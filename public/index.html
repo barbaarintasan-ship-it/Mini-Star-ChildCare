@@ -13,21 +13,21 @@
 
 <!-- TOP BAR -->
 <header class="topbar">
-  <div class="brand">
-    <span class="logo">
-      <img src="images/logo.png" alt="Mini Star">
-    </span>
-    Mini Star Child Care
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="logo"><img src="images/logo.png" alt="Mini Star"></span>
+      Mini Star Child Care
+    </div>
+    <nav class="topnav" aria-label="Main navigation">
+      <button data-page="home" class="active" data-i18n="nav_home">Home</button>
+      <button data-page="about" data-i18n="nav_about">About Us</button>
+      <button data-page="programs" data-i18n="nav_programs">Programs</button>
+      <button data-page="enrollment" data-i18n="nav_enrollment">Enrollment</button>
+      <button data-page="contact" data-i18n="nav_contact">Contact</button>
+      <button data-page="portal" data-i18n="nav_login">Login</button>
+    </nav>
+    <button class="lang-btn" id="lang-toggle" onclick="toggleLang()" aria-label="Change language">Espanol</button>
   </div>
-  <nav class="topnav" aria-label="Main navigation">
-    <button data-page="home" class="active" data-i18n="nav_home">Home</button>
-    <button data-page="about" data-i18n="nav_about">About Us</button>
-    <button data-page="programs" data-i18n="nav_programs">Programs</button>
-    <button data-page="enrollment" data-i18n="nav_enrollment">Enrollment</button>
-    <button data-page="contact" data-i18n="nav_contact">Contact</button>
-    <button data-page="portal" data-i18n="nav_login">Login</button>
-  </nav>
-  <button class="lang-btn" id="lang-toggle" onclick="toggleLang()" aria-label="Change language">Espanol</button>
 </header>
 
 <main>
