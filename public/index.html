@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Star Child Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- TOP BAR -->
+<header class="topbar">
+  <div class="brand">
+    <span class="logo">
+      <img src="images/logo.png" alt="Mini Star">
+    </span>
+    Mini Star Child Care
+  </div>
+  <nav class="topnav" aria-label="Main navigation">
+    <button data-page="home" class="active" data-i18n="nav_home">Home</button>
+    <button data-page="about" data-i18n="nav_about">About Us</button>
+    <button data-page="programs" data-i18n="nav_programs">Programs</button>
+    <button data-page="enrollment" data-i18n="nav_enrollment">Enrollment</button>
+    <button data-page="contact" data-i18n="nav_contact">Contact</button>
+    <button data-page="portal" data-i18n="nav_login">Login</button>
+  </nav>
+  <button class="lang-btn" id="lang-toggle" onclick="toggleLang()" aria-label="Change language">Espanol</button>
+</header>
+
+<main>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="stars" aria-hidden="true">
+      <span class="star-float" style="top:14%;left:8%;font-size:1rem;color:#fff">&#9733;</span>
+      <span class="star-float" style="top:22%;right:12%;font-size:.8rem;color:#FFD9C4;animation-delay:.8s">&#9733;</span>
+      <span class="star-float" style="top:60%;left:14%;font-size:.7rem;color:#1B2A5E;animation-delay:1.4s">&#9733;</span>
+      <span class="star-float" style="top:70%;right:8%;font-size:1.1rem;color:#fff;animation-delay:.4s">&#9733;</span>
+      <span class="star-float" style="top:10%;left:48%;font-size:.7rem;color:#FFD9C4;animation-delay:2s">&#9733;</span>
+    </div>
+    <div class="hero-logo">
+      <img src="images/logo.png" alt="Mini Star Childcare logo">
+    </div>
+    <span class="hero-badge" data-i18n="hero_badge">&#9733; Caring for ages birth - 12 years</span>
+    <h1 data-i18n="hero_h1">Welcome to <span class="gold">Mini Star</span><br>Child Care</h1>
+    <p class="tagline" data-i18n="hero_tag">A safe, loving, and nurturing place where every child can learn, grow, and shine.</p>
+    <button class="btn btn-night" data-page="enrollment" style="box-shadow:0 8px 20px rgba(27,42,94,.3)" data-i18n="hero_enroll">Enroll Today</button>
+    <button class="btn btn-outline" data-page="programs" data-i18n="hero_progs">Our Programs</button>
+  </div>
+
+  <div class="wrap">
+    <section>
+      <span class="eyebrow" data-i18n="home_eyebrow">&#9733; Where bright futures begin</span>
+      <h2 data-i18n="home_h2">Every child is unique</h2>
+      <p data-i18n="home_p1">At Mini Star Child Care, we provide a safe, loving, and nurturing place where every child can learn, grow, and shine. We care for children from birth to 12 years old and support each child's development through play, learning, creativity, and positive guidance.</p>
+      <p data-i18n="home_p2">Our goal is to give families peace of mind knowing their children are in a caring environment every day. We believe every child is unique, and we work hard to create a space where children feel happy, supported, and respected.</p>
+      <p class="lead" data-i18n="home_lead">Come join the Mini Star Child Care family, where bright futures begin. &#9733;</p>
+
+      <div class="values">
+        <div class="value" onclick="openValue('safe')"><span>&#128737;</span><span data-i18n="val_safe">Safe</span></div>
+        <div class="value" onclick="openValue('loving')"><span>&#128155;</span><span data-i18n="val_loving">Loving</span></div>
+        <div class="value" onclick="openValue('learning')"><span>&#128218;</span><span data-i18n="val_learning">Learning</span></div>
+        <div class="value" onclick="openValue('growing')"><span>&#127775;</span><span data-i18n="val_growing">Growing</span></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<div class="page" id="page-about">
+  <div class="wrap">
+    <section>
+      <span class="eyebrow" data-i18n="about_eyebrow">&#9733; About Us</span>
+      <h2 data-i18n="about_h2">Built on love, trust, learning, and family support</h2>
+      <div class="card t-gold">
+        <p data-i18n="about_p1">We understand that choosing childcare is an important decision. That is why we are committed to providing a warm home-like environment where children feel safe and welcome. Our caregivers focus on kindness, patience, and attentive care so each child receives the support they need to grow with confidence.</p>
+      </div>
+      <div class="card t-teal">
+        <p data-i18n="about_p2">We believe children learn best through positive experiences, meaningful play, and caring relationships. At Mini Star Child Care, we help children build early social, emotional, and learning skills that prepare them for the future.</p>
+      </div>
+      <div class="card t-coral">
+        <p class="lead" style="margin-bottom:0" data-i18n="about_mission">Our mission is simple: to care for children with love while helping them learn and thrive every day.</p>
+      </div>
+      <button class="btn btn-night" data-page="programs" data-i18n="about_btn">See Our Programs &rarr;</button>
+    </section>
+  </div>
+</div>
+
+<!-- PROGRAMS -->
+<div class="page" id="page-programs">
+  <div class="wrap">
+    <section>
+      <span class="eyebrow" data-i18n="prog_eyebrow">&#9733; Programs</span>
+      <h2 data-i18n="prog_h2">Care for every age, birth to 12 years</h2>
+      <p class="soft" data-i18n="prog_intro">Our programs are designed to meet the needs of each age group:</p>
+
+      <div class="grid grid-2">
+        <div class="card program-card t-gold">
+          <img class="prog-art" src="images/infants.jpg" alt="Caregiver gently holding a smiling baby">
+          <h3><span class="program-icon bg-gold">&#127868;</span> <span data-i18n="prog_infants">Infants</span> <span class="age-chip" data-i18n="age_infants">0-1 yr</span></h3>
+          <p data-i18n="prog_infants_p">Gentle care, comfort, feeding, and early development support.</p>
+        </div>
+        <div class="card program-card t-coral">
+          <img class="prog-art" src="images/toddlers.jpg" alt="Toddlers playing with colorful blocks">
+          <h3><span class="program-icon bg-coral">&#129528;</span> <span data-i18n="prog_toddlers">Toddlers</span> <span class="age-chip" data-i18n="age_toddlers">1-3 yrs</span></h3>
+          <p data-i18n="prog_toddlers_p">Safe play, language growth, movement, and learning through routines.</p>
+        </div>
+        <div class="card program-card t-teal">
+          <img class="prog-art" src="images/preschool.jpg" alt="Children painting at a table">
+          <h3><span class="program-icon bg-teal">&#127912;</span> <span data-i18n="prog_pre">Preschoolers</span> <span class="age-chip" data-i18n="age_pre">3-5 yrs</span></h3>
+          <p data-i18n="prog_pre_p">Early education activities, creativity, and school readiness.</p>
+        </div>
+        <div class="card program-card t-night">
+          <img class="prog-art" src="images/school-age.jpg" alt="School-age children arriving at care">
+          <h3><span class="program-icon bg-night">&#127234;</span> <span data-i18n="prog_school">School-Age</span> <span class="age-chip" data-i18n="age_school">5-12 yrs</span></h3>
+          <p data-i18n="prog_school_p">Homework support, fun activities, and after-school care.</p>
+        </div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <p class="lead" data-i18n="prog_daily">Every day includes:</p>
+        <ul class="star-list">
+          <li data-i18n="prog_li1">Age-appropriate learning</li>
+          <li data-i18n="prog_li2">Playtime and social development</li>
+          <li data-i18n="prog_li3">Caring, attentive supervision</li>
+          <li data-i18n="prog_li4">Room to explore, discover, and grow at their own pace</li>
+        </ul>
+        <p style="margin-bottom:0" data-i18n="prog_close">Our program helps children build confidence, independence, and a love for learning.</p>
+      </div>
+      <button class="btn btn-gold" data-page="enrollment" data-i18n="prog_btn">Ask About Openings</button>
+    </section>
+  </div>
+</div>
+
+<!-- ENROLLMENT -->
+<div class="page" id="page-enrollment">
+  <div class="wrap">
+    <section>
+      <span class="eyebrow" data-i18n="en_eyebrow">&#9733; Enrollment</span>
+      <h2 data-i18n="en_h2">We're happy to welcome new families</h2>
+      <div id="enrollment-root"></div>
+    </section>
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="page" id="page-contact">
+  <div class="wrap">
+    <section>
+      <span class="eyebrow" data-i18n="c_eyebrow">&#9733; Contact</span>
+      <h2 data-i18n="c_h2">We would love to hear from you</h2>
+      <p data-i18n="c_p">If you have questions about our child care services, enrollment, or openings, please contact Mini Star Child Care using the information below:</p>
+
+      <div class="card t-night">
+        <div class="contact-row">
+          <span class="contact-ic">&#128222;</span>
+          <div>
+            <b data-i18n="c_phone">Phone</b>
+            <a href="tel:+12062554000" class="contact-link">
+              (206) 255-4000
+            </a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-ic">&#9993;</span>
+          <div>
+            <b data-i18n="c_email">Email</b>
+            <a href="mailto:ministarchildcare14@gmail.com" class="contact-link" style="word-break:break-all">
+              ministarchildcare14@gmail.com
+            </a>
+          </div>
+        </div>
+        <div class="contact-row">
+          <span class="contact-ic">&#128205;</span>
+          <div>
+            <b data-i18n="c_addr">Address</b>
+            <a href="https://maps.google.com/?q=17735+38th+Ave+South,+SeaTac,+WA+98188" target="_blank" rel="noopener" class="contact-link">
+              17735 38th Ave South,<br>SeaTac, WA 98188
+            </a>
+          </div>
+        </div>
+        <div class="contact-row" style="margin-bottom:0">
+          <span class="contact-ic">&#128336;</span>
+          <div><b data-i18n="c_hours">Hours</b><span data-i18n="c_hours_val" style="color:var(--ink)">Open 24 Hours - 7 Days a Week</span></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:22px">
+          <a class="btn btn-night" href="tel:+12062554000" style="flex:1;text-align:center;min-width:130px" data-i18n="c_call">&#128222; Call Us</a>
+          <a class="btn btn-gold" href="https://maps.google.com/?q=17735+38th+Ave+South,+SeaTac,+WA+98188" target="_blank" rel="noopener" style="flex:1;text-align:center;min-width:130px" data-i18n="c_directions">&#128205; Get Directions</a>
+          <a class="btn btn-teal" href="mailto:ministarchildcare14@gmail.com" style="flex:1;text-align:center;min-width:130px" data-i18n="c_mail">&#9993; Email Us</a>
+        </div>
+      </div>
+      <p class="soft" style="font-size:.88rem" data-i18n="c_serving">Serving families in SeaTac, Washington and the surrounding area. &#9733;</p>
+    </section>
+  </div>
+</div>
+
+<!-- PORTAL -->
+<div class="page" id="page-portal">
+  <div class="wrap">
+    <section id="portal-root" style="padding-top:10px"></section>
+  </div>
+</div>
+
+<!-- VALUE DETAIL -->
+<div class="page" id="page-value">
+  <div class="wrap"><section id="value-page-root" style="padding-top:14px"></section></div>
+</div>
+
+</main>
+
+<footer data-i18n="footer">&#9733; Mini Star Child Care &mdash; where bright futures begin &#9733;</footer>
+
+<!-- BOTTOM TAB BAR (mobile) -->
+<nav class="tabbar" aria-label="App navigation">
+  <button data-page="home" class="active"><span class="ic">&#127968;</span><span data-i18n="tab_home">Home</span></button>
+  <button data-page="about"><span class="ic">&#11088;</span><span data-i18n="tab_about">About</span></button>
+  <button data-page="programs"><span class="ic">&#127912;</span><span data-i18n="tab_programs">Programs</span></button>
+  <button data-page="enrollment"><span class="ic">&#128221;</span><span data-i18n="tab_enroll">Enroll</span></button>
+  <button data-page="contact"><span class="ic">&#128222;</span><span data-i18n="tab_contact">Contact</span></button>
+  <button data-page="portal"><span class="ic">&#128100;</span><span data-i18n="tab_login">Login</span></button>
+</nav>
+
+<script src="nav.js"></script>
+<script src="values.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
