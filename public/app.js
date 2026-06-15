@@ -125,6 +125,9 @@ function loadDB() {
   DB.enrollments = DB.enrollments || [];
   DB.reports = DB.reports || [];
   DB.messages = DB.messages || [];
+  // remove payments if still stored from old version
+  delete DB.payments;
+  saveDB();
 }
 function saveDB() { localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); }
 
