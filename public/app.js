@@ -1,7 +1,7 @@
 /* ============================================================
    Mini Star Child Care — Combined App
    Design: ministar-fly (night/gold/coral/teal palette)
-   Features: auth, admin/teacher/parent portals, payments, messages
+   Features: auth, admin/teacher/parent portals, messages
    Storage: localStorage (no server required)
    ============================================================ */
 
@@ -81,7 +81,6 @@ function fmtDate(s) {
   try { return new Date(s + 'T00:00').toLocaleDateString(LANG === 'es' ? 'es-US' : 'en-US', {weekday:'short',month:'short',day:'numeric',year:'numeric'}); }
   catch(e) { return s; }
 }
-function fmtMoney(n) { return '$' + Number(n || 0).toFixed(2); }
 
 const CLS_ES = {Infants:'Bebes',Toddlers:'Ninos Pequenos',Preschool:'Preescolar','School-Age':'Edad Escolar'};
 function clsName(id) {
@@ -125,7 +124,6 @@ function loadDB() {
   DB.children = DB.children || [];
   DB.enrollments = DB.enrollments || [];
   DB.reports = DB.reports || [];
-  DB.payments = DB.payments || [];
   DB.messages = DB.messages || [];
 }
 function saveDB() { localStorage.setItem(STORAGE_KEY, JSON.stringify(DB)); }
@@ -178,14 +176,6 @@ function seedDB() {
     reports: [
       { id: uid(), childId: childIds[0], teacherId: userIds.teacher1, date: today(), checkIn: '07:30', checkOut: '', mood: 'happy', meals: 'Ate all of breakfast, good lunch', nap: '12:00 - 2:30 PM', activities: 'Tummy time, music, sensory play', note: 'Emma had a wonderful day! She smiled and cooed during music time.' },
       { id: uid(), childId: childIds[2], teacherId: userIds.teacher2, date: today(), checkIn: '08:00', checkOut: '', mood: 'energetic', meals: 'Full breakfast, half lunch', nap: '1:00 - 2:00 PM', activities: 'Painting, story time, outdoor play', note: 'Sofia led the class in a counting game today!' }
-    ],
-    payments: [
-      { id: uid(), childId: childIds[0], amount: 850, description: 'June Care - Emma Johnson', dueDate: '2026-06-01', paid: true, paidDate: '2026-05-28' },
-      { id: uid(), childId: childIds[1], amount: 780, description: 'June Care - Liam Johnson', dueDate: '2026-06-01', paid: true, paidDate: '2026-05-28' },
-      { id: uid(), childId: childIds[2], amount: 750, description: 'June Care - Sofia Garcia', dueDate: '2026-06-01', paid: false, paidDate: null },
-      { id: uid(), childId: childIds[3], amount: 720, description: 'June Care - Noah Garcia', dueDate: '2026-06-01', paid: false, paidDate: null },
-      { id: uid(), childId: childIds[4], amount: 650, description: 'June Care - Mia Hassan', dueDate: '2026-06-01', paid: true, paidDate: '2026-06-02' },
-      { id: uid(), childId: childIds[5], amount: 630, description: 'June Care - Oliver Hassan', dueDate: '2026-06-01', paid: false, paidDate: null }
     ],
     messages: [
       { id: uid(), fromId: userIds.teacher1, toId: userIds.parent1, childId: childIds[0], text: 'Emma had a great day today! She really enjoyed tummy time and responded well to music.', date: today(), time: '14:30', read: false },
@@ -247,7 +237,7 @@ function authView() {
   <div class="portal-card">
     <div class="portal-logo"><img src="images/logo.png" alt="Mini Star logo"></div>
     <h2 style="text-align:center;font-size:1.4rem">${t('Family &amp; Staff Portal','Portal de Familias y Personal')}</h2>
-    <p class="soft" style="text-align:center;font-size:.9rem;margin-bottom:4px">${t('Sign in to access daily reports, payments, and messages.','Inicia sesion para ver reportes, pagos y mensajes.')}</p>
+    <p class="soft" style="text-align:center;font-size:.9rem;margin-bottom:4px">${t('Sign in to access daily reports and messages.','Inicia sesion para ver reportes y mensajes.')}</p>
     <div class="pill-tabs">
       <button class="${AUTH_TAB === 'login' ? 'active' : ''}" onclick="AUTH_TAB='login';renderPortal()">${t('Sign In','Iniciar Sesion')}</button>
       <button class="${AUTH_TAB === 'signup' ? 'active' : ''}" onclick="AUTH_TAB='signup';renderPortal()">${t('Parent Sign Up','Registro de Padres')}</button>
@@ -313,15 +303,12 @@ function adminView() {
     ['staff',       '&#129489; ' + t('Staff','Personal')],
     ['parents',     '&#128106; ' + t('Parents','Padres')],
     ['reports',     '&#128203; ' + t('Reports','Reportes')],
-    ['payments',    '&#128176; ' + t('Payments','Pagos')],
     ['messages',    '&#128172; ' + t('Messages','Mensajes')]
   ]);
 
   /* --- overview --- */
   if (SUB === 'overview') {
     const td = today();
-    const totalPaid = DB.payments.filter(p => p.paid).reduce((s, p) => s + Number(p.amount), 0);
-    const totalUnpaid = DB.payments.filter(p => !p.paid).reduce((s, p) => s + Number(p.amount), 0);
     h += `
     <div class="stat-grid">
       <div class="stat-box"><div class="stat-num">${DB.children.length}</div><div class="stat-lbl">${t('Children','Ninos')}</div></div>
@@ -330,8 +317,6 @@ function adminView() {
       <div class="stat-box"><div class="stat-num">${DB.reports.filter(r => r.date === td).length}</div><div class="stat-lbl">${t("Today's Reports",'Reportes Hoy')}</div></div>
     </div>
     <div class="stat-grid" style="margin-top:0">
-      <div class="stat-box" style="border-top:4px solid var(--teal)"><div class="stat-num" style="color:var(--teal)">${fmtMoney(totalPaid)}</div><div class="stat-lbl">${t('Collected','Cobrado')}</div></div>
-      <div class="stat-box" style="border-top:4px solid var(--coral)"><div class="stat-num" style="color:var(--coral)">${fmtMoney(totalUnpaid)}</div><div class="stat-lbl">${t('Outstanding','Pendiente')}</div></div>
       <div class="stat-box" style="border-top:4px solid var(--gold)"><div class="stat-num">${DB.messages.filter(m => !m.read).length}</div><div class="stat-lbl">${t('Unread Msgs','Mensajes')}</div></div>
       <div class="stat-box" style="border-top:4px solid var(--night)"><div class="stat-num">${DB.classes.length}</div><div class="stat-lbl">${t('Classrooms','Salones')}</div></div>
     </div>
@@ -340,7 +325,6 @@ function adminView() {
       <ul class="star-list">
         <li>${t('Add teachers under <b>Staff</b> and assign each a classroom.','Agregue maestros en <b>Personal</b> y asigne un salon a cada uno.')}</li>
         <li>${t('Add children under <b>Children</b> and link them to parents.','Agregue ninos en <b>Ninos</b> y vinculelos con sus padres.')}</li>
-        <li>${t('Create payment records under <b>Payments</b>.','Cree registros de pago en <b>Pagos</b>.')}</li>
         <li>${t('View all teacher-parent messages under <b>Messages</b>.','Vea los mensajes en <b>Mensajes</b>.')}</li>
       </ul>
     </div>`;
@@ -452,45 +436,6 @@ function adminView() {
     const rs = DB.reports.filter(r => r.date === d);
     h += rs.length ? rs.map(r => reportCard(r, true)).join('')
       : `<div class="empty">${t('No reports for','No hay reportes para')} ${fmtDate(d)}.</div>`;
-  }
-
-  /* --- payments --- */
-  if (SUB === 'payments') {
-    const unpaid = DB.payments.filter(p => !p.paid);
-    const totalDue = unpaid.reduce((s, p) => s + Number(p.amount), 0);
-    h += `
-    <div class="card">
-      <p class="lead">${t('Create Payment Record','Crear Registro de Pago')}</p>
-      <div class="field"><label>${t('Child','Nino')}</label><select id="np-child">${DB.children.map(c => `<option value="${c.id}">${esc(c.name)}</option>`).join('')}</select></div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-        <div class="field" style="margin:0"><label>${t('Amount ($)','Monto ($)')}</label><input type="number" id="np-amount" placeholder="750"></div>
-        <div class="field" style="margin:0"><label>${t('Due Date','Fecha Limite')}</label><input type="date" id="np-due"></div>
-      </div>
-      <div class="field"><label>${t('Description','Descripcion')}</label><input id="np-desc" placeholder="${t('e.g. July Care Fee','Ej.: Cuota de Julio')}"></div>
-      <button class="btn btn-teal" onclick="addPayment()">${t('Create Payment','Crear Pago')}</button>
-      <div class="form-msg" id="np-msg"></div>
-    </div>`;
-    if (unpaid.length) {
-      h += `<p class="lead" style="color:var(--coral)">${t('Outstanding: ','Pendiente: ')}${fmtMoney(totalDue)}</p>`;
-    }
-    h += DB.payments.length ? DB.payments.sort((a, b) => (a.paid ? 1 : -1)).map(p => {
-      const ch = childById(p.childId);
-      return `<div class="payment-card">
-        <div class="pay-info">
-          <b>${esc(p.description || (ch ? ch.name : '-'))}</b>
-          ${ch ? `<span class="tag" style="margin-left:6px">${esc(clsName(ch.classId))}</span>` : ''}
-          <br>
-          <span class="soft">${t('Due:','Vence:')} ${fmtDate(p.dueDate)}${p.paid && p.paidDate ? ' &nbsp;&#10003; ' + t('Paid','Pagado') + ' ' + fmtDate(p.paidDate) : ''}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
-          <span class="pay-amount">${fmtMoney(p.amount)}</span>
-          <span class="tag ${p.paid ? 'paid' : 'unpaid'}">${p.paid ? t('Paid','Pagado') : t('Unpaid','Pendiente')}</span>
-          ${!p.paid ? `<button class="mini-btn success" onclick="markPaid('${p.id}')">${t('Mark Paid','Marcar Pagado')}</button>` : ''}
-          <button class="mini-btn danger" onclick="delPayment('${p.id}')">${t('Delete','Eliminar')}</button>
-        </div>
-      </div>`;
-    }).join('')
-      : `<div class="empty">${t('No payment records yet.','Aun no hay registros de pago.')}</div>`;
   }
 
   /* --- messages --- */
@@ -618,11 +563,10 @@ function parentView() {
   let h = subtabs([
     ['children', '&#128118; ' + t('My Children','Mis Hijos')],
     ['reports',  '&#128203; ' + t('Daily Reports','Reportes Diarios')],
-    ['payments', '&#128176; ' + t('Payments','Pagos')],
     ['messages', '&#128172; ' + t('Messages','Mensajes')]
   ]);
 
-  if (!kids.length && SUB !== 'messages' && SUB !== 'payments') {
+  if (!kids.length && SUB !== 'messages') {
     h += `<div class="empty">
       ${t('Your account is not linked to a child yet.','Su cuenta aun no esta vinculada a un nino.')}<br>
       ${t('Please contact Mini Star Childcare:','Por favor contacte a Mini Star:')} <a href="tel:+12062554000" style="color:var(--gold)">(206) 255-4000</a>
@@ -677,32 +621,6 @@ function parentView() {
       h += rs.length ? rs.map(r => reportCard(r, false)).join('')
         : `<div class="empty">${t('No reports yet for your child.','Aun no hay reportes para su hijo.')}</div>`;
     }
-  }
-
-  /* payments */
-  if (SUB === 'payments') {
-    const myKidIds = kids.map(k => k.id);
-    const myPayments = DB.payments.filter(p => myKidIds.includes(p.childId)).sort((a, b) => (a.paid ? 1 : -1));
-    const totalDue = myPayments.filter(p => !p.paid).reduce((s, p) => s + Number(p.amount), 0);
-    if (totalDue > 0) {
-      h += `<div class="card t-coral" style="background:#FFF0EE">
-        <p class="lead" style="color:var(--coral)">${t('Balance Due','Saldo Pendiente')}: ${fmtMoney(totalDue)}</p>
-        <p style="margin:0;font-size:.9rem">${t('Please contact us to arrange payment.','Por favor contactenos para arreglar el pago.')}<br><a href="tel:+12062554000" style="color:var(--gold);font-weight:800">(206) 255-4000</a></p>
-      </div>`;
-    }
-    h += myPayments.length ? myPayments.map(p => {
-      return `<div class="payment-card">
-        <div class="pay-info">
-          <b>${esc(p.description)}</b><br>
-          <span class="soft">${t('Due:','Vence:')} ${fmtDate(p.dueDate)}${p.paid && p.paidDate ? ' &nbsp;&#10003; ' + t('Paid','Pagado') + ' ' + fmtDate(p.paidDate) : ''}</span>
-        </div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="pay-amount">${fmtMoney(p.amount)}</span>
-          <span class="tag ${p.paid ? 'paid' : 'unpaid'}">${p.paid ? t('Paid','Pagado') : t('Unpaid','Pendiente')}</span>
-        </div>
-      </div>`;
-    }).join('')
-      : `<div class="empty">${t('No payment records.','No hay registros de pago.')}</div>`;
   }
 
   /* messages */
@@ -1203,7 +1121,7 @@ function emailEnrollmentApproved(parentEmail, parentName, childName, className) 
     'Dear ' + parentName + ',\n\n' +
     'Great news! Your enrollment request for ' + childName + ' has been APPROVED.\n\n' +
     'Your child has been enrolled in the ' + className + ' classroom.\n\n' +
-    'You can now log in to your account on our website to track daily reports, messages, and payments.\n\n' +
+    'You can now log in to your account on our website to track daily reports and messages.\n\n' +
     'Welcome to the Mini Star Child Care family!\n\n' +
     'Mini Star Child Care\n(206) 255-4000\nministarchildcare14@gmail.com\n17735 38th Ave South, SeaTac, WA 98188'
   );
@@ -1337,7 +1255,6 @@ function delChild(id) {
   if (!confirm(t('Remove this child and all their data?', 'Eliminar este nino y todos sus datos?'))) return;
   DB.children = DB.children.filter(c => c.id !== id);
   DB.reports = DB.reports.filter(r => r.childId !== id);
-  DB.payments = DB.payments.filter(p => p.childId !== id);
   DB.messages = DB.messages.filter(m => m.childId !== id);
   saveDB();
   renderPortal();
@@ -1404,29 +1321,6 @@ function saveReport() {
   saveDB();
   FORM_MOOD = '';
   msg('rp-msg', t('Report saved! Parents can now see it.', 'Reporte guardado! Los padres ya pueden verlo.'), true);
-  renderPortal();
-}
-
-function addPayment() {
-  const childId = document.getElementById('np-child').value;
-  const amount = parseFloat(document.getElementById('np-amount').value);
-  const dueDate = document.getElementById('np-due').value;
-  const description = (document.getElementById('np-desc').value || '').trim();
-  if (!childId || !amount || !dueDate) { msg('np-msg', errT(new Error('missing'))); return; }
-  DB.payments.push({ id: uid(), childId, amount, description, dueDate, paid: false, paidDate: null });
-  saveDB();
-  renderPortal();
-}
-
-function markPaid(id) {
-  const p = DB.payments.find(x => x.id === id);
-  if (p) { p.paid = true; p.paidDate = today(); saveDB(); renderPortal(); }
-}
-
-function delPayment(id) {
-  if (!confirm(t('Delete this payment record?', 'Eliminar este registro de pago?'))) return;
-  DB.payments = DB.payments.filter(p => p.id !== id);
-  saveDB();
   renderPortal();
 }
 
