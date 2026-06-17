@@ -521,3 +521,192 @@ footer{
 .prog-detail-list li{padding:5px 0 5px 20px;position:relative;border-bottom:1px solid rgba(0,0,0,.05)}
 .prog-detail-list li:last-child{border-bottom:none}
 .prog-detail-list li::before{content:"›";position:absolute;left:5px;color:var(--gold);font-weight:800}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   TEACHER COACHING & GUIDED INSTRUCTION SYSTEM — UI Components
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── Age Coaching Context card ── */
+.coach-context-card{background:linear-gradient(135deg,var(--night) 0%,#2a3f80 100%);color:#fff;border-radius:18px;padding:22px 24px 18px;margin-bottom:22px}
+.cc-top{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.cc-top h3{font-size:1.15rem;font-family:'Fredoka',sans-serif;font-weight:600;margin:0}
+.cc-top .coach-age-icon{font-size:2rem;line-height:1}
+.cc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px}
+.cc-item{background:rgba(255,255,255,.12);border-radius:10px;padding:10px 12px}
+.cc-title{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;opacity:.75;margin-bottom:3px;font-weight:700}
+.cc-sub{font-size:.84rem;line-height:1.4;opacity:.95}
+
+/* ── Coverage bar ── */
+.coach-coverage{background:#fff;border:1px solid #e5e9f0;border-radius:12px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.coach-cov-label{font-size:.82rem;color:var(--muted);font-weight:600;white-space:nowrap}
+.coach-cov-track{flex:1;min-width:120px;height:10px;background:#eee;border-radius:99px;overflow:hidden}
+.coach-cov-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--gold));border-radius:99px;transition:width .4s}
+.coach-cov-pct{font-size:.82rem;font-weight:700;color:var(--teal);white-space:nowrap}
+
+/* ── Domain playbook mini-cards ── */
+.coach-domain-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:26px}
+.coach-domain-card{background:#fff;border:1.5px solid #e5e9f0;border-radius:14px;padding:14px 16px;cursor:pointer;transition:box-shadow .2s,transform .2s}
+.coach-domain-card:hover{box-shadow:0 4px 18px rgba(0,0,0,.1);transform:translateY(-2px)}
+.cdcard-ic{font-size:1.6rem;margin-bottom:6px}
+.cdcard-name{font-size:.9rem;font-weight:700;color:var(--ink);margin-bottom:2px}
+.cdcard-count{font-size:.78rem;color:var(--muted)}
+.cdcard-link{font-size:.75rem;color:var(--gold);font-weight:700;margin-top:6px;display:inline-block}
+
+/* ── Activities by domain section ── */
+.coach-domain-section{margin-bottom:28px}
+.cds-header{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:12px 12px 0 0;cursor:pointer}
+.cds-header h4{font-size:.95rem;font-family:'Fredoka',sans-serif;font-weight:600;margin:0;color:#fff;flex:1}
+.cds-count{font-size:.78rem;background:rgba(255,255,255,.25);color:#fff;padding:2px 8px;border-radius:99px;font-weight:700}
+.cds-list{border:1px solid #e5e9f0;border-top:none;border-radius:0 0 12px 12px;overflow:hidden}
+.cds-activity{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;border-bottom:1px solid #f0f2f7;cursor:pointer;transition:background .15s}
+.cds-activity:last-child{border-bottom:none}
+.cds-activity:hover{background:#fafbff}
+.cds-act-main{flex:1;min-width:0}
+.cds-act-main strong{font-size:.88rem;color:var(--ink);display:block;margin-bottom:2px}
+.cds-obj{font-size:.78rem;color:var(--muted);line-height:1.4;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cds-dur{font-size:.75rem;color:var(--muted);background:#f0f2f7;padding:2px 7px;border-radius:99px;white-space:nowrap;margin-top:4px;display:inline-block}
+.coach-badge{font-size:.7rem;padding:2px 8px;border-radius:99px;font-weight:700;white-space:nowrap;margin-top:4px;display:inline-block}
+.coach-badge.has-coach{background:#e8f5e9;color:#2e7d32}
+.coach-badge.no-coach{background:#fff3e0;color:#e65100}
+
+/* ── Shared coach section wrapper ── */
+.coach-section{margin-bottom:22px}
+.coach-sec-title{font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:var(--muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid #eee}
+
+/* ── Teacher script block ── */
+.coach-script{background:#fffbef;border-left:4px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;margin-bottom:10px}
+.cs-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700;color:var(--gold);margin-bottom:5px}
+.cs-text{font-size:.88rem;color:var(--ink);line-height:1.6;font-style:italic}
+
+/* ── Coaching tips list ── */
+.coach-tips{list-style:none;margin:0;padding:0}
+.coach-tips li{padding:7px 0 7px 22px;position:relative;font-size:.86rem;color:var(--ink);line-height:1.5;border-bottom:1px dashed #eee}
+.coach-tips li:last-child{border-bottom:none}
+.coach-tips li::before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:900}
+
+/* ── Question bank ── */
+.q-bank{display:flex;flex-direction:column;gap:12px}
+.q-group{background:#fafbff;border-radius:10px;padding:12px 14px}
+.q-level-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:8px}
+.q-chips{display:flex;flex-direction:column;gap:6px}
+.q-chip{font-size:.84rem;color:var(--ink);background:#fff;border:1px solid #e5e9f0;border-radius:8px;padding:7px 12px;line-height:1.45}
+
+/* ── Child response cards ── */
+.response-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.response-card{border-radius:10px;padding:12px 14px}
+.response-card .rc-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:6px}
+.response-card .rc-text{font-size:.84rem;line-height:1.5}
+
+/* ── Shy support ── */
+.shy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-bottom:12px}
+.shy-col{background:#f8f4ff;border-radius:10px;padding:12px 14px}
+.shy-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:#7b5ea7;margin-bottom:7px}
+.shy-col ul{margin:0;padding-left:16px}
+.shy-col ul li{font-size:.83rem;color:var(--ink);line-height:1.5;margin-bottom:4px}
+.encourage-chip{display:inline-block;background:#ede7f6;color:#512da8;border-radius:8px;padding:5px 10px;font-size:.81rem;margin:3px 3px 3px 0;line-height:1.4}
+
+/* ── Observation list ── */
+.obs-list{list-style:none;margin:0;padding:0}
+.obs-list li{padding:8px 0 8px 26px;position:relative;font-size:.86rem;color:var(--ink);line-height:1.5;border-bottom:1px solid #f0f2f7}
+.obs-list li:last-child{border-bottom:none}
+.obs-list li::before{content:"👁";position:absolute;left:0;font-size:.85rem}
+
+/* ── Assessment rubric ── */
+.rubric-grid{display:flex;flex-direction:column;gap:6px}
+.rubric-row{display:flex;align-items:flex-start;gap:12px;padding:10px 14px;border-radius:9px}
+.rubric-level{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;min-width:90px;padding-top:1px}
+.rubric-desc{font-size:.84rem;color:var(--ink);line-height:1.5}
+
+/* ── Classroom management ── */
+.mgmt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.mgmt-item{background:#f9fbff;border:1px solid #e5e9f0;border-radius:10px;padding:12px 14px}
+.mgmt-item .mi-title{font-size:.75rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--night);margin-bottom:6px}
+.mgmt-item p{font-size:.83rem;color:var(--ink);line-height:1.5;margin:0}
+
+/* ── Teacher notes ── */
+.tn-list{display:flex;flex-direction:column;gap:10px}
+.tn-item{background:#f0faf5;border:1px solid #c8e6c9;border-radius:10px;padding:12px 14px;position:relative}
+.tn-text{font-size:.85rem;color:var(--ink);line-height:1.6;font-style:italic;margin-bottom:8px}
+.tn-copy{font-size:.75rem;background:var(--teal);color:#fff;border:none;border-radius:7px;padding:4px 10px;cursor:pointer;font-weight:700}
+.tn-copy:hover{background:#3d8a77}
+
+/* ── Parent report ── */
+.home-ext-card{background:linear-gradient(135deg,#fff8e1,#fffde7);border:1px solid #ffe082;border-radius:12px;padding:14px 16px}
+.home-ext-card .he-title{font-size:.8rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;color:#f57f17;margin-bottom:8px}
+.home-ext-card p{font-size:.85rem;color:var(--ink);line-height:1.6;margin:0}
+
+/* ── Activity variations ── */
+.var-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.var-card{background:#fff;border:1.5px solid #e5e9f0;border-radius:10px;padding:12px 14px}
+.var-card .vc-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;margin-bottom:6px}
+.var-card p{font-size:.83rem;color:var(--ink);line-height:1.5;margin:0}
+
+/* ── Materials grid ── */
+.mat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px}
+.mat-col{background:#fafbff;border-radius:10px;padding:12px 14px}
+.mat-label{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;color:var(--night);margin-bottom:6px}
+.mat-list{list-style:none;margin:0;padding:0}
+.mat-list li{font-size:.82rem;color:var(--ink);padding:3px 0;line-height:1.4}
+.mat-list li::before{content:"• ";color:var(--gold)}
+
+/* ── Activity objective strip ── */
+.act-obj-strip{background:#f0f4ff;border-radius:10px;padding:10px 14px;font-size:.86rem;color:var(--ink);line-height:1.5;margin-bottom:14px;border-left:3px solid var(--night)}
+
+/* ── Domain Playbook full view ── */
+.playbook-card{background:#fff;border:1.5px solid #e5e9f0;border-radius:16px;padding:20px 22px;margin-bottom:18px}
+.pb-mindset{display:flex;align-items:flex-start;gap:14px;background:linear-gradient(135deg,var(--night),#2a3f80);border-radius:12px;padding:16px 18px;margin-bottom:16px;color:#fff}
+.pb-mindset-ic{font-size:2rem;line-height:1;flex-shrink:0}
+.pb-mindset p{font-size:.88rem;line-height:1.6;margin:0;opacity:.95}
+.pb-section{margin-bottom:14px}
+.pb-sec-title{font-size:.78rem;text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid #eee}
+.pb-list{list-style:none;margin:0;padding:0}
+.pb-list li{padding:6px 0 6px 22px;position:relative;font-size:.85rem;color:var(--ink);line-height:1.45;border-bottom:1px dashed #f0f2f7}
+.pb-list li:last-child{border-bottom:none}
+.pb-list li::before{content:"✓";position:absolute;left:0;color:var(--teal);font-weight:900}
+.pb-list.pb-red li::before{content:"✗";color:#e53935}
+.pb-dev-note{background:#fff8e1;border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:10px 14px;font-size:.84rem;color:var(--ink);line-height:1.55;font-style:italic}
+.pb-age-group{background:#f8f9ff;border-radius:10px;padding:10px 14px;margin-bottom:8px}
+.pb-age-label{font-size:.78rem;font-weight:700;color:var(--night);margin-bottom:4px}
+
+/* ── Resource Library ── */
+.res-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
+.rf-group{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.rf-group-label{font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-right:2px}
+.rf-pills{display:flex;flex-wrap:wrap;gap:5px}
+.rf-pill{font-size:.78rem;padding:4px 12px;border-radius:99px;border:1.5px solid #dde1ec;background:#fff;cursor:pointer;font-weight:600;color:var(--ink);transition:background .15s,border-color .15s}
+.rf-pill.active{background:var(--night);color:#fff;border-color:var(--night)}
+.res-org-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+.res-org-card{background:#fff;border:1.5px solid #e5e9f0;border-radius:16px;overflow:hidden;transition:box-shadow .2s}
+.res-org-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.roc-header{display:flex;align-items:center;gap:12px;padding:14px 16px;border-bottom:1px solid #f0f2f7}
+.roc-icon{font-size:1.8rem;line-height:1}
+.roc-name{font-size:.9rem;font-weight:700;color:var(--ink)}
+.roc-desc{font-size:.78rem;color:var(--muted);margin-top:1px}
+.roc-tags{display:flex;flex-wrap:wrap;gap:4px;padding:10px 16px;border-bottom:1px solid #f0f2f7}
+.roc-tag{font-size:.72rem;padding:2px 8px;border-radius:99px;background:#f0f4ff;color:var(--night);font-weight:600}
+.roc-links{padding:10px 16px;display:flex;flex-direction:column;gap:6px}
+.res-link{display:flex;align-items:center;gap:8px;text-decoration:none;padding:6px 10px;border-radius:8px;background:#fafbff;transition:background .15s}
+.res-link:hover{background:#eef1ff}
+.res-link .rl-title{font-size:.82rem;font-weight:600;color:var(--night);flex:1}
+.res-type-badge{font-size:.68rem;padding:2px 7px;border-radius:99px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.res-type-badge.game{background:#e8f5e9;color:#2e7d32}
+.res-type-badge.video{background:#fff3e0;color:#e65100}
+.res-type-badge.lesson{background:#e8eaf6;color:#3949ab}
+.res-type-badge.activity{background:#fce4ec;color:#c62828}
+.res-type-badge.tool{background:#e0f7fa;color:#00695c}
+.res-org-mini{background:#fafbff;border:1px solid #eef0f7;border-radius:10px;padding:12px 14px;margin-bottom:10px}
+.rom-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.rom-header .rom-icon{font-size:1.1rem}
+.rom-header .rom-name{font-size:.82rem;font-weight:700;color:var(--ink)}
+.rom-list{list-style:none;margin:0;padding:0}
+.rom-list li{padding:4px 0;font-size:.8rem;color:var(--muted)}
+.rom-list li a{color:var(--night);text-decoration:none;font-weight:600}
+.rom-list li a:hover{text-decoration:underline}
+
+/* ── Coach 6-tab detail bar ── */
+.coach-detail-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;background:#f4f5fb;border-radius:12px;padding:6px}
+.cdt-btn{font-size:.8rem;font-weight:700;padding:7px 14px;border-radius:8px;border:none;background:transparent;color:var(--muted);cursor:pointer;transition:background .15s,color .15s;font-family:'Nunito',sans-serif}
+.cdt-btn.active{background:#fff;color:var(--night);box-shadow:0 1px 6px rgba(0,0,0,.1)}
+
+/* ── pb-mini (domain badge on activity list) ── */
+.pb-mini{display:inline-flex;align-items:center;gap:4px;font-size:.72rem;font-weight:700;padding:3px 9px;border-radius:99px;background:#f0f4ff;color:var(--night)}
