@@ -1740,9 +1740,11 @@ function parentLearningReport(childId, date) {
    SECTION 28 — EXTEND initCurriculumDB WITH NEW FIELDS
    ══════════════════════════════════════════════ */
 
-const _origInitCurriculumDB = initCurriculumDB;
-function initCurriculumDB() {
-  _origInitCurriculumDB();
-  if (!DB || !DB.curriculum) return;
-  if (!DB.curriculum.successMetrics) DB.curriculum.successMetrics = [];
-}
+(function() {
+  var _prev28 = initCurriculumDB;
+  initCurriculumDB = function() {
+    _prev28();
+    if (!DB || !DB.curriculum) return;
+    if (!DB.curriculum.successMetrics) DB.curriculum.successMetrics = [];
+  };
+})();

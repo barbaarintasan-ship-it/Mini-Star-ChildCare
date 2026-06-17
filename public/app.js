@@ -125,6 +125,18 @@ function loadDB() {
   DB.enrollments = DB.enrollments || [];
   DB.reports = DB.reports || [];
   DB.messages = DB.messages || [];
+  // ensure curriculum collection always exists (curriculum.js may not have run initCurriculumDB yet)
+  if (!DB.curriculum) DB.curriculum = {};
+  DB.curriculum.plans          = DB.curriculum.plans          || [];
+  DB.curriculum.milestones     = DB.curriculum.milestones     || [];
+  DB.curriculum.teacherNotes   = DB.curriculum.teacherNotes   || [];
+  DB.curriculum.weekThemes     = DB.curriculum.weekThemes     || [];
+  DB.curriculum.successMetrics = DB.curriculum.successMetrics || [];
+  DB.curriculum.portfolio      = DB.curriculum.portfolio      || [];
+  DB.curriculum.projects       = DB.curriculum.projects       || [];
+  DB.curriculum.readinessScores   = DB.curriculum.readinessScores   || [];
+  DB.curriculum.flMilestones      = DB.curriculum.flMilestones      || [];
+  DB.curriculum.leadershipProgress = DB.curriculum.leadershipProgress || [];
   // remove payments if still stored from old version
   delete DB.payments;
   saveDB();
@@ -485,6 +497,35 @@ function teacherView() {
   /* class */
   if (SUB === 'class') {
     const td = today();
+    /* ── Curriculum Dashboard Widget ── */
+    if (typeof getAgeKey === 'function') {
+      const _ak  = getAgeKey(CU.classId);
+      const _ai  = (typeof CURR_AGE_INFO !== 'undefined' ? CURR_AGE_INFO[_ak] : null) || { color:'#C4DDFF', icon:'&#128218;', label:'Class', range:'' };
+      const _th  = typeof getWeekTheme === 'function' ? getWeekTheme(CU.classId) : t('Today','Hoy');
+      const _pl  = typeof getPlan === 'function' ? getPlan(CU.classId, td) : null;
+      const _tot = _pl ? (_pl.activities || []).length : 0;
+      const _don = _pl ? (_pl.activities || []).filter(a => a.status === 'completed').length : 0;
+      const _pct = _tot ? Math.round((_don / _tot) * 100) : 0;
+      h += `<div style="background:${_ai.color};border-radius:14px;padding:13px 16px;margin-bottom:14px;cursor:pointer" onclick="SUB='curriculum';CURR_SUB='today';renderPortal()">
+        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          <span style="font-size:1.4rem">${_ai.icon}</span>
+          <div style="flex:1;min-width:0">
+            <b style="color:var(--night)">&#127808; ${esc(_th)}</b>
+            <p style="font-size:.82rem;color:var(--ink);margin:3px 0 0">${esc(_ai.label)} &middot; ${esc(_ai.range)}</p>
+          </div>
+          ${_tot ? `<div style="text-align:center;min-width:44px"><div style="font-size:1.5rem;font-weight:800;color:var(--night);line-height:1">${_pct}%</div><div style="font-size:.7rem;color:var(--ink)">${t('done','listo')}</div></div>` : ''}
+          <button class="mini-btn in" style="white-space:nowrap" onclick="event.stopPropagation();SUB='curriculum';CURR_SUB='today';renderPortal()">&#127963; ${t('Curriculum','Curriculo')}</button>
+        </div>
+        ${_tot ? `<div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--ink);margin-bottom:4px">
+            <span>${_don} ${t('activities completed','actividades completadas')}</span><span>${_tot - _don} ${t('remaining','restantes')}</span>
+          </div>
+          <div style="background:rgba(0,0,0,.15);border-radius:999px;height:8px;overflow:hidden">
+            <div style="background:var(--night);width:${_pct}%;height:100%;border-radius:999px;transition:width .5s"></div>
+          </div>
+        </div>` : `<p style="font-size:.78rem;color:var(--ink);margin:8px 0 0">&#128197; ${t("Tap to open today's lesson plan","Toque para ver el plan de hoy")}</p>`}
+      </div>`;
+    }
     if (EDIT_CHILD_ID && kids.some(k => k.id === EDIT_CHILD_ID)) {
       const ec = DB.children.find(x => x.id === EDIT_CHILD_ID);
       if (ec) h += childEditForm(ec, false);
@@ -538,6 +579,28 @@ function teacherView() {
       <button class="btn btn-teal btn-full" onclick="saveReport()">${t('Save Daily Report','Guardar Reporte Diario')}</button>
       <div class="form-msg" id="rp-msg"></div>
     </div>`;
+    /* ── Curriculum Activity Auto-Populate ── */
+    if (typeof getPlan === 'function') {
+      const _cp  = getPlan(CU.classId, d);
+      const _cak = typeof getAgeKey === 'function' ? getAgeKey(CU.classId) : 'preschool';
+      const _ca  = _cp ? (_cp.activities || []).filter(a => a.status === 'completed' || a.status === 'partial') : [];
+      if (_ca.length) {
+        const _lines = _ca.map(entry => {
+          const pool = (typeof ACTIVITY_LIBRARY !== 'undefined' ? (ACTIVITY_LIBRARY[_cak] || {})[entry.catId] : null) || [];
+          const act  = pool.find(a => a.id === entry.activityId);
+          if (!act) return null;
+          return `[${entry.status === 'completed' ? t('Completed','Completado') : t('Partial','Parcial')}] ${act.title}${entry.notes ? ' \u2014 ' + entry.notes : ''}`;
+        }).filter(Boolean);
+        if (_lines.length) {
+          h += `<div class="card" style="margin-top:10px;border-left:5px solid var(--teal)">
+            <p class="lead" style="margin-bottom:5px">&#9989; ${t("Today's Curriculum Activities","Actividades de Curriculo Hoy")}</p>
+            <p style="font-size:.82rem;color:var(--muted);margin:0 0 8px">${t('Marked complete in the Curriculum tab. Click to copy into the report.','Marcadas completas en el Curriculo. Toque para copiar al reporte.')}</p>
+            <ul style="margin:0 0 10px 16px;padding:0">${_lines.map(ln => `<li style="font-size:.83rem;margin-bottom:3px">${esc(ln)}</li>`).join('')}</ul>
+            <button class="mini-btn in" onclick="_fillReportActivities(${JSON.stringify(_lines.join('\n'))})">&#128203; ${t('Copy to Activities Field','Copiar a Actividades')}</button>
+          </div>`;
+        }
+      }
+    }
   }
 
   /* history */
@@ -571,14 +634,22 @@ function teacherView() {
 
   /* curriculum */
   if (SUB === 'curriculum') {
+    // reset if CURR_SUB is stuck on an admin-only tab key
+    const _adminOnlyTabs = ['overview','themes','analytics','analytics2','pbl_admin'];
+    if (typeof CURR_SUB !== 'undefined' && _adminOnlyTabs.includes(CURR_SUB)) CURR_SUB = 'today';
     if (typeof curriculumPortalView === 'function') {
       h += curriculumPortalView();
     } else {
-      h += `<div class="empty">Curriculum system loading...</div>`;
+      h += `<div class="empty">${t('Curriculum system loading...','Cargando Curriculo...')}</div>`;
     }
   }
 
   return h;
+}
+
+function _fillReportActivities(text) {
+  const el = document.getElementById('rp-act');
+  if (el) { el.value = text; el.focus(); }
 }
 
 /* ===================== PARENT ===================== */
