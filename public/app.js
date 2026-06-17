@@ -306,7 +306,8 @@ function adminView() {
     ['staff',       '&#129489; ' + t('Staff','Personal')],
     ['parents',     '&#128106; ' + t('Parents','Padres')],
     ['reports',     '&#128203; ' + t('Reports','Reportes')],
-    ['messages',    '&#128172; ' + t('Messages','Mensajes')]
+    ['messages',    '&#128172; ' + t('Messages','Mensajes')],
+    ['curriculum',  '&#127963; ' + t('Curriculum','Curriculo')]
   ]);
 
   /* --- overview --- */
@@ -361,6 +362,7 @@ function adminView() {
         <div class="field" style="margin:0"><label>${t('Classroom','Salon')}</label><select id="nc-class">${DB.classes.map(c => `<option value="${c.id}">${esc(LANG === 'es' ? (CLS_ES[c.name] || c.name) : c.name)}</option>`).join('')}</select></div>
       </div>
       <div class="field"><label>${t('Allergies (if any)','Alergias (si aplica)')}</label><input id="nc-allergy" placeholder="${t('e.g. Peanuts','Ej.: Cacahuates')}"></div>
+      <div class="field"><label>${t('Food / Dietary Needs','Comida / Dieta')}</label><input id="nc-food" placeholder="${t('e.g. Halal only, no dairy','Ej.: Solo halal, sin lacteos')}"></div>
       <div class="field"><label>${t('Emergency Contact','Contacto de Emergencia')}</label><input id="nc-ec" placeholder="${t('Name & phone number','Nombre y telefono')}"></div>
       <div class="field"><label>${t('Notes','Notas')}</label><input id="nc-notes" placeholder="${t('Special instructions...','Instrucciones especiales...')}"></div>
       <div class="field"><label>${t('Link Parents','Vincular Padres')}</label>
@@ -456,6 +458,15 @@ function adminView() {
       : `<div class="empty">${t('No messages yet.','Aun no hay mensajes.')}</div>`;
   }
 
+  /* --- curriculum --- */
+  if (SUB === 'curriculum') {
+    if (typeof curriculumPortalView === 'function') {
+      h += curriculumPortalView();
+    } else {
+      h += `<div class="empty">Curriculum system loading...</div>`;
+    }
+  }
+
   return h;
 }
 
@@ -463,10 +474,11 @@ function adminView() {
 function teacherView() {
   let h = `<p class="soft" style="margin-bottom:2px">${t('Classroom:','Salon:')} <b style="color:var(--night)">${esc(clsName(CU.classId))}</b></p>`;
   h += subtabs([
-    ['class',   '&#127979; ' + t('My Class','Mi Salon')],
-    ['report',  '&#128221; ' + t('Daily Report','Reporte Diario')],
-    ['history', '&#128193; ' + t('History','Historial')],
-    ['messages','&#128172; ' + t('Messages','Mensajes')]
+    ['class',      '&#127979; ' + t('My Class','Mi Salon')],
+    ['report',     '&#128221; ' + t('Daily Report','Reporte Diario')],
+    ['history',    '&#128193; ' + t('History','Historial')],
+    ['messages',   '&#128172; ' + t('Messages','Mensajes')],
+    ['curriculum', '&#127963; ' + t('Curriculum','Curriculo')]
   ]);
   const kids = DB.children.filter(c => c.classId === CU.classId);
 
@@ -557,6 +569,15 @@ function teacherView() {
       : `<div class="empty">${t('No messages yet.','Aun no hay mensajes.')}</div>`;
   }
 
+  /* curriculum */
+  if (SUB === 'curriculum') {
+    if (typeof curriculumPortalView === 'function') {
+      h += curriculumPortalView();
+    } else {
+      h += `<div class="empty">Curriculum system loading...</div>`;
+    }
+  }
+
   return h;
 }
 
@@ -564,9 +585,10 @@ function teacherView() {
 function parentView() {
   const kids = parentChildren(CU);
   let h = subtabs([
-    ['children', '&#128118; ' + t('My Children','Mis Hijos')],
-    ['reports',  '&#128203; ' + t('Daily Reports','Reportes Diarios')],
-    ['messages', '&#128172; ' + t('Messages','Mensajes')]
+    ['children',   '&#128118; ' + t('My Children','Mis Hijos')],
+    ['reports',    '&#128203; ' + t('Daily Reports','Reportes Diarios')],
+    ['messages',   '&#128172; ' + t('Messages','Mensajes')],
+    ['curriculum', '&#127963; ' + t('Learning','Aprendizaje')]
   ]);
 
   if (!kids.length && SUB !== 'messages') {
@@ -647,6 +669,15 @@ function parentView() {
     saveDB();
     h += myMsgs.length ? myMsgs.map(m => msgCard(m, false)).join('')
       : `<div class="empty">${t('No messages yet.','Aun no hay mensajes.')}</div>`;
+  }
+
+  /* curriculum / learning */
+  if (SUB === 'curriculum') {
+    if (typeof curriculumPortalView === 'function') {
+      h += curriculumPortalView();
+    } else {
+      h += `<div class="empty">Learning system loading...</div>`;
+    }
   }
 
   return h;
@@ -1245,6 +1276,7 @@ function addChild() {
     classId: document.getElementById('nc-class').value,
     parentIds,
     allergies: (document.getElementById('nc-allergy').value || '').trim(),
+    food: (document.getElementById('nc-food') ? document.getElementById('nc-food').value : '').trim(),
     emergencyContact: (document.getElementById('nc-ec').value || '').trim(),
     notes: (document.getElementById('nc-notes').value || '').trim()
   };
@@ -1404,6 +1436,7 @@ function changePassword() {
 
 /* ---------- init ---------- */
 loadDB();
+if (typeof initCurriculumDB === 'function') initCurriculumDB();
 applyLang();
 document.querySelectorAll('[data-page="portal"]').forEach(b => b.addEventListener('click', () => { if (CU) renderPortal(); }));
 document.querySelectorAll('[data-page="enrollment"]').forEach(b => b.addEventListener('click', () => setTimeout(renderEnrollment, 0)));
