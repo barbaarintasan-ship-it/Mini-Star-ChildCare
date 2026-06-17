@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mini Star Child Care</title>
+<title>Mini Star Child Care &mdash; Curriculum-Based Program | SeaTac, WA</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -32,8 +32,9 @@
 
 <main>
 
-<!-- HOME -->
+<!-- ═══════════════════════════════════ HOME ══════════════════════════════════ -->
 <div class="page active" id="page-home">
+
   <div class="hero">
     <div class="stars" aria-hidden="true">
       <span class="star-float" style="top:14%;left:8%;font-size:1rem;color:#fff">&#9733;</span>
@@ -45,46 +46,181 @@
     <div class="hero-logo">
       <img src="images/logo.png" alt="Mini Star Childcare logo">
     </div>
-    <span class="hero-badge" data-i18n="hero_badge">&#9733; Caring for ages birth - 12 years</span>
+    <span class="hero-badge" data-i18n="hero_badge">&#9733; Curriculum-based program &mdash; birth to 12 years</span>
     <h1 data-i18n="hero_h1">Welcome to <span class="gold">Mini Star</span><br>Child Care</h1>
-    <p class="tagline" data-i18n="hero_tag">A safe, loving, and nurturing place where every child can learn, grow, and shine.</p>
-    <button class="btn btn-night" data-page="enrollment" style="box-shadow:0 8px 20px rgba(27,42,94,.3)" data-i18n="hero_enroll">Enroll Today</button>
-    <button class="btn btn-outline" data-page="programs" data-i18n="hero_progs">Our Programs</button>
+    <p class="tagline">Not just childcare &mdash; a complete child development program with daily lesson plans, progress tracking, and weekly parent reports.</p>
+    <div class="hero-features">
+      <span class="hf-pill">&#128197; Daily Lesson Plans</span>
+      <span class="hf-pill">&#128202; Progress Tracking</span>
+      <span class="hf-pill">&#128140; Weekly Parent Reports</span>
+    </div>
+    <button class="btn btn-night" data-page="enrollment" style="box-shadow:0 8px 20px rgba(27,42,94,.3);margin-top:16px" data-i18n="hero_enroll">Enroll Today</button>
+    <button class="btn btn-outline" data-page="programs" data-i18n="hero_progs">See Our Curriculum</button>
   </div>
 
   <div class="wrap">
+
+    <!-- Quick stats -->
+    <div class="impact-strip">
+      <div class="impact-box"><div class="ib-num">10</div><div class="ib-lbl">Learning Domains</div></div>
+      <div class="impact-box"><div class="ib-num">4</div><div class="ib-lbl">Age Programs</div></div>
+      <div class="impact-box"><div class="ib-num">24/7</div><div class="ib-lbl">Care Available</div></div>
+      <div class="impact-box"><div class="ib-num">0&ndash;12</div><div class="ib-lbl">Years Served</div></div>
+    </div>
+
     <section>
       <span class="eyebrow" data-i18n="home_eyebrow">&#9733; Where bright futures begin</span>
       <h2 data-i18n="home_h2">Every child is unique</h2>
-      <p data-i18n="home_p1">At Mini Star Child Care, we provide a safe, loving, and nurturing place where every child can learn, grow, and shine. We care for children from birth to 12 years old and support each child's development through play, learning, creativity, and positive guidance.</p>
+      <p data-i18n="home_p1">At Mini Star Child Care, we provide a safe, loving, and nurturing place where every child can learn, grow, and shine. We care for children from birth to 12 years old and support each child&rsquo;s development through play, learning, creativity, and positive guidance.</p>
       <p data-i18n="home_p2">Our goal is to give families peace of mind knowing their children are in a caring environment every day. We believe every child is unique, and we work hard to create a space where children feel happy, supported, and respected.</p>
-      <p class="lead" data-i18n="home_lead">Come join the Mini Star Child Care family, where bright futures begin. &#9733;</p>
-
       <div class="values">
         <div class="value" onclick="openValue('safe')"><span>&#128737;</span><span data-i18n="val_safe">Safe</span></div>
         <div class="value" onclick="openValue('loving')"><span>&#128155;</span><span data-i18n="val_loving">Loving</span></div>
         <div class="value" onclick="openValue('learning')"><span>&#128218;</span><span data-i18n="val_learning">Learning</span></div>
         <div class="value" onclick="openValue('growing')"><span>&#127775;</span><span data-i18n="val_growing">Growing</span></div>
       </div>
+    </section>
 
-      <div class="curric-teaser">
-        <h3>More than childcare &mdash; a real curriculum</h3>
-        <p>Mini Star follows a structured, research-based curriculum covering 10 development domains. Your child doesn&rsquo;t just spend the day here &mdash; they grow, learn, and build skills for life.</p>
-        <div class="ct-pills">
-          <span class="ct-pill">&#129504; Critical Thinking</span>
-          <span class="ct-pill">&#127775; Leadership</span>
-          <span class="ct-pill">&#128176; Financial Literacy</span>
-          <span class="ct-pill">&#128161; Entrepreneurship</span>
-          <span class="ct-pill">&#10084; Emotional Intelligence</span>
-          <span class="ct-pill">&#127912; Creativity</span>
-        </div>
-        <button class="btn btn-gold" data-page="programs" style="margin-top:14px;font-size:.9rem;padding:11px 22px">See Our Full Curriculum &rarr;</button>
+    <!-- ── More Than Childcare ── -->
+    <section style="padding-top:0">
+      <span class="eyebrow">&#9733; A complete development program</span>
+      <h2 style="margin-bottom:6px">More Than Childcare &mdash;<br>A Complete Child Development Program</h2>
+      <p class="soft" style="margin-bottom:18px">Every hour at Mini Star is intentional and purposeful. Your child is never just waiting &mdash; they are actively learning and building real skills every day.</p>
+      <div class="mtc-grid">
+        <div class="mtc-card"><span class="mc-ic">&#128197;</span><b>Daily Curriculum</b><span>Structured lesson plans for each age group, every single day &mdash; not free play all day</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#128202;</span><b>Progress Tracking</b><span>Each child&rsquo;s development tracked across 10 domains and documented with notes</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#128140;</span><b>Parent Reports</b><span>Weekly learning summaries sent directly to you &mdash; know exactly what your child did</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#127891;</span><b>School Readiness</b><span>Children assessed and prepared for kindergarten and beyond across all key areas</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#127968;</span><b>Life Readiness</b><span>Practical self-care, responsibility, and emotional skills built into every daily routine</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#128295;</span><b>Project-Based Learning</b><span>Real-world mini-projects that build critical thinking, creativity, and collaboration</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#127775;</span><b>Leadership Development</b><span>Decision-making, teamwork, and peer mentoring practiced from an early age</span></div>
+        <div class="mtc-card"><span class="mc-ic">&#128176;</span><b>Financial Literacy</b><span>Age-appropriate money concepts: saving, earning, budgeting, and the value of work</span></div>
       </div>
     </section>
+
+    <!-- ── Sample Learning Day ── -->
+    <section style="padding-top:0">
+      <span class="eyebrow">&#9733; A day in the curriculum</span>
+      <h2 style="margin-bottom:6px">See What a Learning Day Looks Like</h2>
+      <p class="soft" style="margin-bottom:18px">Every age group follows its own structured daily schedule. Here&rsquo;s a sample day for our Preschool program (ages 3&ndash;5). Every activity maps directly to a learning domain:</p>
+
+      <div class="sample-day">
+        <div class="sd-header">
+          <h3 style="margin:0;color:#fff;font-family:'Fredoka',sans-serif;font-size:1.15rem">&#127912; Weekly Theme: Colors &amp; Shapes</h3>
+          <span class="sd-badge">Preschool &bull; Ages 3&ndash;5</span>
+        </div>
+        <p class="sd-sub">Sample Tuesday schedule &mdash; teacher-led, curriculum-aligned, domain-mapped</p>
+
+        <div class="schedule-row"><span class="sr-time">7:00</span><span class="sr-ic">&#127968;</span><span class="sr-act">Arrival &amp; Morning Welcome Circle</span><span class="sr-domain">Social-Emotional</span></div>
+        <div class="schedule-row"><span class="sr-time">8:00</span><span class="sr-ic">&#127859;</span><span class="sr-act">Breakfast &amp; Self-Care Routine</span><span class="sr-domain">Practical Life</span></div>
+        <div class="schedule-row"><span class="sr-time">8:30</span><span class="sr-ic">&#128300;</span><span class="sr-act">Morning Lesson: Colors in Nature</span><span class="sr-domain">Science</span></div>
+        <div class="schedule-row"><span class="sr-time">9:30</span><span class="sr-ic">&#127912;</span><span class="sr-act">Art Studio: Color Mixing Experiment</span><span class="sr-domain">Creativity</span></div>
+        <div class="schedule-row"><span class="sr-time">10:30</span><span class="sr-ic">&#9981;</span><span class="sr-act">Outdoor Play &amp; Shape Hunt Activity</span><span class="sr-domain">Physical Dev.</span></div>
+        <div class="schedule-row"><span class="sr-time">11:30</span><span class="sr-ic">&#128218;</span><span class="sr-act">Story Time &amp; Comprehension Discussion</span><span class="sr-domain">Language</span></div>
+        <div class="schedule-row"><span class="sr-time">2:30</span><span class="sr-ic">&#128290;</span><span class="sr-act">Math Centers: Shape Sorting &amp; Counting</span><span class="sr-domain">Mathematics</span></div>
+        <div class="schedule-row"><span class="sr-time">3:30</span><span class="sr-ic">&#127775;</span><span class="sr-act">Leadership Circle: Helper of the Day</span><span class="sr-domain">Leadership</span></div>
+
+        <div style="margin-top:18px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-gold" data-page="programs" style="font-size:.88rem;padding:11px 22px">View All Programs &rarr;</button>
+          <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.3);font-size:.88rem;padding:11px 22px" data-page="enrollment">Enroll Your Child</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Parent Portal Preview ── -->
+    <section style="padding-top:0">
+      <span class="eyebrow">&#9733; Parent portal</span>
+      <h2 style="margin-bottom:6px">Real-Time Visibility Into Your Child&rsquo;s Growth</h2>
+      <p class="soft" style="margin-bottom:18px">Every enrolled family gets full access to the Mini Star parent portal. See daily reports, track progress across all 10 learning domains, browse your child&rsquo;s portfolio, and message your caregiver directly:</p>
+
+      <div class="portal-preview-grid">
+
+        <div class="pp-mock">
+          <div class="pm-head">
+            <span class="pm-title">&#128221; Today&rsquo;s Daily Report</span>
+            <span class="pm-date">Preschool</span>
+          </div>
+          <div class="pp-report-row">
+            <span class="pp-chip green">&#128512; Happy</span>
+            <span class="pp-chip green">&#129367; Ate well</span>
+            <span class="pp-chip gold">&#128564; Short nap</span>
+          </div>
+          <div class="pp-note" style="margin-bottom:8px">
+            <b class="pp-note-head">Activities Completed</b>
+            Color mixing art, shape sorting, outdoor nature walk, story time with discussion
+          </div>
+          <div class="pp-note">
+            <b class="pp-note-head">Caregiver Note</b>
+            Excellent focus today! Identified 6 colors independently during art time &#9733;
+          </div>
+        </div>
+
+        <div class="pp-mock" style="border-top-color:var(--gold)">
+          <div class="pm-head">
+            <span class="pm-title">&#128202; Learning Progress</span>
+            <span class="pm-date">This Month</span>
+          </div>
+          <div class="pp-bar-row"><span class="pp-bar-label">Language</span><div class="pp-bar-track"><div class="pp-bar-fill" style="width:82%;background:var(--teal)"></div></div><span class="pp-bar-pct">82%</span></div>
+          <div class="pp-bar-row"><span class="pp-bar-label">Mathematics</span><div class="pp-bar-track"><div class="pp-bar-fill" style="width:74%;background:var(--gold)"></div></div><span class="pp-bar-pct">74%</span></div>
+          <div class="pp-bar-row"><span class="pp-bar-label">Creativity</span><div class="pp-bar-track"><div class="pp-bar-fill" style="width:91%;background:var(--coral)"></div></div><span class="pp-bar-pct">91%</span></div>
+          <div class="pp-bar-row"><span class="pp-bar-label">Leadership</span><div class="pp-bar-track"><div class="pp-bar-fill" style="width:68%;background:var(--night-2)"></div></div><span class="pp-bar-pct">68%</span></div>
+          <div class="pp-bar-row"><span class="pp-bar-label">Life Skills</span><div class="pp-bar-track"><div class="pp-bar-fill" style="width:85%;background:var(--gold)"></div></div><span class="pp-bar-pct">85%</span></div>
+          <div class="pp-bar-row" style="margin-bottom:0"><span class="pp-bar-label">Fin. Literacy</span><div class="pp-bar-track"><div class="pp-bar-fill" style="width:61%;background:var(--teal)"></div></div><span class="pp-bar-pct">61%</span></div>
+        </div>
+
+        <div class="pp-mock" style="border-top-color:var(--coral)">
+          <div class="pm-head">
+            <span class="pm-title">&#128197; Weekly Summary</span>
+            <span class="pm-date">This Week</span>
+          </div>
+          <div class="pp-report-row" style="margin-bottom:10px">
+            <span class="pp-chip green">5/5 Days Attended</span>
+            <span class="pp-chip green">8 Activities Done</span>
+          </div>
+          <div class="pp-note" style="margin-bottom:8px">
+            <b class="pp-note-head">This Week&rsquo;s Theme</b>
+            Colors &amp; Shapes &mdash; 3 new milestones reached this week
+          </div>
+          <div class="pp-note">
+            <b class="pp-note-head">Milestones Reached</b>
+            &#9989; Counts to 20 &bull; &#9989; Writes first name &bull; &#9989; Color mixing mastered
+          </div>
+        </div>
+
+        <div class="pp-mock" style="border-top-color:var(--night-2)">
+          <div class="pm-head">
+            <span class="pm-title">&#128241; Child Portfolio</span>
+            <span class="pm-date">3 Items This Week</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <div class="pp-note">
+              <div class="pp-port-row"><b style="color:var(--night);font-size:.85rem">Color Mixing Art</b><span class="pp-domain-tag">Creativity</span></div>
+              <span style="font-size:.76rem;color:var(--muted)">Created a color wheel using primary colors independently</span>
+            </div>
+            <div class="pp-note">
+              <div class="pp-port-row"><b style="color:var(--night);font-size:.85rem">Shape Sorting Challenge</b><span class="pp-domain-tag">Mathematics</span></div>
+              <span style="font-size:.76rem;color:var(--muted)">Sorted 12 shapes correctly and explained the differences</span>
+            </div>
+            <div class="pp-note">
+              <div class="pp-port-row"><b style="color:var(--night);font-size:.85rem">Helper of the Day</b><span class="pp-domain-tag">Leadership</span></div>
+              <span style="font-size:.76rem;color:var(--muted)">Led morning circle and assisted two classmates with tasks</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="cta-band">
+        <h3>Ready to see your child grow?</h3>
+        <p>Enroll at Mini Star and get full access to daily reports, learning progress dashboards, child portfolio, and direct messaging with your caregiver.</p>
+        <button class="btn btn-gold" data-page="enrollment">Enroll Now &rarr;</button>
+      </div>
+    </section>
+
   </div>
 </div>
 
-<!-- ABOUT -->
+<!-- ═══════════════════════════════════ ABOUT ═════════════════════════════════ -->
 <div class="page" id="page-about">
   <div class="wrap">
     <section>
@@ -101,142 +237,414 @@
       </div>
 
       <!-- Educational Philosophy -->
-      <div style="margin-top:32px">
+      <div style="margin-top:34px">
         <span class="eyebrow">&#9733; Our educational philosophy</span>
-        <h3 style="color:var(--night);font-size:1.2rem;margin-bottom:6px">We raise whole children, not just well-behaved ones</h3>
+        <h3 class="section-h3">We raise whole children, not just well-behaved ones</h3>
         <p class="soft" style="margin-bottom:14px">At Mini Star, every child who walks through our doors is treated as a future leader, thinker, and contributor. Our structured curriculum is designed to develop children who are:</p>
         <div class="phil-grid">
-          <div class="phil-item"><span class="ph-ic">&#128270;</span><div><b>Curious Learners</b><span>Who ask questions and explore freely</span></div></div>
-          <div class="phil-item"><span class="ph-ic">&#129504;</span><div><b>Independent Thinkers</b><span>Who reason through problems on their own</span></div></div>
-          <div class="phil-item"><span class="ph-ic">&#128301;</span><div><b>Problem Solvers</b><span>Who see challenges as opportunities</span></div></div>
-          <div class="phil-item"><span class="ph-ic">&#127775;</span><div><b>Responsible Individuals</b><span>Who respect others and take ownership</span></div></div>
-          <div class="phil-item"><span class="ph-ic">&#128172;</span><div><b>Effective Communicators</b><span>Who express themselves clearly and confidently</span></div></div>
-          <div class="phil-item"><span class="ph-ic">&#127912;</span><div><b>Creative Innovators</b><span>Who bring fresh ideas and imagination</span></div></div>
-          <div class="phil-item"><span class="ph-ic">&#9733;</span><div><b>Future Leaders</b><span>Who inspire and uplift those around them</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#128270;</span><div><b>Curious Learners</b><span>Children who ask &ldquo;why&rdquo; and explore the world with open minds</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#129504;</span><div><b>Independent Thinkers</b><span>Who reason through problems and form their own ideas</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#128301;</span><div><b>Creative Problem Solvers</b><span>Who see challenges as opportunities and find original solutions</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#127775;</span><div><b>Responsible Individuals</b><span>Who respect others, follow through, and take ownership</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#128172;</span><div><b>Effective Communicators</b><span>Who listen carefully and express themselves clearly and confidently</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#127912;</span><div><b>Creative Innovators</b><span>Who bring fresh ideas, imagination, and inventive thinking</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#10084;</span><div><b>Emotionally Intelligent</b><span>Who understand their own feelings and empathize with others</span></div></div>
+          <div class="phil-item"><span class="ph-ic">&#9733;</span><div><b>Future Leaders</b><span>Who inspire, support, and uplift the people around them</span></div></div>
         </div>
       </div>
 
-      <!-- Teacher Methodology -->
-      <div class="card" style="margin-top:20px">
+      <!-- How Teachers Use the Curriculum Daily -->
+      <div class="card" style="margin-top:22px">
         <span class="eyebrow">&#9733; How our caregivers teach</span>
-        <h3 style="color:var(--night);font-size:1.15rem;margin:6px 0 4px">Structured, intentional, and responsive</h3>
-        <p class="soft" style="margin-bottom:4px">Our caregivers don&rsquo;t just supervise &mdash; they teach. Every day is purposeful:</p>
+        <h3 class="section-h3" style="margin-top:6px">Structured, intentional, and responsive &mdash; every single day</h3>
+        <p class="soft" style="margin-bottom:10px">Our caregivers don&rsquo;t just supervise &mdash; they teach with intention. Here&rsquo;s how the curriculum comes to life each day:</p>
         <div class="method-grid">
-          <div class="method-item"><span class="mi-ic">&#128197;</span><b>Daily Lesson Plans</b><span>Each age group follows a structured daily schedule with learning goals</span></div>
-          <div class="method-item"><span class="mi-ic">&#128202;</span><b>Milestone Tracking</b><span>Development milestones tracked and documented for each child</span></div>
-          <div class="method-item"><span class="mi-ic">&#128065;</span><b>Progress Observation</b><span>Caregivers observe and note each child&rsquo;s growth continuously</span></div>
-          <div class="method-item"><span class="mi-ic">&#128140;</span><b>Parent Communication</b><span>Weekly reports and learning updates sent directly to families</span></div>
+          <div class="method-item"><span class="mi-ic">&#9728;</span><b>Morning Prep</b><span>Caregiver reviews the day&rsquo;s lesson plan, materials, and each child&rsquo;s active goals before the day begins</span></div>
+          <div class="method-item"><span class="mi-ic">&#128197;</span><b>Daily Lesson Plans</b><span>Each age group follows a structured schedule with objectives, activities, materials list, and assessment checklist</span></div>
+          <div class="method-item"><span class="mi-ic">&#128065;</span><b>Live Observation</b><span>During activities, caregivers observe and document each child&rsquo;s participation, focus, and skill development</span></div>
+          <div class="method-item"><span class="mi-ic">&#9989;</span><b>Lesson Completion</b><span>Activities are marked complete, partial, or not attempted &mdash; creating an accurate daily record</span></div>
+          <div class="method-item"><span class="mi-ic">&#128202;</span><b>Milestone Tracking</b><span>When a child reaches a development milestone, it&rsquo;s immediately recorded in their personal profile</span></div>
+          <div class="method-item"><span class="mi-ic">&#128221;</span><b>Daily Report</b><span>Each day closes with a full report: mood, meals, nap, activities, and personalized caregiver notes</span></div>
+          <div class="method-item"><span class="mi-ic">&#128140;</span><b>Parent Communication</b><span>Reports are auto-populated from completed curriculum activities and delivered to parents through the portal</span></div>
+          <div class="method-item"><span class="mi-ic">&#128336;</span><b>Weekly Planning</b><span>Caregivers plan the following week&rsquo;s curriculum theme, activities, and differentiated goals for each child</span></div>
         </div>
       </div>
 
       <!-- Parent Benefits -->
       <div style="margin-top:28px">
         <span class="eyebrow">&#9733; For parents</span>
-        <h3 style="color:var(--night);font-size:1.2rem;margin-bottom:6px">Stay connected to your child&rsquo;s learning every day</h3>
-        <p class="soft" style="margin-bottom:4px">Through our parent portal, families can:</p>
+        <h3 class="section-h3">Stay connected to your child&rsquo;s learning every single day</h3>
+        <p class="soft" style="margin-bottom:4px">Through the Mini Star parent portal, families have full transparency into their child&rsquo;s education:</p>
         <div class="benefit-grid">
-          <div class="benefit-item"><span class="bi-ic">&#128218;</span><div><b>View Daily Learning Activities</b><span>See exactly what your child worked on each day</span></div></div>
-          <div class="benefit-item"><span class="bi-ic">&#128202;</span><div><b>Progress Updates</b><span>Real-time updates on development and skill milestones</span></div></div>
-          <div class="benefit-item"><span class="bi-ic">&#9989;</span><div><b>Milestone Tracking</b><span>Know when your child reaches each developmental milestone</span></div></div>
-          <div class="benefit-item"><span class="bi-ic">&#128221;</span><div><b>Curriculum Completion</b><span>Track lesson and activity completion across all 10 domains</span></div></div>
-          <div class="benefit-item"><span class="bi-ic">&#127775;</span><div><b>Multi-Domain Growth</b><span>Monitor language, math, leadership, creativity, and more</span></div></div>
-          <div class="benefit-item"><span class="bi-ic">&#128172;</span><div><b>Direct Messaging</b><span>Communicate directly with your child&rsquo;s caregiver anytime</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#128221;</span><div><b>Daily Learning Reports</b><span>See exactly what your child worked on, what they ate, their mood, and a personal note from their caregiver</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#128202;</span><div><b>Domain Progress Bars</b><span>Visual progress tracking across all 10 learning domains updated in real time</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#9989;</span><div><b>Milestone Notifications</b><span>Instantly know when your child reaches a new development milestone &mdash; never miss a breakthrough</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#128241;</span><div><b>Child Portfolio</b><span>A growing digital record of your child&rsquo;s best work, projects, and learning moments</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#128197;</span><div><b>Weekly Summaries</b><span>Auto-generated weekly learning summaries with theme, activities completed, and milestones reached</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#127775;</span><div><b>Readiness Scores</b><span>School readiness and life readiness scores tracked across 8 categories so you always know where your child stands</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#128172;</span><div><b>Direct Messaging</b><span>Communicate directly with your child&rsquo;s caregiver anytime &mdash; ask questions, share updates, stay connected</span></div></div>
+          <div class="benefit-item"><span class="bi-ic">&#128176;</span><div><b>Payment Tracking</b><span>View invoices, payment history, and upcoming balances &mdash; all in one place</span></div></div>
         </div>
       </div>
 
       <!-- Curriculum Highlights -->
       <div style="margin-top:28px">
         <span class="eyebrow">&#9733; Curriculum highlights</span>
-        <h3 style="color:var(--night);font-size:1.2rem;margin-bottom:6px">Beyond the basics &mdash; skills for life</h3>
-        <p class="soft" style="margin-bottom:4px">What makes Mini Star different from ordinary daycare:</p>
+        <h3 class="section-h3">Beyond the basics &mdash; building skills for life</h3>
+        <p class="soft" style="margin-bottom:14px">What separates Mini Star from ordinary daycare &mdash; seven domains you won&rsquo;t find everywhere:</p>
         <div class="ch-grid">
-          <div class="ch-card ch-night"><span class="ch-ic">&#129504;</span><b>Critical Thinking</b><span>Age-appropriate reasoning, analysis, and problem-solving activities</span></div>
-          <div class="ch-card ch-teal"><span class="ch-ic">&#127775;</span><b>Leadership Development</b><span>Responsibility, decision-making, and mentoring peers</span></div>
-          <div class="ch-card ch-gold"><span class="ch-ic">&#128176;</span><b>Financial Literacy</b><span>Money concepts, saving, earning, and the value of work</span></div>
-          <div class="ch-card ch-coral"><span class="ch-ic">&#128161;</span><b>Entrepreneurship</b><span>Creative ideas, initiative, and real mini-business projects</span></div>
-          <div class="ch-card ch-teal"><span class="ch-ic">&#127912;</span><b>Creativity &amp; Innovation</b><span>Art, music, dramatic play, and open-ended exploration</span></div>
-          <div class="ch-card ch-gold"><span class="ch-ic">&#10084;</span><b>Emotional Intelligence</b><span>Self-regulation, empathy, and healthy social relationships</span></div>
-          <div class="ch-card ch-night"><span class="ch-ic">&#127968;</span><b>Practical Life Skills</b><span>Self-care, routines, tidiness, and real-world independence</span></div>
+          <div class="ch-card ch-night"><span class="ch-ic">&#129504;</span><b>Critical Thinking</b><span>Age-appropriate reasoning, analysis, and creative problem-solving in every lesson</span></div>
+          <div class="ch-card ch-teal"><span class="ch-ic">&#127775;</span><b>Leadership Development</b><span>Responsibility, decision-making, peer mentoring, and confidence-building from infancy</span></div>
+          <div class="ch-card ch-gold"><span class="ch-ic">&#128176;</span><b>Financial Literacy</b><span>Money value, saving, earning, and responsible spending taught at every age level</span></div>
+          <div class="ch-card ch-coral"><span class="ch-ic">&#128161;</span><b>Entrepreneurship Foundations</b><span>Creative thinking, initiative, and mini business projects for preschool and school-age</span></div>
+          <div class="ch-card ch-teal"><span class="ch-ic">&#127912;</span><b>Creativity &amp; Innovation</b><span>Art, music, dramatic play, and open-ended exploration built into every week</span></div>
+          <div class="ch-card ch-gold"><span class="ch-ic">&#10084;</span><b>Emotional Intelligence</b><span>Self-regulation, empathy, conflict resolution, and healthy social relationships</span></div>
+          <div class="ch-card ch-night"><span class="ch-ic">&#127968;</span><b>Practical Life Skills</b><span>Self-care, tidiness, routines, and real-world independence from the earliest age</span></div>
         </div>
       </div>
 
-      <button class="btn btn-night" data-page="programs" style="margin-top:20px">See Our Programs &rarr;</button>
+      <button class="btn btn-night" data-page="programs" style="margin-top:22px">See Our Full Programs &rarr;</button>
     </section>
   </div>
 </div>
 
-<!-- PROGRAMS -->
+<!-- ═══════════════════════════════════ PROGRAMS ══════════════════════════════ -->
 <div class="page" id="page-programs">
   <div class="wrap">
     <section>
       <span class="eyebrow" data-i18n="prog_eyebrow">&#9733; Programs</span>
-      <h2 data-i18n="prog_h2">Structured curriculum for every age, birth to 12 years</h2>
-      <p class="soft">Our research-based curriculum is tailored to each stage of development &mdash; building knowledge, character, and life skills from day one:</p>
+      <h2>Structured Curriculum for Every Age &mdash; Birth to 12 Years</h2>
+      <p class="soft">Our research-based curriculum grows with your child. Every program is tailored to the specific developmental stage, building knowledge, character, and life skills from day one:</p>
 
-      <div class="grid grid-2">
-
-        <!-- Infants -->
-        <div class="card program-card t-gold">
-          <img class="prog-art" src="images/infants.jpg" alt="Caregiver gently holding a smiling baby">
-          <h3><span class="program-icon bg-gold">&#127868;</span> Infants <span class="age-chip">0&ndash;1 yr</span></h3>
-          <p class="prog-desc">Responsive care that supports every milestone from birth.</p>
-          <ul class="prog-detail-list">
-            <li><b>Sensory Development:</b> Sight, sound, touch, and movement exploration</li>
-            <li><b>Language:</b> Songs, rhymes, narrated routines, and responsive talk</li>
-            <li><b>Motor Skills:</b> Tummy time, reaching, grasping, rolling</li>
-            <li><b>Emotional:</b> Secure attachment, comfort, and caregiver trust-building</li>
-          </ul>
+      <!-- Visual Journey Bar -->
+      <div class="journey" role="list">
+        <div class="journey-stop js-infant" role="listitem">
+          <div class="js-age">0 &ndash; 1 Year</div>
+          <div class="js-name">Infants</div>
+          <div class="js-icon">&#127868;</div>
+          <div class="js-focus">Sensory &amp; Bonding</div>
         </div>
-
-        <!-- Toddlers -->
-        <div class="card program-card t-coral">
-          <img class="prog-art" src="images/toddlers.jpg" alt="Toddlers playing with colorful blocks">
-          <h3><span class="program-icon bg-coral">&#129528;</span> Toddlers <span class="age-chip">1&ndash;3 yrs</span></h3>
-          <p class="prog-desc">Building independence, language, and early thinking through play.</p>
-          <ul class="prog-detail-list">
-            <li><b>Language:</b> Vocabulary building, two-word phrases, early storytelling</li>
-            <li><b>Cognitive:</b> Cause &amp; effect, sorting, shape &amp; color recognition</li>
-            <li><b>Social:</b> Parallel play, sharing basics, turn-taking, self-expression</li>
-            <li><b>Life Skills:</b> Hand washing, tidying up, following simple routines</li>
-            <li><b>Early Leadership:</b> Choosing activities and helping caregivers</li>
-          </ul>
+        <div class="journey-arrow">&#8594;</div>
+        <div class="journey-stop js-toddler" role="listitem">
+          <div class="js-age">1 &ndash; 3 Years</div>
+          <div class="js-name">Toddlers</div>
+          <div class="js-icon">&#129528;</div>
+          <div class="js-focus">Language &amp; Play</div>
         </div>
-
-        <!-- Preschool -->
-        <div class="card program-card t-teal">
-          <img class="prog-art" src="images/preschool.jpg" alt="Children painting at a table">
-          <h3><span class="program-icon bg-teal">&#127912;</span> Preschoolers <span class="age-chip">3&ndash;5 yrs</span></h3>
-          <p class="prog-desc">School readiness through creativity, curiosity, and confidence.</p>
-          <ul class="prog-detail-list">
-            <li><b>Literacy &amp; Math:</b> Pre-reading, counting, letters, early writing</li>
-            <li><b>Critical Thinking:</b> Problem-solving games and pattern recognition</li>
-            <li><b>Creativity:</b> Art projects, dramatic play, music &amp; movement</li>
-            <li><b>Leadership:</b> Classroom helper roles, group projects, decision-making</li>
-            <li><b>Financial Literacy:</b> Saving concepts, pretend store play, value of work</li>
-          </ul>
+        <div class="journey-arrow">&#8594;</div>
+        <div class="journey-stop js-pre" role="listitem">
+          <div class="js-age">3 &ndash; 5 Years</div>
+          <div class="js-name">Preschool</div>
+          <div class="js-icon">&#127912;</div>
+          <div class="js-focus">School Readiness</div>
         </div>
-
-        <!-- School-Age -->
-        <div class="card program-card t-night">
-          <img class="prog-art" src="images/school-age.jpg" alt="School-age children arriving at care">
-          <h3><span class="program-icon bg-night">&#127234;</span> School-Age <span class="age-chip">5&ndash;12 yrs</span></h3>
-          <p class="prog-desc">Expanding knowledge, leadership, and real-world life skills.</p>
-          <ul class="prog-detail-list">
-            <li><b>Academics:</b> Homework support, reading comprehension, math practice</li>
-            <li><b>Critical Thinking:</b> Strategy games, debates, research mini-projects</li>
-            <li><b>Leadership:</b> Peer mentoring, team challenges, goal setting</li>
-            <li><b>Financial Literacy:</b> Budgeting basics, earning, saving, smart spending</li>
-            <li><b>Entrepreneurship:</b> Mini business projects, creative problem-solving</li>
-          </ul>
+        <div class="journey-arrow">&#8594;</div>
+        <div class="journey-stop js-school" role="listitem">
+          <div class="js-age">5 &ndash; 12 Years</div>
+          <div class="js-name">School-Age</div>
+          <div class="js-icon">&#127234;</div>
+          <div class="js-focus">Leadership &amp; Life</div>
         </div>
-
       </div>
 
-      <!-- What Children Learn - 10 domains -->
-      <div style="margin-top:34px">
+      <!-- Infants -->
+      <div class="age-card" id="age-infants">
+        <div class="age-card-header ac-gold">
+          <span class="ac-icon">&#127868;</span>
+          <div class="ac-title-group">
+            <h3 class="ac-title">Infants</h3>
+            <span class="ac-sub">Ages 0&ndash;1 year &bull; Nurturing care that supports every milestone from birth</span>
+          </div>
+          <span class="age-chip" style="background:rgba(255,255,255,.5)">0&ndash;1 yr</span>
+        </div>
+        <img class="prog-art" src="images/infants.jpg" alt="Caregiver gently holding a smiling baby">
+        <div class="age-detail-grid">
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127919; Development Goals</div>
+            <ul>
+              <li>Develop secure attachment with caregivers</li>
+              <li>Build sensory awareness and early motor control</li>
+              <li>Establish consistent feeding and sleep rhythms</li>
+              <li>Begin early communication through sounds and gestures</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128218; Learning Domains</div>
+            <ul>
+              <li>Sensory Development</li>
+              <li>Language &amp; Early Communication</li>
+              <li>Motor Skills (gross &amp; fine)</li>
+              <li>Emotional Bonding &amp; Security</li>
+              <li>Practical Life Routines</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128336; Daily Routine</div>
+            <ul>
+              <li>Responsive feeding on demand</li>
+              <li>Tummy time &amp; movement exploration</li>
+              <li>Sensory play: textures, sounds, light</li>
+              <li>Songs, rhymes, and narrated routines</li>
+              <li>Rest and comfort care</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#9989; Key Milestones Tracked</div>
+            <ul>
+              <li>Responds to name and familiar voices</li>
+              <li>Reaches for and grasps objects</li>
+              <li>Rolls over, sits with support, stands</li>
+              <li>Babbles and imitates sounds</li>
+              <li>Shows object permanence</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127380; Example Activities</div>
+            <ul>
+              <li>Peek-a-boo and hide-the-toy games</li>
+              <li>Texture exploration boards</li>
+              <li>Mirror play and face recognition</li>
+              <li>Rattle shaking and sound discovery</li>
+              <li>Gentle music &amp; movement sessions</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128172; What Parents Receive</div>
+            <ul>
+              <li>Daily feeding &amp; nap log</li>
+              <li>Mood &amp; comfort report</li>
+              <li>Activity notes from caregiver</li>
+              <li>Milestone alerts when reached</li>
+              <li>Weekly developmental summary</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Toddlers -->
+      <div class="age-card" id="age-toddlers">
+        <div class="age-card-header ac-coral">
+          <span class="ac-icon">&#129528;</span>
+          <div class="ac-title-group">
+            <h3 class="ac-title">Toddlers</h3>
+            <span class="ac-sub">Ages 1&ndash;3 years &bull; Building independence, language, and early thinking through play</span>
+          </div>
+          <span class="age-chip" style="background:rgba(255,255,255,.5)">1&ndash;3 yrs</span>
+        </div>
+        <img class="prog-art" src="images/toddlers.jpg" alt="Toddlers playing with colorful blocks">
+        <div class="age-detail-grid">
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127919; Development Goals</div>
+            <ul>
+              <li>Expand vocabulary rapidly through conversation</li>
+              <li>Build independence in basic self-care tasks</li>
+              <li>Develop cause-and-effect understanding</li>
+              <li>Learn to express emotions appropriately</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128218; Learning Domains</div>
+            <ul>
+              <li>Language &amp; Communication</li>
+              <li>Cognitive Development</li>
+              <li>Social-Emotional Skills</li>
+              <li>Practical Life &amp; Self-Care</li>
+              <li>Early Leadership Awareness</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128336; Daily Routine</div>
+            <ul>
+              <li>Circle time: greetings, songs, movement</li>
+              <li>Structured play with learning materials</li>
+              <li>Snack time &amp; self-feeding practice</li>
+              <li>Outdoor exploration and gross motor play</li>
+              <li>Story time &amp; naptime routine</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#9989; Key Milestones Tracked</div>
+            <ul>
+              <li>Uses 2-word phrases then full sentences</li>
+              <li>Sorts by color, shape, and size</li>
+              <li>Follows 2-step instructions</li>
+              <li>Washes hands with reminders</li>
+              <li>Plays alongside and begins cooperating</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127380; Example Activities</div>
+            <ul>
+              <li>Block stacking &amp; knock-down games</li>
+              <li>Color sorting trays and matching puzzles</li>
+              <li>Pretend cooking and dramatic play</li>
+              <li>Finger painting and sensory bins</li>
+              <li>&ldquo;Helper of the day&rdquo; task rotation</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128176; Financial Literacy Intro</div>
+            <ul>
+              <li>Concepts of &ldquo;mine&rdquo; and &ldquo;sharing&rdquo;</li>
+              <li>Pretend store play &amp; &ldquo;buying&rdquo; items</li>
+              <li>Understanding &ldquo;we wait&rdquo; vs. &ldquo;we get now&rdquo;</li>
+              <li>Helping tidy supplies (ownership)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Preschool -->
+      <div class="age-card" id="age-preschool">
+        <div class="age-card-header ac-teal">
+          <span class="ac-icon">&#127912;</span>
+          <div class="ac-title-group">
+            <h3 class="ac-title">Preschoolers</h3>
+            <span class="ac-sub">Ages 3&ndash;5 years &bull; School readiness through creativity, curiosity, and confidence</span>
+          </div>
+          <span class="age-chip" style="background:rgba(255,255,255,.5)">3&ndash;5 yrs</span>
+        </div>
+        <img class="prog-art" src="images/preschool.jpg" alt="Children painting at a table">
+        <div class="age-detail-grid">
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127919; Development Goals</div>
+            <ul>
+              <li>Build pre-reading and early writing skills</li>
+              <li>Develop number sense and early math concepts</li>
+              <li>Learn to work collaboratively in groups</li>
+              <li>Build confidence through leadership roles</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128218; Learning Domains</div>
+            <ul>
+              <li>Literacy &amp; Language Arts</li>
+              <li>Early Mathematics</li>
+              <li>Critical Thinking &amp; Problem Solving</li>
+              <li>Creativity &amp; Innovation</li>
+              <li>Leadership &amp; Financial Literacy</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128336; Daily Routine</div>
+            <ul>
+              <li>Morning meeting: calendar, weather, theme</li>
+              <li>Structured literacy &amp; math lesson</li>
+              <li>Art studio or science exploration</li>
+              <li>Outdoor play with learning objectives</li>
+              <li>Leadership circle &amp; reflection time</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#9989; Key Milestones Tracked</div>
+            <ul>
+              <li>Recognizes all 26 letters (upper &amp; lower)</li>
+              <li>Counts to 20 and understands quantity</li>
+              <li>Writes own first name legibly</li>
+              <li>Retells a story with beginning/middle/end</li>
+              <li>Resolves conflicts with words</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127380; Example Activities</div>
+            <ul>
+              <li>Shape &amp; color mixing science experiments</li>
+              <li>Letter formation practice &amp; sound games</li>
+              <li>Pretend store with coin counting</li>
+              <li>Group mural &amp; collaborative art projects</li>
+              <li>Nature journaling &amp; observation walks</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127775; Leadership &amp; Financial Literacy</div>
+            <ul>
+              <li>Weekly &ldquo;Helper of the Day&rdquo; job rotations</li>
+              <li>Group decision-making exercises</li>
+              <li>Saving coins for a class &ldquo;purchase&rdquo;</li>
+              <li>Mini entrepreneurship: design &amp; sell art</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- School-Age -->
+      <div class="age-card" id="age-schoolage">
+        <div class="age-card-header ac-night">
+          <span class="ac-icon">&#127234;</span>
+          <div class="ac-title-group">
+            <h3 class="ac-title">School-Age</h3>
+            <span class="ac-sub">Ages 5&ndash;12 years &bull; Expanding knowledge, leadership, and real-world life skills</span>
+          </div>
+          <span class="age-chip" style="background:rgba(255,255,255,.5)">5&ndash;12 yrs</span>
+        </div>
+        <img class="prog-art" src="images/school-age.jpg" alt="School-age children arriving at care">
+        <div class="age-detail-grid">
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127919; Development Goals</div>
+            <ul>
+              <li>Strengthen academic skills across all subjects</li>
+              <li>Build leadership, teamwork, and mentoring skills</li>
+              <li>Develop financial literacy and entrepreneurship mindset</li>
+              <li>Prepare for real-world independence</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128218; Learning Domains</div>
+            <ul>
+              <li>Academic Support &amp; Critical Thinking</li>
+              <li>Leadership Development</li>
+              <li>Financial Literacy &amp; Entrepreneurship</li>
+              <li>Project-Based Learning</li>
+              <li>Emotional Intelligence &amp; Life Skills</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128336; Daily Routine</div>
+            <ul>
+              <li>Homework support with caregiver guidance</li>
+              <li>Structured enrichment activity (STEAM, art, etc.)</li>
+              <li>Physical activity or outdoor project</li>
+              <li>Leadership or entrepreneurship challenge</li>
+              <li>Reflection &amp; goal-setting circle</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#9989; Key Milestones Tracked</div>
+            <ul>
+              <li>Reading comprehension at grade level</li>
+              <li>Multi-step math problem solving</li>
+              <li>Completes a project from idea to presentation</li>
+              <li>Mentors a younger child independently</li>
+              <li>Creates and explains a simple budget</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#127380; Example Activities</div>
+            <ul>
+              <li>Mini business plan creation &amp; pitching</li>
+              <li>STEAM challenges: build, test, improve</li>
+              <li>Debate club &amp; persuasive writing</li>
+              <li>Community helper research projects</li>
+              <li>Goal-setting journals &amp; vision boards</li>
+            </ul>
+          </div>
+          <div class="age-detail-cell">
+            <div class="adc-head">&#128161; Entrepreneurship Pathway</div>
+            <ul>
+              <li>Stage 1: Identify problems worth solving</li>
+              <li>Stage 2: Design and prototype a solution</li>
+              <li>Stage 3: Present to peers and get feedback</li>
+              <li>Budget planning for a class micro-project</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 10 Domains -->
+      <div style="margin-top:36px">
         <span class="eyebrow">&#9733; What children learn</span>
-        <h3 style="color:var(--night);font-size:1.25rem;margin-bottom:6px">10 Core Development Domains</h3>
-        <p class="soft" style="margin-bottom:16px">Our curriculum spans every dimension of a child&rsquo;s growth &mdash; academic, social, emotional, and life-skills &mdash; preparing them for school and beyond:</p>
+        <h3 class="section-h3" style="margin-top:4px">10 Core Development Domains</h3>
+        <p class="soft" style="margin-bottom:16px">Our curriculum spans every dimension of a child&rsquo;s growth &mdash; academic, social, emotional, and life-skills &mdash; preparing them for school and for life:</p>
         <div class="domain-grid">
           <div class="domain-card dc-gold"><span class="domain-ic">&#128218;</span><b>Language Development</b><span>Reading, speaking, listening, and communication</span></div>
           <div class="domain-card dc-coral"><span class="domain-ic">&#128290;</span><b>Early Mathematics</b><span>Numbers, patterns, shapes, and logical thinking</span></div>
@@ -255,30 +663,133 @@
         <p class="lead">Every day at Mini Star includes:</p>
         <ul class="star-list">
           <li>Structured learning aligned to each child&rsquo;s age and development stage</li>
-          <li>Hands-on creative play and exploration activities</li>
-          <li>Social-emotional skill building and group interaction</li>
+          <li>Hands-on creative activities with clear learning objectives</li>
+          <li>Social-emotional skill building and guided group interaction</li>
           <li>Caring, attentive supervision from trained caregivers</li>
-          <li>Progress tracking shared with parents every week</li>
+          <li>Progress tracking and parent reports delivered every week</li>
         </ul>
         <p style="margin-bottom:0">Our program builds confident, independent children with a lifelong love for learning &mdash; not just a safe place to wait for pickup.</p>
       </div>
-      <button class="btn btn-gold" data-page="enrollment">Ask About Openings</button>
+      <button class="btn btn-gold" data-page="enrollment" style="margin-top:4px">Ask About Openings</button>
     </section>
   </div>
 </div>
 
-<!-- ENROLLMENT -->
+<!-- ═══════════════════════════════════ ENROLLMENT ════════════════════════════ -->
 <div class="page" id="page-enrollment">
   <div class="wrap">
     <section>
       <span class="eyebrow" data-i18n="en_eyebrow">&#9733; Enrollment</span>
-      <h2 data-i18n="en_h2">We're happy to welcome new families</h2>
+      <h2 data-i18n="en_h2">We&rsquo;re happy to welcome new families</h2>
+
+      <!-- What Makes Mini Star Different -->
+      <div style="margin-bottom:28px">
+        <span class="eyebrow">&#9733; Why families choose us</span>
+        <h3 class="section-h3" style="margin-top:4px">What Makes Mini Star Different?</h3>
+        <p class="soft" style="margin-bottom:14px">This is not ordinary daycare. Here is what your child gets from day one:</p>
+        <div class="diff-grid">
+          <div class="diff-card">
+            <span class="dc-ic">&#128197;</span>
+            <b>Structured Daily Curriculum</b>
+            <span>Every day follows a lesson plan with clear objectives, activities, and learning outcomes &mdash; not free-play all day</span>
+          </div>
+          <div class="diff-card" style="border-left-color:var(--gold)">
+            <span class="dc-ic">&#128202;</span>
+            <b>Development Tracking</b>
+            <span>Each child&rsquo;s progress across 10 domains is tracked, documented, and shared with parents every week</span>
+          </div>
+          <div class="diff-card" style="border-left-color:var(--coral)">
+            <span class="dc-ic">&#128140;</span>
+            <b>Parent Communication</b>
+            <span>Daily reports, weekly summaries, milestone alerts, and direct messaging with your caregiver &mdash; always in the loop</span>
+          </div>
+          <div class="diff-card">
+            <span class="dc-ic">&#127775;</span>
+            <b>Individual Growth Monitoring</b>
+            <span>Every child has their own growth profile with personalized milestones, portfolio, and caregiver observations</span>
+          </div>
+          <div class="diff-card" style="border-left-color:var(--gold)">
+            <span class="dc-ic">&#127891;</span>
+            <b>School Readiness</b>
+            <span>Formally assessed across 8 school-readiness areas so your child is prepared &mdash; academically and socially &mdash; before kindergarten</span>
+          </div>
+          <div class="diff-card" style="border-left-color:var(--coral)">
+            <span class="dc-ic">&#127968;</span>
+            <b>Life Readiness</b>
+            <span>Practical skills, emotional regulation, financial literacy, and leadership built into the curriculum &mdash; preparing children for real life</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ -->
+      <div style="margin-bottom:28px">
+        <span class="eyebrow">&#9733; Questions from families</span>
+        <h3 class="section-h3" style="margin-top:4px">Frequently Asked Questions</h3>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            Is this a daycare or a curriculum-based program?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">Mini Star is a curriculum-based child development program. While we provide full childcare, every hour is structured around age-appropriate lesson plans covering 10 development domains. Teachers follow daily schedules with clear learning objectives, track each child&rsquo;s progress, and deliver weekly reports to parents. We are not a drop-off and watch &mdash; we actively teach.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            What ages do you serve?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">We care for children from birth (infants) through age 12. We have four dedicated age programs: Infants (0&ndash;1 yr), Toddlers (1&ndash;3 yrs), Preschoolers (3&ndash;5 yrs), and School-Age (5&ndash;12 yrs). Each program has its own curriculum, daily schedule, and milestone tracking system tailored to that developmental stage.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            How will I know what my child did each day?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">Every enrolled family has access to the Mini Star parent portal. Each day, you receive a full daily report including your child&rsquo;s mood, meals, nap, completed curriculum activities, and a personalized note from your caregiver. Each week, you receive an auto-generated weekly summary showing the learning theme, activities completed, milestones reached, and domain progress bars.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            Do you teach financial literacy and leadership to young children?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">Yes. These are built into our curriculum at every age, scaled appropriately. Toddlers explore sharing and the concept of &ldquo;mine vs. ours.&rdquo; Preschoolers use pretend stores, coin counting, and role play around the value of work. School-age children learn budgeting basics, create mini business plans, and practice peer leadership and mentoring. Financial literacy and leadership are woven into daily activities, not taught as separate classes.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            What is school readiness and how do you measure it?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">School readiness at Mini Star covers 8 areas: Language &amp; Communication, Mathematical Thinking, Social-Emotional Readiness, Physical Development, Creative Thinking, Self-Regulation, Cultural Awareness, and Early Literacy. We score each child across these areas and track growth over time. Parents can view their child&rsquo;s readiness scores in the parent portal. Life readiness is assessed separately across 8 additional life-skill categories.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            What are your hours and location?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">Mini Star Child Care is open 24 hours, 7 days a week. We are located at 17735 38th Ave South, SeaTac, WA 98188, serving families in SeaTac and the surrounding area. You can reach us by phone at (206) 255-4000 or by email at ministarchildcare14@gmail.com.</div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-q" onclick="toggleFAQ(this)" aria-expanded="false">
+            How do I enroll my child?
+            <span class="faq-arr">&#8964;</span>
+          </button>
+          <div class="faq-a">Fill out the enrollment form below with your family information, your child&rsquo;s details, and any relevant notes. We will review your request and contact you to confirm availability and schedule a visit. You can also call us at (206) 255-4000 or email ministarchildcare14@gmail.com with any questions before enrolling.</div>
+        </div>
+
+      </div>
+
       <div id="enrollment-root"></div>
     </section>
   </div>
 </div>
 
-<!-- CONTACT -->
+<!-- ═══════════════════════════════════ CONTACT ═══════════════════════════════ -->
 <div class="page" id="page-contact">
   <div class="wrap">
     <section>
@@ -291,18 +802,14 @@
           <span class="contact-ic">&#128222;</span>
           <div>
             <b data-i18n="c_phone">Phone</b>
-            <a href="tel:+12062554000" class="contact-link">
-              (206) 255-4000
-            </a>
+            <a href="tel:+12062554000" class="contact-link">(206) 255-4000</a>
           </div>
         </div>
         <div class="contact-row">
           <span class="contact-ic">&#9993;</span>
           <div>
             <b data-i18n="c_email">Email</b>
-            <a href="mailto:ministarchildcare14@gmail.com" class="contact-link" style="word-break:break-all">
-              ministarchildcare14@gmail.com
-            </a>
+            <a href="mailto:ministarchildcare14@gmail.com" class="contact-link" style="word-break:break-all">ministarchildcare14@gmail.com</a>
           </div>
         </div>
         <div class="contact-row">
@@ -329,14 +836,14 @@
   </div>
 </div>
 
-<!-- PORTAL -->
+<!-- ═══════════════════════════════════ PORTAL ════════════════════════════════ -->
 <div class="page" id="page-portal">
   <div class="wrap">
     <section id="portal-root" style="padding-top:10px"></section>
   </div>
 </div>
 
-<!-- VALUE DETAIL -->
+<!-- ═══════════════════════════════════ VALUE DETAIL ══════════════════════════ -->
 <div class="page" id="page-value">
   <div class="wrap"><section id="value-page-root" style="padding-top:14px"></section></div>
 </div>
@@ -360,5 +867,21 @@
 <script src="app.js"></script>
 <script src="curriculum.js"></script>
 <script src="curriculum2.js"></script>
+<script>
+function toggleFAQ(btn) {
+  var ans = btn.nextElementSibling;
+  var isOpen = ans.classList.contains('open');
+  // close all
+  document.querySelectorAll('.faq-a.open').forEach(function(el){ el.classList.remove('open'); });
+  document.querySelectorAll('.faq-q.open').forEach(function(el){ el.classList.remove('open'); });
+  if (!isOpen) {
+    ans.classList.add('open');
+    btn.classList.add('open');
+    btn.setAttribute('aria-expanded','true');
+  } else {
+    btn.setAttribute('aria-expanded','false');
+  }
+}
+</script>
 </body>
 </html>
