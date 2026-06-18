@@ -1,56 +1,28 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { api } from '@/lib/api'
 import { useAuthStore } from '@/store/auth'
 import type { Message, MessageForm } from '@/types'
 import toast from 'react-hot-toast'
 
-const QUERY_KEY = 'messages'
+const K = 'messages'
 
 export function useMessages(withUserId?: string) {
   const { user } = useAuthStore()
-
   return useQuery({
-    queryKey: [QUERY_KEY, user?.id, withUserId],
-    queryFn: async () => {
-      let query = supabase
-        .from('messages')
-        .select(`
-          *,
-          from:users!messages_from_id_fkey(id,name,role,avatar_url),
-          to:users!messages_to_id_fkey(id,name,role,avatar_url),
-          child:children(id,name)
-        `)
-        .order('created_at', { ascending: true })
-
-      if (withUserId) {
-        query = query.or(
-          `and(from_id.eq.${user!.id},to_id.eq.${withUserId}),and(from_id.eq.${withUserId},to_id.eq.${user!.id})`
-        )
-      } else {
-        query = query.or(`from_id.eq.${user!.id},to_id.eq.${user!.id}`)
-      }
-
-      const { data, error } = await query
-      if (error) throw error
-      return (data ?? []) as Message[]
-    },
+    queryKey: [K, user?.id, withUserId],
+    queryFn: () => api.get<Message[]>(`/messages${withUserId ? `?with=${withUserId}` : ''}`),
     enabled: !!user,
-    refetchInterval: 5000, // poll every 5s for new messages
+    refetchInterval: 5000,
   })
 }
 
 export function useUnreadCount() {
   const { user } = useAuthStore()
   return useQuery({
-    queryKey: [QUERY_KEY, 'unread', user?.id],
+    queryKey: [K, 'unread', user?.id],
     queryFn: async () => {
-      const { count, error } = await supabase
-        .from('messages')
-        .select('id', { count: 'exact', head: true })
-        .eq('to_id', user!.id)
-        .eq('read', false)
-      if (error) throw error
-      return count ?? 0
+      const { count } = await api.get<{ count: number }>('/messages/unread-count')
+      return count
     },
     enabled: !!user,
     refetchInterval: 10000,
@@ -59,77 +31,47 @@ export function useUnreadCount() {
 
 export function useSendMessage() {
   const qc = useQueryClient()
-  const { user } = useAuthStore()
-
   return useMutation({
-    mutationFn: async (form: MessageForm) => {
-      const { data, error } = await supabase
-        .from('messages')
-        .insert({ ...form, from_id: user!.id })
-        .select()
-        .single()
-      if (error) throw error
-      return data
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: [QUERY_KEY] })
-    },
+    mutationFn: (form: MessageForm) => api.post<Message>('/messages', form),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [K] }),
     onError: () => toast.error('Failed to send message.'),
   })
 }
 
 export function useMarkRead() {
   const qc = useQueryClient()
-  const { user } = useAuthStore()
-
   return useMutation({
-    mutationFn: async (fromUserId: string) => {
-      const { error } = await supabase
-        .from('messages')
-        .update({ read: true })
-        .eq('to_id', user!.id)
-        .eq('from_id', fromUserId)
-        .eq('read', false)
-      if (error) throw error
-    },
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: [QUERY_KEY] })
-    },
+    mutationFn: (fromUserId: string) =>
+      api.patch('/messages/mark-read', { from_user_id: fromUserId }),
+    onSuccess: () => qc.invalidateQueries({ queryKey: [K] }),
   })
 }
 
-/** Get list of unique conversation partners */
 export function useConversations() {
   const { user } = useAuthStore()
-
   return useQuery({
-    queryKey: [QUERY_KEY, 'conversations', user?.id],
+    queryKey: [K, 'conversations', user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('messages')
-        .select(`
-          from_id, to_id,
-          from:users!messages_from_id_fkey(id,name,role,avatar_url),
-          to:users!messages_to_id_fkey(id,name,role,avatar_url)
-        `)
-        .or(`from_id.eq.${user!.id},to_id.eq.${user!.id}`)
-        .order('created_at', { ascending: false })
-      if (error) throw error
+      const rows = await api.get<Array<{
+        from_id: string
+        to_id: string
+        from: { id: string; name: string; role: string; avatar_url?: string | null }
+        to: { id: string; name: string; role: string; avatar_url?: string | null }
+      }>>('/messages/conversations')
 
-      // Unique partners
       const seen = new Set<string>()
-      const conversations: Array<{ partner: { id: string; name: string; role: string; avatar_url?: string | null }; unread: number }> = []
+      const conversations: Array<{
+        partner: { id: string; name: string; role: string; avatar_url?: string | null }
+        unread: number
+      }> = []
 
-      for (const msg of data ?? []) {
-        const partner = msg.from_id === user!.id
-          ? (msg.to as unknown as { id: string; name: string; role: string; avatar_url?: string | null })
-          : (msg.from as unknown as { id: string; name: string; role: string; avatar_url?: string | null })
+      for (const msg of rows) {
+        const partner = msg.from_id === user!.id ? msg.to : msg.from
         if (partner && !seen.has(partner.id)) {
           seen.add(partner.id)
           conversations.push({ partner, unread: 0 })
         }
       }
-
       return conversations
     },
     enabled: !!user,

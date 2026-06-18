@@ -1,71 +1,42 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { supabase } from '@/lib/supabase'
+import { api } from '@/lib/api'
 import type { User } from '@/types'
 import toast from 'react-hot-toast'
 
-const QUERY_KEY = 'staff'
-const PARENTS_KEY = 'parents'
+const K = 'staff'
+const PK = 'parents'
 
 export function useStaff() {
   return useQuery({
-    queryKey: [QUERY_KEY],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('users')
-        .select(`*, classroom:classrooms(id,name)`)
-        .in('role', ['admin', 'teacher'])
-        .order('name')
-      if (error) throw error
-      return (data ?? []) as User[]
-    },
+    queryKey: [K],
+    queryFn: () => api.get<User[]>('/users/staff'),
   })
 }
 
 export function useParents() {
   return useQuery({
-    queryKey: [PARENTS_KEY],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('users')
-        .select(`*`)
-        .eq('role', 'parent')
-        .order('name')
-      if (error) throw error
-      return (data ?? []) as User[]
-    },
+    queryKey: [PK],
+    queryFn: () => api.get<User[]>('/users/parents'),
   })
 }
 
 export function useAllUsers() {
   return useQuery({
     queryKey: ['all_users'],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('users')
-        .select('id,name,role,username,email,classroom_id,avatar_url')
-        .order('name')
-      if (error) throw error
-      return (data ?? []) as User[]
-    },
+    queryFn: () => api.get<User[]>('/users'),
   })
 }
 
 export function useUpdateUser() {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async ({
-      id,
-      updates,
-    }: {
+    mutationFn: ({ id, updates }: {
       id: string
       updates: Partial<Pick<User, 'name' | 'phone' | 'email' | 'classroom_id' | 'role'>>
-    }) => {
-      const { error } = await supabase.from('users').update(updates).eq('id', id)
-      if (error) throw error
-    },
+    }) => api.patch(`/users/${id}`, updates),
     onSuccess: () => {
-      qc.invalidateQueries({ queryKey: [QUERY_KEY] })
-      qc.invalidateQueries({ queryKey: [PARENTS_KEY] })
+      qc.invalidateQueries({ queryKey: [K] })
+      qc.invalidateQueries({ queryKey: [PK] })
       qc.invalidateQueries({ queryKey: ['all_users'] })
       toast.success('User updated.')
     },
@@ -73,11 +44,20 @@ export function useUpdateUser() {
   })
 }
 
-/**
- * Creates a new staff/parent account via Supabase Admin API.
- * NOTE: This requires a server-side function or Supabase Edge Function
- * to use the service_role key. For now we show the invite flow.
- */
+export function useCreateUser() {
+  const qc = useQueryClient()
+  return useMutation({
+    mutationFn: (form: { name: string; role: string; username: string; email?: string; phone?: string; classroom_id?: string; password: string }) =>
+      api.post<User>('/users', form),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: [K] })
+      qc.invalidateQueries({ queryKey: [PK] })
+      toast.success('User created.')
+    },
+    onError: (e: Error) => toast.error(e.message || 'Failed to create user.'),
+  })
+}
+
 export function useCreateUserNote() {
-  return { note: 'Use Supabase Dashboard → Auth → Invite user to create accounts.' }
+  return { note: 'Use the Create User form to add staff/parent accounts.' }
 }

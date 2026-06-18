@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { supabase } from '@/lib/supabase'
+import { api, setToken } from '@/lib/api'
 import type { User } from '@/types'
 
 interface AuthState {
@@ -7,33 +7,27 @@ interface AuthState {
   loading: boolean
   setUser: (user: User | null) => void
   setLoading: (v: boolean) => void
-  logout: () => Promise<void>
+  logout: () => void
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
   loading: true,
-
   setUser: (user) => set({ user }),
   setLoading: (loading) => set({ loading }),
-
-  logout: async () => {
-    await supabase.auth.signOut()
+  logout: () => {
+    setToken(null)
     set({ user: null })
   },
 }))
 
-/** Fetch the profile row for the currently signed-in auth user */
 export async function fetchCurrentUser(): Promise<User | null> {
-  const { data: { user: authUser } } = await supabase.auth.getUser()
-  if (!authUser) return null
-
-  const { data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('id', authUser.id)
-    .single()
-
-  if (error || !data) return null
-  return data as User
+  const token = localStorage.getItem('ms_token')
+  if (!token) return null
+  try {
+    return await api.get<User>('/auth/me')
+  } catch {
+    setToken(null)
+    return null
+  }
 }
