@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * { box-sizing: border-box; }
+
+  body {
+    @apply font-body text-gray-800 bg-gray-50;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+
+  :root {
+    --scrollbar-width: 6px;
+  }
+
+  ::-webkit-scrollbar { width: var(--scrollbar-width); height: var(--scrollbar-width); }
+  ::-webkit-scrollbar-track { @apply bg-gray-100 rounded-full; }
+  ::-webkit-scrollbar-thumb { @apply bg-gray-300 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-gray-400; }
+}
+
+@layer components {
+  /* ── Buttons ── */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl font-body font-700
+           px-4 py-2 text-sm transition-all duration-150 focus-visible:outline-none
+           focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-gold text-white hover:bg-gold-hover focus-visible:ring-gold;
+  }
+  .btn-secondary {
+    @apply btn bg-night text-white hover:bg-night-2 focus-visible:ring-night;
+  }
+  .btn-teal {
+    @apply btn bg-teal text-white hover:opacity-90 focus-visible:ring-teal;
+  }
+  .btn-outline {
+    @apply btn bg-white border-2 border-gray-200 text-gray-700 hover:border-gold hover:text-gold;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-gray-600 hover:bg-gray-100;
+  }
+  .btn-danger {
+    @apply btn bg-red-500 text-white hover:bg-red-600 focus-visible:ring-red-500;
+  }
+  .btn-sm { @apply text-xs px-3 py-1.5 rounded-lg; }
+  .btn-lg { @apply text-base px-6 py-3; }
+
+  /* ── Cards ── */
+  .card {
+    @apply bg-white rounded-2xl shadow-card p-5;
+  }
+  .card-hover {
+    @apply card hover:shadow-card-hover transition-shadow duration-200 cursor-pointer;
+  }
+
+  /* ── Form elements ── */
+  .input {
+    @apply w-full rounded-xl border border-gray-200 bg-white px-3 py-2 text-sm
+           placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-gold/40
+           focus:border-gold transition-colors;
+  }
+  .input-error {
+    @apply border-red-400 focus:ring-red-400/40 focus:border-red-400;
+  }
+  .label {
+    @apply block text-xs font-800 text-gray-600 mb-1;
+  }
+  .form-error {
+    @apply text-xs text-red-500 mt-1;
+  }
+
+  /* ── Badges ── */
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-700;
+  }
+
+  /* ── Table ── */
+  .table-wrapper {
+    @apply overflow-x-auto rounded-xl border border-gray-100;
+  }
+  table { @apply w-full text-sm; }
+  thead { @apply bg-gray-50; }
+  th { @apply px-4 py-3 text-left text-xs font-800 text-gray-500 uppercase tracking-wide; }
+  td { @apply px-4 py-3 border-t border-gray-100; }
+  tr:hover td { @apply bg-gray-50; }
+
+  /* ── Avatar ── */
+  .avatar {
+    @apply inline-flex items-center justify-center rounded-full font-heading font-600
+           text-white select-none shrink-0;
+  }
+
+  /* ── Sidebar nav ── */
+  .nav-item {
+    @apply flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-700
+           text-gray-600 hover:bg-gray-100 hover:text-night transition-colors cursor-pointer;
+  }
+  .nav-item-active {
+    @apply bg-night text-white hover:bg-night-2 hover:text-white;
+  }
+
+  /* ── Stat boxes ── */
+  .stat-box {
+    @apply card flex flex-col items-center justify-center text-center p-5;
+  }
+
+  /* ── Section heading ── */
+  .section-eyebrow {
+    @apply text-xs font-800 tracking-widest text-gold uppercase mb-1;
+  }
+}
+
+@layer utilities {
+  .font-700 { font-weight: 700; }
+  .font-800 { font-weight: 800; }
+}

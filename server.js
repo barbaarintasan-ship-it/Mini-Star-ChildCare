@@ -4,16 +4,19 @@ const path = require('path');
 const PORT = process.env.PORT || 8080;
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public'), {
+// Serve the React app build output
+const STATIC_DIR = path.join(__dirname, 'public_react');
+
+app.use(express.static(STATIC_DIR, {
   maxAge: '1h',
-  index: 'index.html'
+  index: 'index.html',
 }));
 
-// Serve index.html for any unknown route (SPA fallback)
+// SPA fallback — all routes serve index.html so React Router handles them
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(STATIC_DIR, 'index.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {
-  console.log('Mini Star Child Care running on port ' + PORT);
+  console.log('Mini Star Child Care v2 running on port ' + PORT);
 });

@@ -1,3 +1,7 @@
 node_modules/
+client/node_modules/
 .env
+client/.env
 *.log
+public_react/
+client/dist/

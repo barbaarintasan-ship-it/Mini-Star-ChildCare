@@ -1,10 +1,12 @@
 {
   "name": "ministar-combined",
-  "version": "1.0.0",
-  "description": "Mini Star Child Care — combined web app",
+  "version": "2.0.0",
+  "description": "Mini Star Child Care — React + Supabase app",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "cd client && npm install && npm run build",
+    "dev": "cd client && npm run dev"
   },
   "engines": {
     "node": ">=20"
