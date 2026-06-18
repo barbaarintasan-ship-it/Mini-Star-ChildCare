@@ -818,6 +818,183 @@ app.delete('/api/curriculum/activities/:id', auth, role('admin','teacher'), asyn
   } catch (e) { res.status(500).json({ error: 'Server error' }) }
 })
 
+// ═══════════════════════════════════════════════════════════
+// LESSON PLANS — generate / get / update
+// ═══════════════════════════════════════════════════════════
+
+const CURR_CATS = ['language','cognitive','social','physical','creativity','life_skills','health','character']
+
+const CURR_THEMES = [
+  'All About Me','My Family & Friends','Animals & Nature','Colors & Shapes',
+  'Numbers & Counting','Seasons & Weather','Food & Nutrition','Community Helpers',
+  'Plants & Growing','Water & Science','Music & Movement','Feelings & Emotions',
+  'Transportation','Insects & Bugs','Ocean & Sea Life','Space & Stars',
+  'Sports & Exercise','Holidays Around the World','STEM & Technology','Kindness & Compassion'
+]
+
+// Activity IDs per age group / domain (compact reference for server-side generation)
+const ACTIVITY_IDS = {
+  infants:    { language:['il1','il2','il3','il4'], cognitive:['ic1','ic2','ic3','ic4'], social:['is1','is2','is3','is4'], physical:['ip1','ip2','ip3','ip4'], creativity:['icr1','icr2','icr3'], life_skills:['ils1','ils2'], health:['ih1','ih2'], character:['ich1','ich2'] },
+  toddlers:   { language:['tl1','tl2','tl3','tl4'], cognitive:['tc1','tc2','tc3','tc4'], social:['ts1','ts2','ts3','ts4'], physical:['tp1','tp2','tp3','tp4'], creativity:['tcr1','tcr2','tcr3'], life_skills:['tls1','tls2','tls3'], health:['th1','th2'], character:['tch1','tch2','tch3'] },
+  preschool:  { language:['pl1','pl2','pl3','pl4'], cognitive:['pc1','pc2','pc3','pc4'], social:['ps1','ps2','ps3','ps4'], physical:['pp1','pp2','pp3','pp4'], creativity:['pcr1','pcr2','pcr3'], life_skills:['pls1','pls2','pls3'], health:['ph1','ph2'], character:['pch1','pch2','pch3'] },
+  school_age: { language:['sal1','sal2','sal3','sal4'], cognitive:['sac1','sac2','sac3','sac4'], social:['sas1','sas2','sas3'], physical:['sap1','sap2'], creativity:['sacr1','sacr2'], life_skills:['sals1','sals2','sals3'], health:['sah1','sah2'], character:['sach1','sach2','sach3'] }
+}
+
+const DAILY_SCHEDULE_TMPL = {
+  infants:    [{time:'7:00–8:00',name:'Arrival & Settling',type:'routine',cat:null},{time:'8:00–8:30',name:'Morning Feeding',type:'care',cat:'health'},{time:'8:30–9:15',name:'Tummy Time & Sensory Exploration',type:'learning',cat:'physical'},{time:'9:15–10:15',name:'Morning Nap',type:'care',cat:null},{time:'10:15–10:45',name:'Language & Music Time',type:'learning',cat:'language'},{time:'10:45–11:30',name:'Active Exploration Play',type:'learning',cat:'cognitive'},{time:'11:30–12:00',name:'Feeding & Diapering',type:'care',cat:'health'},{time:'12:00–2:00',name:'Afternoon Nap',type:'care',cat:null},{time:'2:00–2:30',name:'Outdoor Time',type:'learning',cat:'health'},{time:'2:30–4:00',name:'Afternoon Social Play',type:'learning',cat:'social'},{time:'4:00–5:30',name:'Feeding & Departure',type:'care',cat:null}],
+  toddlers:   [{time:'7:00–8:30',name:'Arrival & Free Exploration',type:'routine',cat:null},{time:'8:30–9:00',name:'Morning Circle',type:'learning',cat:'language'},{time:'9:00–9:50',name:'Learning Centers',type:'learning',cat:null},{time:'9:50–10:10',name:'Snack Time',type:'care',cat:'health'},{time:'10:10–11:00',name:'Outdoor Play',type:'learning',cat:'physical'},{time:'11:00–11:30',name:'Curriculum Activity Block',type:'learning',cat:null},{time:'11:30–11:45',name:'Story Time',type:'learning',cat:'language'},{time:'11:45–12:15',name:'Lunch',type:'care',cat:'health'},{time:'12:15–2:30',name:'Rest & Nap',type:'care',cat:null},{time:'2:30–3:00',name:'Afternoon Snack & Sharing',type:'routine',cat:'social'},{time:'3:00–4:30',name:'Afternoon Activities',type:'learning',cat:null},{time:'4:30–5:30',name:'Departure Routine',type:'routine',cat:null}],
+  preschool:  [{time:'7:00–8:30',name:'Arrival & Morning Work',type:'routine',cat:null},{time:'8:30–9:00',name:'Morning Circle',type:'learning',cat:'language'},{time:'9:00–9:50',name:'Learning Centers',type:'learning',cat:null},{time:'9:50–10:00',name:'Clean-Up & Transition',type:'routine',cat:'life_skills'},{time:'10:00–10:20',name:'Snack',type:'care',cat:'health'},{time:'10:20–11:10',name:'Outdoor Play',type:'learning',cat:'physical'},{time:'11:10–11:45',name:'Curriculum Focus Block',type:'learning',cat:null},{time:'11:45–12:00',name:'Story & Vocabulary',type:'learning',cat:'language'},{time:'12:00–12:30',name:'Lunch',type:'care',cat:'health'},{time:'12:30–2:30',name:'Rest Time',type:'care',cat:null},{time:'2:30–3:15',name:'Afternoon Creative Activity',type:'learning',cat:'creativity'},{time:'3:15–4:00',name:'Reflection & Gratitude Circle',type:'routine',cat:'character'},{time:'4:00–5:30',name:'Extended Care',type:'routine',cat:null}],
+  school_age: [{time:'7:00–8:30',name:'Arrival & Homework Help',type:'routine',cat:null},{time:'8:30–9:00',name:'Morning Meeting',type:'learning',cat:'social'},{time:'9:00–9:50',name:'Academic Block',type:'learning',cat:'cognitive'},{time:'9:50–10:40',name:'STEM & Science Time',type:'learning',cat:'cognitive'},{time:'10:40–11:00',name:'Snack & Movement Break',type:'care',cat:'health'},{time:'11:00–11:45',name:'Creative Arts & Enrichment',type:'learning',cat:'creativity'},{time:'11:45–12:15',name:'Lunch',type:'care',cat:'health'},{time:'12:15–12:45',name:'Physical Education',type:'learning',cat:'physical'},{time:'12:45–1:30',name:'Character & Life Skills',type:'learning',cat:'character'},{time:'1:30–2:30',name:'Project-Based Learning',type:'learning',cat:'cognitive'},{time:'2:30–3:30',name:'Reflection & Goal Setting',type:'routine',cat:'character'},{time:'3:30–5:30',name:'Homework & Extended Care',type:'routine',cat:null}]
+}
+
+const CLS_TO_AGE_KEY = { 'Infants':'infants', 'Toddlers':'toddlers', 'Preschool':'preschool', 'School-Age':'school_age' }
+
+function getAgeKeyForClassroom(name, age_group) {
+  if (name && CLS_TO_AGE_KEY[name]) return CLS_TO_AGE_KEY[name]
+  if (!age_group) return 'preschool'
+  const ag = age_group.toLowerCase()
+  if (ag.includes('infant') || ag.includes('0')) return 'infants'
+  if (ag.includes('toddler') || ag.includes('1-3') || ag.includes('1–3')) return 'toddlers'
+  if (ag.includes('school') || ag.includes('5-12') || ag.includes('5–12')) return 'school_age'
+  return 'preschool'
+}
+
+function generateLessonPlan(classroomId, ageKey, theme, date) {
+  const ids = ACTIVITY_IDS[ageKey] || ACTIVITY_IDS.preschool
+  const activities = CURR_CATS.map(cat => {
+    const pool = ids[cat] || []
+    const pick = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null
+    return { catId: cat, activityId: pick, status: 'pending', notes: '' }
+  }).filter(a => a.activityId)
+  const schedule = (DAILY_SCHEDULE_TMPL[ageKey] || DAILY_SCHEDULE_TMPL.preschool).map((s, i) => ({ ...s, slotIndex: i }))
+  return { classroomId, date, ageKey, theme, activities, schedule }
+}
+
+// GET /api/lesson-plans?classroom_id=&date=
+app.get('/api/lesson-plans', auth, async (req, res) => {
+  const { classroom_id, date } = req.query
+  if (!classroom_id || !date) return res.status(400).json({ error: 'classroom_id and date required' })
+  try {
+    let { rows } = await pool.query('SELECT * FROM lesson_plans WHERE classroom_id=$1 AND date=$2', [classroom_id, date])
+    if (!rows[0]) {
+      const { rows: cls } = await pool.query('SELECT name,age_group FROM classrooms WHERE id=$1', [classroom_id])
+      const cl = cls[0] || {}
+      const ageKey = getAgeKeyForClassroom(cl.name, cl.age_group)
+      const { rows: wt } = await pool.query(
+        "SELECT theme FROM week_themes WHERE classroom_id=$1 AND week_start<=CURRENT_DATE ORDER BY week_start DESC LIMIT 1",
+        [classroom_id]
+      )
+      const theme = wt[0]?.theme || CURR_THEMES[0]
+      const plan = generateLessonPlan(classroom_id, ageKey, theme, date)
+      const ins = await pool.query(
+        'INSERT INTO lesson_plans (classroom_id,date,age_key,theme,activities,schedule) VALUES ($1,$2,$3,$4,$5,$6) RETURNING *',
+        [classroom_id, date, plan.ageKey, plan.theme, JSON.stringify(plan.activities), JSON.stringify(plan.schedule)]
+      )
+      rows = ins.rows
+    }
+    res.json(rows[0])
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error' }) }
+})
+
+// POST /api/lesson-plans/generate — force-regenerate
+app.post('/api/lesson-plans/generate', auth, role('admin','teacher'), async (req, res) => {
+  const { classroom_id, date, theme } = req.body
+  if (!classroom_id || !date) return res.status(400).json({ error: 'classroom_id and date required' })
+  try {
+    const { rows: cls } = await pool.query('SELECT name,age_group FROM classrooms WHERE id=$1', [classroom_id])
+    const cl = cls[0] || {}
+    const ageKey = getAgeKeyForClassroom(cl.name, cl.age_group)
+    const resolvedTheme = theme || (await pool.query(
+      "SELECT theme FROM week_themes WHERE classroom_id=$1 AND week_start<=CURRENT_DATE ORDER BY week_start DESC LIMIT 1",
+      [classroom_id]
+    )).rows[0]?.theme || CURR_THEMES[0]
+    const plan = generateLessonPlan(classroom_id, ageKey, resolvedTheme, date)
+    const { rows } = await pool.query(
+      `INSERT INTO lesson_plans (classroom_id,date,age_key,theme,activities,schedule,generated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,NOW())
+       ON CONFLICT (classroom_id,date) DO UPDATE
+       SET age_key=$3,theme=$4,activities=$5,schedule=$6,generated_at=NOW()
+       RETURNING *`,
+      [classroom_id, date, plan.ageKey, plan.theme, JSON.stringify(plan.activities), JSON.stringify(plan.schedule)]
+    )
+    res.json(rows[0])
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error' }) }
+})
+
+// PATCH /api/lesson-plans/:id/activity — update one activity's status/notes
+app.patch('/api/lesson-plans/:id/activity', auth, role('admin','teacher'), async (req, res) => {
+  const { index, status, notes } = req.body
+  try {
+    const { rows } = await pool.query('SELECT activities FROM lesson_plans WHERE id=$1', [req.params.id])
+    if (!rows[0]) return res.status(404).json({ error: 'Plan not found' })
+    const acts = rows[0].activities
+    if (index < 0 || index >= acts.length) return res.status(400).json({ error: 'Invalid index' })
+    if (status !== undefined) acts[index].status = status
+    if (notes !== undefined) acts[index].notes = notes
+    const { rows: updated } = await pool.query('UPDATE lesson_plans SET activities=$1 WHERE id=$2 RETURNING *', [JSON.stringify(acts), req.params.id])
+    res.json(updated[0])
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error' }) }
+})
+
+// GET /api/milestones?child_id=
+app.get('/api/milestones', auth, async (req, res) => {
+  const { child_id } = req.query
+  if (!child_id) return res.status(400).json({ error: 'child_id required' })
+  try {
+    if (req.user.role === 'parent') {
+      const ids = await parentChildIds(req.user.id)
+      if (!ids.includes(child_id)) return res.status(403).json({ error: 'Forbidden' })
+    }
+    const { rows } = await pool.query('SELECT * FROM child_milestones WHERE child_id=$1 ORDER BY skill_id', [child_id])
+    res.json(rows)
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+// PUT /api/milestones — upsert a milestone level
+app.put('/api/milestones', auth, role('admin','teacher'), async (req, res) => {
+  const { child_id, skill_id, level } = req.body
+  if (!child_id || !skill_id || !level) return res.status(400).json({ error: 'child_id, skill_id, level required' })
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO child_milestones (child_id,skill_id,level,updated_by,updated_at)
+       VALUES ($1,$2,$3,$4,NOW())
+       ON CONFLICT (child_id,skill_id) DO UPDATE SET level=$3,updated_by=$4,updated_at=NOW()
+       RETURNING *`,
+      [child_id, skill_id, level, req.user.id]
+    )
+    res.json(rows[0])
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+// GET /api/week-themes?classroom_id=
+app.get('/api/week-themes', auth, async (req, res) => {
+  const { classroom_id } = req.query
+  if (!classroom_id) return res.status(400).json({ error: 'classroom_id required' })
+  try {
+    const { rows } = await pool.query(
+      'SELECT * FROM week_themes WHERE classroom_id=$1 ORDER BY week_start DESC LIMIT 12',
+      [classroom_id]
+    )
+    res.json(rows)
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+// PUT /api/week-themes
+app.put('/api/week-themes', auth, role('admin','teacher'), async (req, res) => {
+  const { classroom_id, week_start, theme } = req.body
+  if (!classroom_id || !week_start || !theme) return res.status(400).json({ error: 'classroom_id, week_start, theme required' })
+  try {
+    const { rows } = await pool.query(
+      `INSERT INTO week_themes (classroom_id,week_start,theme,updated_at)
+       VALUES ($1,$2,$3,NOW())
+       ON CONFLICT (classroom_id,week_start) DO UPDATE SET theme=$3,updated_at=NOW()
+       RETURNING *`,
+      [classroom_id, week_start, theme]
+    )
+    res.json(rows[0])
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
 // ── Static files ─────────────────────────────────────────────
 const STATIC_DIR = path.join(__dirname, 'public_react')
 app.use(express.static(STATIC_DIR, { maxAge: '1h', index: 'index.html' }))
