@@ -754,6 +754,70 @@ app.patch('/api/enrollments/:id', auth, role('admin'), async (req, res) => {
   } catch (e) { res.status(500).json({ error: 'Server error' }) }
 })
 
+// ═══════════════════════════════════════════════════════════
+// CURRICULUM
+// ═══════════════════════════════════════════════════════════
+
+app.get('/api/curriculum/units', auth, async (req, res) => {
+  try {
+    const { rows: units } = await pool.query('SELECT * FROM curriculum_units ORDER BY sort_order,created_at')
+    const { rows: acts } = await pool.query('SELECT * FROM curriculum_activities ORDER BY created_at')
+    const map = {}
+    for (const u of units) map[u.id] = { ...u, activities: [] }
+    for (const a of acts) if (map[a.unit_id]) map[a.unit_id].activities.push(a)
+    res.json(Object.values(map))
+  } catch (e) { console.error(e); res.status(500).json({ error: 'Server error' }) }
+})
+
+app.post('/api/curriculum/units', auth, role('admin','teacher'), async (req, res) => {
+  const { week, theme, color, sort_order } = req.body
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO curriculum_units (week,theme,color,sort_order) VALUES ($1,$2,$3,$4) RETURNING *',
+      [week, theme, color ?? 'bg-teal/10 text-teal', sort_order ?? 99]
+    )
+    res.json(rows[0])
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+app.delete('/api/curriculum/units/:id', auth, role('admin'), async (req, res) => {
+  try {
+    await pool.query('DELETE FROM curriculum_units WHERE id=$1', [req.params.id])
+    res.json({ ok: true })
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+app.post('/api/curriculum/activities', auth, role('admin','teacher'), async (req, res) => {
+  const { unit_id, title, description, age_group, area, duration } = req.body
+  if (!unit_id || !title) return res.status(400).json({ error: 'unit_id and title required' })
+  try {
+    const { rows } = await pool.query(
+      'INSERT INTO curriculum_activities (unit_id,title,description,age_group,area,duration,created_by) VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *',
+      [unit_id, title, description ?? '', age_group ?? '3-5 years', area ?? 'Other', duration ?? '20 min', req.user.id]
+    )
+    res.json(rows[0])
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+app.patch('/api/curriculum/activities/:id', auth, role('admin','teacher'), async (req, res) => {
+  const fields = ['title','description','age_group','area','duration','unit_id']
+  const updates = []; const vals = []; let i = 1
+  for (const f of fields) if (req.body[f] !== undefined) { updates.push(`${f}=$${i++}`); vals.push(req.body[f]) }
+  if (!updates.length) return res.json({ ok: true })
+  vals.push(req.params.id)
+  try {
+    const { rows } = await pool.query(`UPDATE curriculum_activities SET ${updates.join(',')} WHERE id=$${i} RETURNING *`, vals)
+    res.json(rows[0])
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
+app.delete('/api/curriculum/activities/:id', auth, role('admin','teacher'), async (req, res) => {
+  try {
+    await pool.query('DELETE FROM curriculum_activities WHERE id=$1', [req.params.id])
+    res.json({ ok: true })
+  } catch (e) { res.status(500).json({ error: 'Server error' }) }
+})
+
 // ── Static files ─────────────────────────────────────────────
 const STATIC_DIR = path.join(__dirname, 'public_react')
 app.use(express.static(STATIC_DIR, { maxAge: '1h', index: 'index.html' }))

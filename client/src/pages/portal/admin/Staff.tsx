@@ -1,23 +1,37 @@
 import { useState } from 'react'
-import { useStaff, useUpdateUser } from '@/hooks/useStaff'
+import { UserPlus, Edit2 } from 'lucide-react'
+import { useStaff, useUpdateUser, useCreateUser } from '@/hooks/useStaff'
 import { useClassrooms } from '@/hooks/useClassrooms'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
-import { Select } from '@/components/ui/Input'
+import { Input, Select } from '@/components/ui/Input'
 import { Modal } from '@/components/ui/Modal'
 import { Avatar } from '@/components/ui/Avatar'
 import { RoleBadge } from '@/components/ui/Badge'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { PageLoader } from '@/components/ui/LoadingSkeleton'
-import { Edit2 } from 'lucide-react'
 import type { User } from '@/types'
+
+const DEFAULT_CREATE = {
+  name: '',
+  role: 'teacher',
+  username: '',
+  email: '',
+  phone: '',
+  classroom_id: '',
+  password: '',
+}
 
 export default function Staff() {
   const { data: staff = [], isLoading } = useStaff()
   const { data: classrooms = [] } = useClassrooms()
   const updateUser = useUpdateUser()
+  const createUser = useCreateUser()
+
   const [editing, setEditing] = useState<User | null>(null)
   const [classId, setClassId] = useState('')
+  const [showCreate, setShowCreate] = useState(false)
+  const [createForm, setCreateForm] = useState(DEFAULT_CREATE)
 
   function openEdit(u: User) {
     setEditing(u)
@@ -30,6 +44,16 @@ export default function Staff() {
     setEditing(null)
   }
 
+  async function handleCreate() {
+    if (!createForm.name || !createForm.username || !createForm.password) return
+    await createUser.mutateAsync({
+      ...createForm,
+      classroom_id: createForm.classroom_id || undefined,
+    })
+    setShowCreate(false)
+    setCreateForm(DEFAULT_CREATE)
+  }
+
   if (isLoading) return <PageLoader />
 
   const teachers = staff.filter((s) => s.role === 'teacher')
@@ -39,7 +63,9 @@ export default function Staff() {
     <div className="space-y-5">
       <div className="flex items-center justify-between gap-3">
         <h1 className="font-heading text-2xl font-600 text-night">Staff</h1>
-        <p className="text-xs text-gray-400">Add new accounts via Supabase Dashboard → Auth → Invite</p>
+        <Button size="sm" onClick={() => setShowCreate(true)}>
+          <UserPlus size={14} /> Add Staff
+        </Button>
       </div>
 
       {/* Admins */}
@@ -67,7 +93,7 @@ export default function Staff() {
       <div>
         <p className="text-xs font-800 uppercase text-gray-400 mb-2">Teachers</p>
         {teachers.length === 0 ? (
-          <EmptyState icon="🎓" title="No teachers yet" message="Invite teachers via Supabase Auth." />
+          <EmptyState icon="🎓" title="No teachers yet" message="Use the Add Staff button to create a teacher account." />
         ) : (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {teachers.map((u) => {
@@ -97,7 +123,7 @@ export default function Staff() {
         )}
       </div>
 
-      {/* Edit modal */}
+      {/* Assign classroom modal */}
       <Modal open={!!editing} onClose={() => setEditing(null)} title={`Edit — ${editing?.name}`} size="sm">
         {editing && (
           <div className="space-y-3">
@@ -113,6 +139,78 @@ export default function Staff() {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Create staff modal */}
+      <Modal open={showCreate} onClose={() => setShowCreate(false)} title="Add Staff Account" size="md">
+        <div className="space-y-3">
+          <Input
+            label="Full Name"
+            value={createForm.name}
+            onChange={(e) => setCreateForm((f) => ({ ...f, name: e.target.value }))}
+            placeholder="Jane Smith"
+          />
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              label="Username"
+              value={createForm.username}
+              onChange={(e) => setCreateForm((f) => ({ ...f, username: e.target.value }))}
+              placeholder="janesmith"
+            />
+            <Input
+              label="Password"
+              type="password"
+              value={createForm.password}
+              onChange={(e) => setCreateForm((f) => ({ ...f, password: e.target.value }))}
+              placeholder="min 6 chars"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Input
+              label="Email (optional)"
+              type="email"
+              value={createForm.email}
+              onChange={(e) => setCreateForm((f) => ({ ...f, email: e.target.value }))}
+            />
+            <Input
+              label="Phone (optional)"
+              value={createForm.phone}
+              onChange={(e) => setCreateForm((f) => ({ ...f, phone: e.target.value }))}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <Select
+              label="Role"
+              value={createForm.role}
+              onChange={(e) => setCreateForm((f) => ({ ...f, role: e.target.value }))}
+            >
+              <option value="teacher">Teacher</option>
+              <option value="admin">Admin</option>
+              <option value="parent">Parent</option>
+            </Select>
+            <Select
+              label="Classroom (optional)"
+              value={createForm.classroom_id}
+              onChange={(e) => setCreateForm((f) => ({ ...f, classroom_id: e.target.value }))}
+            >
+              <option value="">None</option>
+              {classrooms.map((c) => (
+                <option key={c.id} value={c.id}>{c.name}</option>
+              ))}
+            </Select>
+          </div>
+          <div className="flex gap-2 pt-2">
+            <Button variant="outline" className="flex-1" onClick={() => setShowCreate(false)}>Cancel</Button>
+            <Button
+              className="flex-1"
+              onClick={handleCreate}
+              loading={createUser.isPending}
+              disabled={!createForm.name || !createForm.username || !createForm.password}
+            >
+              Create Account
+            </Button>
+          </div>
+        </div>
       </Modal>
     </div>
   )
