@@ -118,6 +118,7 @@
 }
 
 @layer utilities {
+  .font-600 { font-weight: 600; }
   .font-700 { font-weight: 700; }
   .font-800 { font-weight: 800; }
 }
