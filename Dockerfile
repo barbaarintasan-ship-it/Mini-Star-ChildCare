@@ -32,7 +32,7 @@ COPY server.js ./
 COPY public/images ./public_react/images
 
 # Copy built React app into public_react/
-COPY --from=builder /app/client/dist/ ./public_react/
+COPY --from=builder /app/public_react/ ./public_react/
 
 EXPOSE 8080
 
