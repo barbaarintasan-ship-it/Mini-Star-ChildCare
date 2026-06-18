@@ -31,6 +31,7 @@ const MedicationsPage   = lazy(() => import('@/pages/portal/shared/MedicationsPa
 const PortfolioPage     = lazy(() => import('@/pages/portal/shared/PortfolioPage'))
 const CalendarPage      = lazy(() => import('@/pages/portal/shared/CalendarPage'))
 const NotificationsPage = lazy(() => import('@/pages/portal/shared/NotificationsPage'))
+const CurriculumPage    = lazy(() => import('@/pages/portal/shared/CurriculumPage'))
 
 const AdminDashboard = lazy(() => import('@/pages/portal/admin/AdminDashboard'))
 const Children       = lazy(() => import('@/pages/portal/admin/Children'))
@@ -172,6 +173,7 @@ export default function App() {
             <Route path="/portal/portfolio"     element={<PortfolioPage />} />
             <Route path="/portal/calendar"      element={<CalendarPage />} />
             <Route path="/portal/notifications" element={<NotificationsPage />} />
+            <Route path="/portal/curriculum"    element={<CurriculumPage />} />
           </Route>
 
           {/* Admin only */}
