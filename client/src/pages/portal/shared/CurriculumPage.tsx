@@ -162,30 +162,28 @@ function TodayPlan({ classroomId, ageKey }: { classroomId: string; ageKey: AgeKe
                 return (
                   <div key={idx} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden" style={{ borderLeft: `4px solid ${cat?.color || '#ccc'}` }}>
                     <div className="px-5 py-4">
-                      <div className="flex items-start gap-3 mb-3">
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2 mb-1">
-                            <span className="text-xs font-700 px-2 py-0.5 rounded-full text-white" style={{ background: cat?.color || '#ccc' }}>
-                              {cat?.icon} {cat?.label}
-                            </span>
-                            <span className="text-xs text-gray-400">⏱ {activity.dur} min</span>
-                          </div>
-                          <h4 className="font-700 text-night">{activity.title}</h4>
-                          <p className="text-xs text-gray-500 mt-0.5">{activity.obj}</p>
-                        </div>
-                        <div className={`flex items-center gap-1 text-xs font-700 shrink-0 ${sc.cls}`}>
+                      {/* Card header */}
+                      <div className="flex items-center gap-2 mb-2 flex-wrap">
+                        <span className="text-xs font-700 px-2 py-0.5 rounded-full text-white shrink-0" style={{ background: cat?.color || '#ccc' }}>
+                          {cat?.icon} {cat?.label}
+                        </span>
+                        <span className="text-xs text-gray-400">⏱ {activity.dur} min</span>
+                        <span className={`ml-auto text-xs font-700 flex items-center gap-1 shrink-0 ${sc.cls}`}>
                           {sc.icon} {sc.label}
-                        </div>
+                        </span>
                       </div>
+                      <h4 className="font-700 text-night mb-0.5">{activity.title}</h4>
+                      <p className="text-xs text-gray-500 mb-3">{activity.obj}</p>
 
                       {/* Status buttons */}
-                      <div className="flex gap-2 flex-wrap mb-3">
+                      <div className="flex items-center gap-2 flex-wrap mb-3">
+                        <span className="text-xs text-gray-400 font-700 shrink-0">Mark as:</span>
                         {(Object.keys(STATUS_CONFIG) as (keyof typeof STATUS_CONFIG)[]).map(s => (
                           <button
                             key={s}
                             type="button"
                             onClick={() => updateAct.mutate({ planId: plan.id, index: idx, status: s })}
-                            className={`text-xs px-2.5 py-1 rounded-full border font-700 transition-colors ${entry.status === s ? 'bg-night text-white border-night' : 'bg-white text-gray-500 border-gray-200 hover:border-night hover:text-night'}`}
+                            className={`text-xs px-3 py-1 rounded-full border font-700 transition-colors ${entry.status === s ? 'bg-night text-white border-night' : 'bg-white text-gray-500 border-gray-200 hover:border-night hover:text-night'}`}
                           >
                             {STATUS_CONFIG[s].label}
                           </button>
