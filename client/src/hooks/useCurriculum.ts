@@ -138,9 +138,8 @@ export function useMilestones(child_id: string | undefined) {
 
 export function useUpsertMilestone() {
   const qc = useQueryClient()
-  return useMutation({
-    mutationFn: (body: { child_id: string; skill_id: string; level: string }) =>
-      api.put<ChildMilestone>('/milestones', body),
+  return useMutation<ChildMilestone, Error, { child_id: string; skill_id: string; level: string }>({
+    mutationFn: (body) => api.put<ChildMilestone>('/milestones', body),
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: [ML, data.child_id] })
     },
@@ -170,9 +169,8 @@ export function useWeekThemes(classroom_id: string | undefined) {
 
 export function useSetWeekTheme() {
   const qc = useQueryClient()
-  return useMutation({
-    mutationFn: (body: { classroom_id: string; week_start: string; theme: string }) =>
-      api.put<WeekTheme>('/week-themes', body),
+  return useMutation<WeekTheme, Error, { classroom_id: string; week_start: string; theme: string }>({
+    mutationFn: (body) => api.put<WeekTheme>('/week-themes', body),
     onSuccess: (data) => {
       qc.invalidateQueries({ queryKey: [WT, data.classroom_id] })
       toast.success('Theme updated!')

@@ -839,7 +839,7 @@ export default function CurriculumPage() {
 
       {/* Parent tabs */}
       {!canEdit && activeTab === 'today' && (
-        <ParentTodayLearning classroomId={activeChild?.classroom_id} ageKey={childAgeKey} />
+        <ParentTodayLearning classroomId={activeChild?.classroom_id ?? undefined} ageKey={childAgeKey} />
       )}
       {!canEdit && activeTab === 'progress' && activeChild && (
         <ParentProgress childId={activeChild.id} ageKey={childAgeKey} />
