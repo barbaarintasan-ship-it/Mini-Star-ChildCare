@@ -122,8 +122,8 @@ export function useConversations() {
 
       for (const msg of data ?? []) {
         const partner = msg.from_id === user!.id
-          ? (msg.to as { id: string; name: string; role: string; avatar_url?: string | null })
-          : (msg.from as { id: string; name: string; role: string; avatar_url?: string | null })
+          ? (msg.to as unknown as { id: string; name: string; role: string; avatar_url?: string | null })
+          : (msg.from as unknown as { id: string; name: string; role: string; avatar_url?: string | null })
         if (partner && !seen.has(partner.id)) {
           seen.add(partner.id)
           conversations.push({ partner, unread: 0 })
