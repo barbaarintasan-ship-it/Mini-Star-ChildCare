@@ -8,7 +8,7 @@ import { Avatar } from '@/components/ui/Avatar'
 import { EmptyState } from '@/components/ui/EmptyState'
 import { RoleBadge } from '@/components/ui/Badge'
 import { fmtDateTime, cn } from '@/lib/utils'
-import { Send } from 'lucide-react'
+import { Send, ArrowLeft } from 'lucide-react'
 
 export default function MessagesPage() {
   const { user } = useAuthStore()
@@ -45,9 +45,9 @@ export default function MessagesPage() {
   const messageable = allUsers.filter((u) => u.id !== user?.id)
 
   return (
-    <div className="flex h-[calc(100vh-7rem)] rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-card">
+    <div className="flex h-[calc(100vh-6rem)] rounded-2xl overflow-hidden border border-gray-100 bg-white shadow-card">
       {/* Conversation list */}
-      <div className="w-64 flex flex-col border-r border-gray-100 shrink-0">
+      <div className={`flex flex-col border-r border-gray-100 shrink-0 ${selectedUserId ? 'hidden sm:flex w-56 lg:w-64' : 'flex w-full sm:w-56 lg:w-64'}`}>
         <div className="p-3 border-b border-gray-100">
           <p className="font-heading font-600 text-night text-sm">Messages</p>
         </div>
@@ -78,12 +78,20 @@ export default function MessagesPage() {
 
       {/* Chat area */}
       {selectedUserId && selectedUser ? (
-        <div className="flex flex-col flex-1 min-w-0">
+        <div className="flex flex-col flex-1 min-w-0 w-full">
           {/* Header */}
-          <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
+          <div className="flex items-center gap-3 px-3 py-3 border-b border-gray-100">
+            <button
+              type="button"
+              className="sm:hidden p-1.5 rounded-lg text-gray-400 hover:bg-gray-100"
+              onClick={() => setSelectedUserId(null)}
+              aria-label="Back"
+            >
+              <ArrowLeft size={16} />
+            </button>
             <Avatar name={selectedUser.name} url={selectedUser.avatar_url} size="sm" />
-            <div>
-              <p className="font-700 text-night text-sm">{selectedUser.name}</p>
+            <div className="min-w-0">
+              <p className="font-700 text-night text-sm truncate">{selectedUser.name}</p>
               <RoleBadge role={selectedUser.role} />
             </div>
           </div>

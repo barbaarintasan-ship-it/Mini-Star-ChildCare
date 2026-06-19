@@ -62,21 +62,23 @@ const AREA_COLORS: Record<string, string> = {
 
 function TabBar({ tabs, active, onChange }: { tabs: { id: string; label: string }[]; active: string; onChange: (id: string) => void }) {
   return (
-    <div className="flex gap-1 flex-wrap border-b border-gray-100 mb-6">
-      {tabs.map(t => (
-        <button
-          key={t.id}
-          type="button"
-          onClick={() => onChange(t.id)}
-          className={`px-4 py-2.5 text-sm font-700 rounded-t-xl border-b-2 transition-colors ${
-            active === t.id
-              ? 'border-night text-night bg-white'
-              : 'border-transparent text-gray-500 hover:text-night'
-          }`}
-        >
-          {t.label}
-        </button>
-      ))}
+    <div className="overflow-x-auto -mx-1 px-1">
+      <div className="flex gap-1 border-b border-gray-100 mb-6 min-w-max">
+        {tabs.map(t => (
+          <button
+            key={t.id}
+            type="button"
+            onClick={() => onChange(t.id)}
+            className={`px-3 py-2.5 text-sm font-700 rounded-t-xl border-b-2 transition-colors whitespace-nowrap ${
+              active === t.id
+                ? 'border-night text-night bg-white'
+                : 'border-transparent text-gray-500 hover:text-night'
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
     </div>
   )
 }
@@ -96,30 +98,34 @@ function TodayPlan({ classroomId, ageKey }: { classroomId: string; ageKey: AgeKe
   return (
     <div className="space-y-6">
       {/* Date bar */}
-      <div className="card flex flex-wrap items-center gap-3">
-        <span className="font-700 text-night">{plan ? fmtDate(plan.date) : fmtDate(date)}</span>
-        <input
-          type="date"
-          aria-label="Select date"
-          title="Select date"
-          value={date}
-          onChange={e => setDate(e.target.value)}
-          className="border border-gray-200 rounded-xl px-3 py-1.5 text-sm text-night focus:outline-none focus:ring-2 focus:ring-teal"
-        />
+      <div className="card space-y-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <input
+            type="date"
+            aria-label="Select date"
+            title="Select date"
+            value={date}
+            onChange={e => setDate(e.target.value)}
+            className="border border-gray-200 rounded-xl px-3 py-1.5 text-sm text-night focus:outline-none focus:ring-2 focus:ring-teal"
+          />
+          {plan && (
+            <span className="bg-gold/10 text-gold text-xs font-700 px-2.5 py-1 rounded-full">
+              🌿 {plan.theme}
+            </span>
+          )}
+          <button
+            type="button"
+            className="ml-auto btn btn-sm btn-outline flex items-center gap-1.5 whitespace-nowrap"
+            disabled={generate.isPending}
+            onClick={() => generate.mutate({ classroom_id: classroomId, date })}
+          >
+            <RefreshCw size={13} className={generate.isPending ? 'animate-spin' : ''} />
+            {plan ? 'Regenerate' : 'Generate Plan'}
+          </button>
+        </div>
         {plan && (
-          <span className="bg-gold/10 text-gold text-xs font-700 px-2.5 py-1 rounded-full">
-            🌿 Theme: {plan.theme}
-          </span>
+          <p className="text-xs text-gray-400 font-700">{fmtDate(plan.date)}</p>
         )}
-        <button
-          type="button"
-          className="ml-auto btn btn-sm btn-outline flex items-center gap-1.5"
-          disabled={generate.isPending}
-          onClick={() => generate.mutate({ classroom_id: classroomId, date })}
-        >
-          <RefreshCw size={13} className={generate.isPending ? 'animate-spin' : ''} />
-          {plan ? 'Regenerate Plan' : 'Generate Plan'}
-        </button>
       </div>
 
       {!plan ? (
@@ -133,15 +139,17 @@ function TodayPlan({ classroomId, ageKey }: { classroomId: string; ageKey: AgeKe
               {schedule.map((slot, i) => {
                 const cat = CURR_CATS.find(c => c.id === slot.cat)
                 return (
-                  <div key={i} className={`flex items-center gap-3 px-4 py-2.5 rounded-xl border text-sm ${slot.type === 'care' ? 'bg-gray-50 border-gray-100' : slot.type === 'learning' ? 'bg-white border-gray-100' : 'bg-white border-gray-50'}`}>
-                    <span className="text-xs text-gray-400 font-700 min-w-[90px] shrink-0">{slot.time}</span>
-                    {cat && (
-                      <span className="text-xs font-700 px-2 py-0.5 rounded-full text-white shrink-0" style={{ background: cat.color }}>
-                        {cat.icon} {cat.label}
-                      </span>
-                    )}
-                    <span className="font-600 text-night flex-1">{slot.name}</span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-700 ${slot.type === 'learning' ? 'bg-teal/10 text-teal' : slot.type === 'care' ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-500'}`}>
+                  <div key={i} className={`flex items-start gap-2 px-3 py-2.5 rounded-xl border text-sm ${slot.type === 'care' ? 'bg-gray-50 border-gray-100' : slot.type === 'learning' ? 'bg-white border-gray-100' : 'bg-white border-gray-50'}`}>
+                    <span className="text-xs text-gray-400 font-700 w-16 shrink-0 mt-0.5">{slot.time}</span>
+                    <div className="flex-1 min-w-0">
+                      <span className="font-600 text-night text-sm">{slot.name}</span>
+                      {cat && (
+                        <span className="ml-2 text-[10px] font-700 px-1.5 py-0.5 rounded-full text-white inline-block" style={{ background: cat.color }}>
+                          {cat.icon} {cat.label}
+                        </span>
+                      )}
+                    </div>
+                    <span className={`text-[10px] px-2 py-0.5 rounded-full font-700 shrink-0 ${slot.type === 'learning' ? 'bg-teal/10 text-teal' : slot.type === 'care' ? 'bg-blue-50 text-blue-500' : 'bg-gray-100 text-gray-500'}`}>
                       {slot.type}
                     </span>
                   </div>
@@ -176,18 +184,20 @@ function TodayPlan({ classroomId, ageKey }: { classroomId: string; ageKey: AgeKe
                       <p className="text-xs text-gray-500 mb-3">{activity.obj}</p>
 
                       {/* Status buttons */}
-                      <div className="flex items-center gap-2 flex-wrap mb-3">
-                        <span className="text-xs text-gray-400 font-700 shrink-0">Mark as:</span>
-                        {(Object.keys(STATUS_CONFIG) as (keyof typeof STATUS_CONFIG)[]).map(s => (
-                          <button
-                            key={s}
-                            type="button"
-                            onClick={() => updateAct.mutate({ planId: plan.id, index: idx, status: s })}
-                            className={`text-xs px-3 py-1 rounded-full border font-700 transition-colors ${entry.status === s ? 'bg-night text-white border-night' : 'bg-white text-gray-500 border-gray-200 hover:border-night hover:text-night'}`}
-                          >
-                            {STATUS_CONFIG[s].label}
-                          </button>
-                        ))}
+                      <div className="mb-3">
+                        <p className="text-[10px] text-gray-400 font-700 uppercase mb-1.5">Mark as:</p>
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5">
+                          {(Object.keys(STATUS_CONFIG) as (keyof typeof STATUS_CONFIG)[]).map(s => (
+                            <button
+                              key={s}
+                              type="button"
+                              onClick={() => updateAct.mutate({ planId: plan.id, index: idx, status: s })}
+                              className={`text-xs px-2 py-1.5 rounded-xl border font-700 transition-colors text-center ${entry.status === s ? 'bg-night text-white border-night' : 'bg-white text-gray-500 border-gray-200 hover:border-night hover:text-night'}`}
+                            >
+                              {STATUS_CONFIG[s].icon} {STATUS_CONFIG[s].label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
 
                       {/* Details expandable */}

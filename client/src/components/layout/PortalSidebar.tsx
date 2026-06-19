@@ -79,36 +79,33 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
   }
 
   const Sidebar = (
-    <aside className="flex flex-col h-full bg-white border-r border-gray-100 w-60">
-      {/* Logo */}
-      <div className="flex items-center gap-2 px-4 py-4 border-b border-gray-100">
-        <img src="/images/logo.png" alt="Mini Star" className="h-8 w-8 object-contain" />
-        <div>
-          <p className="font-heading font-600 text-night text-sm leading-tight">Mini Star</p>
-          <p className="text-[10px] text-gray-400 font-700">Child Care</p>
+    <aside className="flex flex-col h-full bg-white border-r border-gray-100 w-64">
+      {/* Logo + user info combined */}
+      <div className="flex items-center gap-3 px-4 py-3 border-b border-gray-100">
+        <img src="/images/logo.png" alt="Mini Star" className="h-8 w-8 object-contain shrink-0" />
+        <div className="flex-1 min-w-0">
+          <p className="font-heading font-700 text-night text-sm leading-tight truncate">{user?.name ?? 'Mini Star'}</p>
+          <p className="text-[10px] text-gray-400 capitalize">{user?.role} · Mini Star</p>
         </div>
+        {/* Close button on mobile */}
+        <button
+          type="button"
+          className="lg:hidden p-1 rounded-lg text-gray-400 hover:bg-gray-100"
+          onClick={() => setSidebarOpen(false)}
+          aria-label="Close menu"
+        >
+          <X size={16} />
+        </button>
       </div>
 
-      {/* User info */}
-      {user && (
-        <div className="px-4 py-3 border-b border-gray-100">
-          <div className="flex items-center gap-2">
-            <Avatar name={user.name} url={user.avatar_url} size="sm" />
-            <div className="min-w-0">
-              <p className="text-xs font-700 text-night truncate">{user.name}</p>
-              <p className="text-[10px] text-gray-400 capitalize">{user.role}</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Nav items */}
-      <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
+      <nav className="flex-1 overflow-y-auto p-2 space-y-0.5">
         {navItems.map((item) => {
           const active = location.pathname === item.path
           return (
             <button
               key={item.path}
+              type="button"
               className={cn('nav-item w-full', active && 'nav-item-active')}
               onClick={() => { navigate(item.path); setSidebarOpen(false) }}
             >
@@ -120,8 +117,9 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
       </nav>
 
       {/* Logout */}
-      <div className="p-3 border-t border-gray-100">
+      <div className="p-2 border-t border-gray-100">
         <button
+          type="button"
           className="nav-item w-full text-red-500 hover:bg-red-50 hover:text-red-600"
           onClick={handleLogout}
         >
@@ -137,38 +135,47 @@ export function PortalLayout({ children }: { children: React.ReactNode }) {
       {/* Desktop sidebar */}
       <div className="hidden lg:flex flex-shrink-0">{Sidebar}</div>
 
-      {/* Mobile sidebar */}
+      {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div className="lg:hidden fixed inset-0 z-50 flex">
-          <div className="absolute inset-0 bg-black/40" onClick={() => setSidebarOpen(false)} />
-          <div className="relative flex flex-col w-60">{Sidebar}</div>
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSidebarOpen(false)} />
+          <div className="relative flex flex-col w-64 z-10">{Sidebar}</div>
         </div>
       )}
 
       {/* Main content */}
       <div className="flex flex-col flex-1 min-w-0 overflow-hidden">
         {/* Top bar */}
-        <header className="bg-white border-b border-gray-100 px-4 h-14 flex items-center justify-between shrink-0">
+        <header className="bg-white border-b border-gray-100 px-3 h-12 lg:h-14 flex items-center justify-between shrink-0 gap-2">
           <button
-            className="lg:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100"
+            type="button"
+            className="lg:hidden p-1.5 rounded-lg text-gray-500 hover:bg-gray-100 shrink-0"
             onClick={() => setSidebarOpen(true)}
+            aria-label="Open menu"
           >
             <Menu size={20} />
           </button>
 
-          <div className="flex-1 lg:hidden">
-            <p className="text-sm font-heading font-600 text-night">
+          <div className="flex-1 lg:hidden min-w-0">
+            <p className="text-sm font-heading font-700 text-night truncate">
               {navItems.find(n => n.path === location.pathname)?.label ?? 'Portal'}
             </p>
           </div>
 
-          <div className="flex items-center gap-2 ml-auto">
+          {/* Desktop: show app name */}
+          <div className="hidden lg:block flex-1">
+            <p className="text-sm font-heading font-600 text-gray-400">
+              {navItems.find(n => n.path === location.pathname)?.label ?? ''}
+            </p>
+          </div>
+
+          <div className="flex items-center gap-2">
             <NotificationBell />
           </div>
         </header>
 
         {/* Page content */}
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6">
           {children}
         </main>
       </div>

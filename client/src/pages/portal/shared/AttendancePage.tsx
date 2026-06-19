@@ -149,11 +149,12 @@ export default function AttendancePage() {
                       )}
                     </div>
                     {/* Quick status buttons */}
-                    <div className="flex gap-1 flex-wrap justify-end">
+                    <div className="flex flex-wrap gap-1 justify-end max-w-[160px] sm:max-w-none">
                       {(['present','absent','late','early_pickup','excused'] as AttendanceStatus[]).map((s) => (
                         <button
                           key={s}
-                          className={`px-2 py-1 rounded-lg text-[10px] font-700 transition-colors border
+                          type="button"
+                          className={`px-2 py-1 rounded-lg text-[10px] font-700 transition-colors border whitespace-nowrap
                             ${record?.status === s
                               ? 'bg-night text-white border-night'
                               : 'bg-white text-gray-500 border-gray-200 hover:border-night hover:text-night'

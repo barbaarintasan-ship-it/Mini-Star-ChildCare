@@ -11,7 +11,7 @@ import { AttendanceBadge } from '@/components/ui/Badge'
 import { Avatar } from '@/components/ui/Avatar'
 import { PageLoader } from '@/components/ui/LoadingSkeleton'
 import { fmtDate, MOOD_MAP, today } from '@/lib/utils'
-import { CURR_CATS } from '@/data/curriculum'
+import { CURR_CATS, findActivity } from '@/data/curriculum'
 import { useNavigate } from 'react-router-dom'
 import { Lightbulb, ChevronRight, CheckCircle2, AlertCircle, Pill } from 'lucide-react'
 
@@ -188,14 +188,17 @@ export default function TeacherDashboard() {
             <div className="space-y-2">
               {lessonPlan.activities.slice(0, 5).map((act, i) => {
                 const cat = CURR_CATS.find(c => c.id === act.catId)
+                const activity = findActivity(act.activityId)
                 return (
                   <div key={i} className="flex items-center gap-2.5">
                     <span className="text-base shrink-0">{cat?.icon ?? '📌'}</span>
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-700 text-night truncate">{act.activityId}</p>
-                      <p className="text-[10px] text-gray-400">{cat?.label}</p>
+                      <p className="text-xs font-700 text-night truncate">
+                        {activity?.title ?? act.activityId}
+                      </p>
+                      <p className="text-[10px] text-gray-400">{cat?.label} · {activity?.dur ?? '?'} min</p>
                     </div>
-                    <span className={`text-[10px] font-700 px-2 py-0.5 rounded-full ${
+                    <span className={`text-[10px] font-700 px-2 py-0.5 rounded-full shrink-0 ${
                       act.status === 'completed' ? 'bg-teal-soft text-teal' :
                       act.status === 'partial'   ? 'bg-amber-50 text-amber-600' :
                       act.status === 'skipped'   ? 'bg-gray-100 text-gray-400' :
