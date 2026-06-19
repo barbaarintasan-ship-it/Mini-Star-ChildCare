@@ -32,6 +32,7 @@ const PortfolioPage     = lazy(() => import('@/pages/portal/shared/PortfolioPage
 const CalendarPage      = lazy(() => import('@/pages/portal/shared/CalendarPage'))
 const NotificationsPage = lazy(() => import('@/pages/portal/shared/NotificationsPage'))
 const CurriculumPage    = lazy(() => import('@/pages/portal/shared/CurriculumPage'))
+const AnalyticsPage     = lazy(() => import('@/pages/portal/shared/AnalyticsPage'))
 
 const AdminDashboard = lazy(() => import('@/pages/portal/admin/AdminDashboard'))
 const Children       = lazy(() => import('@/pages/portal/admin/Children'))
@@ -39,8 +40,9 @@ const Enrollments    = lazy(() => import('@/pages/portal/admin/Enrollments'))
 const Staff          = lazy(() => import('@/pages/portal/admin/Staff'))
 const Parents        = lazy(() => import('@/pages/portal/admin/Parents'))
 
-const TeacherDashboard = lazy(() => import('@/pages/portal/teacher/TeacherDashboard'))
-const ParentDashboard  = lazy(() => import('@/pages/portal/parent/ParentDashboard'))
+const TeacherDashboard  = lazy(() => import('@/pages/portal/teacher/TeacherDashboard'))
+const ParentDashboard   = lazy(() => import('@/pages/portal/parent/ParentDashboard'))
+const MyChildrenPage    = lazy(() => import('@/pages/portal/parent/MyChildrenPage'))
 
 // ── Query Client ───────────────────────────────────────────────
 const queryClient = new QueryClient({
@@ -174,6 +176,7 @@ export default function App() {
             <Route path="/portal/calendar"      element={<CalendarPage />} />
             <Route path="/portal/notifications" element={<NotificationsPage />} />
             <Route path="/portal/curriculum"    element={<CurriculumPage />} />
+            <Route path="/portal/analytics"     element={<AnalyticsPage />} />
           </Route>
 
           {/* Admin only */}
@@ -182,6 +185,11 @@ export default function App() {
             <Route path="/portal/enrollments" element={<Enrollments />} />
             <Route path="/portal/staff"       element={<Staff />} />
             <Route path="/portal/parents"     element={<Parents />} />
+          </Route>
+
+          {/* Parent only */}
+          <Route element={<RequireAuth roles={['parent']} />}>
+            <Route path="/portal/my-children" element={<MyChildrenPage />} />
           </Route>
 
           {/* Teacher only */}

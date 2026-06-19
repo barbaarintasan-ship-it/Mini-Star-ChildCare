@@ -4,7 +4,7 @@ import {
   LayoutDashboard, Users, Baby, ClipboardList, MessageSquare,
   Calendar, BookOpen, AlertTriangle, Pill, Image, GraduationCap,
   Bell, Menu, X, LogOut, ChevronDown, ChevronRight, BookMarked,
-  UserCheck,
+  UserCheck, BarChart2,
 } from 'lucide-react'
 import { useAuthStore } from '@/store/auth'
 import { Avatar } from '@/components/ui/Avatar'
@@ -35,6 +35,7 @@ function useNavItems(role: string): NavItem[] {
     { label: 'Portfolio',   path: `${base}/portfolio`,   icon: <Image size={18} /> },
     { label: 'Curriculum',  path: `${base}/curriculum`,  icon: <BookOpen size={18} /> },
     { label: 'Calendar',    path: `${base}/calendar`,    icon: <Calendar size={18} /> },
+    { label: 'Analytics',    path: `${base}/analytics`,   icon: <BarChart2 size={18} /> },
     { label: 'Notifications',path:`${base}/notifications`,icon:<Bell size={18} /> },
   ]
 
@@ -48,13 +49,14 @@ function useNavItems(role: string): NavItem[] {
     { label: 'Medications', path: `${base}/medications`, icon: <Pill size={18} /> },
     { label: 'Portfolio',   path: `${base}/portfolio`,   icon: <Image size={18} /> },
     { label: 'Curriculum',  path: `${base}/curriculum`,  icon: <BookOpen size={18} /> },
-    { label: 'Calendar',    path: `${base}/calendar`,    icon: <Calendar size={18} /> },
+    { label: 'Analytics',  path: `${base}/analytics`,   icon: <BarChart2 size={18} /> },
+    { label: 'Calendar',   path: `${base}/calendar`,    icon: <Calendar size={18} /> },
   ]
 
   // parent
   return [
     { label: 'Dashboard',  path: `${base}/dashboard`,  icon: <LayoutDashboard size={18} /> },
-    { label: 'My Children',path: `${base}/children`,   icon: <Baby size={18} /> },
+    { label: 'My Children',path: `${base}/my-children`, icon: <Baby size={18} /> },
     { label: 'Attendance', path: `${base}/attendance`, icon: <UserCheck size={18} /> },
     { label: 'Reports',    path: `${base}/reports`,    icon: <BookMarked size={18} /> },
     { label: 'Messages',   path: `${base}/messages`,   icon: <MessageSquare size={18} /> },
