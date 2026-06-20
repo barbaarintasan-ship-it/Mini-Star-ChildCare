@@ -996,7 +996,7 @@ app.put('/api/week-themes', auth, role('admin','teacher'), async (req, res) => {
 })
 
 // ── Static files ─────────────────────────────────────────────
-const STATIC_DIR = path.join(__dirname, 'public_react')
+const STATIC_DIR = path.join(__dirname, 'public')
 app.use(express.static(STATIC_DIR, { maxAge: '1h', index: 'index.html' }))
 app.get('*', (_req, res) => res.sendFile(path.join(STATIC_DIR, 'index.html')))
 
