@@ -512,8 +512,10 @@ function buildParentReport(actId, childName) {
 function rubricBadge(level, desc) {
   var colors = { beginning:'#FFB3B3', developing:'#FFE08A', proficient:'#A8D8A8', advanced:'#4ECDC4' };
   var icons  = { beginning:'&#9634;', developing:'&#8599;', proficient:'&#9989;', advanced:'&#11088;' };
+  var labelsES = { beginning:'Inicial', developing:'En Desarrollo', proficient:'Competente', advanced:'Avanzado' };
+  var displayLabel = (typeof LANG !== 'undefined' && LANG === 'es' && labelsES[level]) ? labelsES[level] : (level.charAt(0).toUpperCase() + level.slice(1));
   return '<div class="rubric-row"><div class="rubric-level" style="background:' + colors[level] + '">' +
-    icons[level] + ' <b>' + level.charAt(0).toUpperCase() + level.slice(1) + '</b></div>' +
+    icons[level] + ' <b>' + displayLabel + '</b></div>' +
     '<div class="rubric-desc">' + esc(desc) + '</div></div>';
 }
 
@@ -571,36 +573,36 @@ function teacherCoachView() {
   var cats = (typeof CURR_CATS !== 'undefined') ? CURR_CATS : [];
 
   var h = '<div class="portal-head">' +
-    '<div><h2 style="margin-bottom:2px">&#127795; Teaching Coach</h2>' +
-    '<span class="role-chip role-teacher">&#127891; ' + esc(info.label) + ' Program</span></div>' +
-    '<button class="mini-btn ghost" onclick="CURR_SUB=\'today\';renderPortal()">&#8592; Back to Curriculum</button>' +
+    '<div><h2 style="margin-bottom:2px">&#127795; ' + t('Teaching Coach','Entrenador de Enseñanza') + '</h2>' +
+    '<span class="role-chip role-teacher">&#127891; ' + esc(info.label) + ' ' + t('Program','Programa') + '</span></div>' +
+    '<button class="mini-btn ghost" onclick="CURR_SUB=\'today\';renderPortal()">&#8592; ' + t('Back to Curriculum','Volver al Currículo') + '</button>' +
     '</div>';
 
   /* Age Context Card */
   h += '<div class="coach-context-card">' +
     '<div class="cc-top"><span class="cc-icon">' + info.icon + '</span>' +
-    '<div><b class="cc-title">Coaching Context for ' + esc(info.label) + '</b>' +
-    '<span class="cc-sub">Key insights for working with this age group</span></div></div>' +
+    '<div><b class="cc-title">' + t('Coaching Context for','Contexto de Entrenamiento para') + ' ' + esc(info.label) + '</b>' +
+    '<span class="cc-sub">' + t('Key insights for working with this age group','Puntos clave para trabajar con este grupo de edad') + '</span></div></div>' +
     '<div class="cc-grid">' +
-    '<div class="cc-item"><b>&#128172; Voice &amp; Tone</b><p>' + esc(ctx.voice) + '</p></div>' +
-    '<div class="cc-item"><b>&#128336; Pacing</b><p>' + esc(ctx.pacing) + '</p></div>' +
-    '<div class="cc-item"><b>&#128161; Core Principle</b><p>' + esc(ctx.key) + '</p></div>' +
-    '<div class="cc-item"><b>&#128065; What to Watch</b><p>' + esc(ctx.watch) + '</p></div>' +
-    '<div class="cc-item cc-item-wide"><b>&#9888; Common Mistake</b><p>' + esc(ctx.mistake) + '</p></div>' +
+    '<div class="cc-item"><b>&#128172; ' + t('Voice &amp; Tone','Voz y Tono') + '</b><p>' + esc(ctx.voice) + '</p></div>' +
+    '<div class="cc-item"><b>&#128336; ' + t('Pacing','Ritmo') + '</b><p>' + esc(ctx.pacing) + '</p></div>' +
+    '<div class="cc-item"><b>&#128161; ' + t('Core Principle','Principio Central') + '</b><p>' + esc(ctx.key) + '</p></div>' +
+    '<div class="cc-item"><b>&#128065; ' + t('What to Watch','Qué Observar') + '</b><p>' + esc(ctx.watch) + '</p></div>' +
+    '<div class="cc-item cc-item-wide"><b>&#9888; ' + t('Common Mistake','Error Común') + '</b><p>' + esc(ctx.mistake) + '</p></div>' +
     '</div></div>';
 
   /* Coverage bar */
   var pct = totalActs > 0 ? Math.round(coachedActs / totalActs * 100) : 0;
   h += '<div class="card" style="margin-bottom:18px;padding:18px 20px">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-    '<b style="color:var(--night)">Coaching Coverage — ' + esc(info.label) + '</b>' +
-    '<span style="font-size:.8rem;color:var(--muted)">' + coachedActs + ' / ' + totalActs + ' activities coached</span></div>' +
+    '<b style="color:var(--night)">' + t('Coaching Coverage —','Cobertura de Entrenamiento —') + ' ' + esc(info.label) + '</b>' +
+    '<span style="font-size:.8rem;color:var(--muted)">' + coachedActs + ' / ' + totalActs + ' ' + t('activities coached','actividades entrenadas') + '</span></div>' +
     '<div style="background:var(--cream);border-radius:999px;height:10px;overflow:hidden">' +
     '<div style="width:' + pct + '%;height:100%;background:var(--teal);border-radius:999px;transition:width .5s"></div></div></div>';
 
   /* Domain Playbooks */
-  h += '<div style="margin-bottom:6px"><b style="color:var(--night);font-size:1rem">&#128218; Domain Coaching Playbooks</b>' +
-    '<p class="soft" style="font-size:.82rem;margin:4px 0 10px">General strategies for every domain — read before teaching any activity in that area:</p></div>';
+  h += '<div style="margin-bottom:6px"><b style="color:var(--night);font-size:1rem">&#128218; ' + t('Domain Coaching Playbooks','Manuales de Enseñanza por Dominio') + '</b>' +
+    '<p class="soft" style="font-size:.82rem;margin:4px 0 10px">' + t('General strategies for every domain — read before teaching any activity in that area:','Estrategias generales para cada dominio — léelas antes de enseñar cualquier actividad en esa área:') + '</p></div>';
   h += '<div class="coach-domain-grid">';
   cats.forEach(function(cat) {
     var pb = DOMAIN_PLAYBOOKS[cat.id];
@@ -609,14 +611,14 @@ function teacherCoachView() {
       '<span class="cdcard-ic" style="background:' + cat.color + '20;color:' + cat.color + '">' + cat.icon + '</span>' +
       '<b>' + esc(pb.label) + '</b>' +
       '<span>' + esc(pb.teacherMindset.substring(0, 60)) + '&hellip;</span>' +
-      '<span class="cdcard-link">Read playbook &#8594;</span>' +
+      '<span class="cdcard-link">' + t('Read playbook &#8594;','Leer manual &#8594;') + '</span>' +
       '</div>';
   });
   h += '</div>';
 
   /* Activities by Domain */
-  h += '<div style="margin-top:24px;margin-bottom:8px"><b style="color:var(--night);font-size:1rem">&#127380; Activity Coach — ' + esc(info.label) + '</b>' +
-    '<p class="soft" style="font-size:.82rem;margin:4px 0 10px">Tap any activity to open the full coaching guide, scripts, questions, and assessment tools:</p></div>';
+  h += '<div style="margin-top:24px;margin-bottom:8px"><b style="color:var(--night);font-size:1rem">&#127380; ' + t('Activity Coach —','Entrenador de Actividades —') + ' ' + esc(info.label) + '</b>' +
+    '<p class="soft" style="font-size:.82rem;margin:4px 0 10px">' + t('Tap any activity to open the full coaching guide, scripts, questions, and assessment tools:','Toca cualquier actividad para abrir la guía completa de entrenamiento, guiones, preguntas y herramientas de evaluación:') + '</p></div>';
 
   cats.forEach(function(cat) {
     var acts = getActivitiesForContext(ageKey, cat.id);
@@ -624,7 +626,7 @@ function teacherCoachView() {
     h += '<div class="coach-domain-section">' +
       '<div class="cds-header" style="background:' + cat.color + '18;border-left:4px solid ' + cat.color + '">' +
       '<span>' + cat.icon + '</span><b style="color:var(--night)">' + esc(cat.label) + '</b>' +
-      '<span class="cds-count">' + acts.length + ' activities</span></div>';
+      '<span class="cds-count">' + acts.length + ' ' + t('activities','actividades') + '</span></div>';
     h += '<div class="cds-list">';
     acts.forEach(function(act) {
       var coached = hasCoaching(act.id);
@@ -634,8 +636,8 @@ function teacherCoachView() {
         '<span class="cds-dur">&#128336; ' + act.dur + ' min</span>' +
         '</div>' +
         '<span class="cds-obj soft">' + esc(act.obj) + '</span>' +
-        (coached ? '<span class="coach-badge">&#127795; Full Coach Guide</span>' :
-                   '<span class="coach-badge pending">&#128196; Guide Loading</span>') +
+        (coached ? '<span class="coach-badge">&#127795; ' + t('Full Coach Guide','Guía Completa') + '</span>' :
+                   '<span class="coach-badge pending">&#128196; ' + t('Guide Loading','Guía en Progreso') + '</span>') +
         '</div>';
     });
     h += '</div></div>';
@@ -650,26 +652,26 @@ function showDomainPlaybook(domainId) {
   if (!pb) return;
   var h = '<div class="portal-head">' +
     '<div><h2 style="margin-bottom:2px">' + pb.icon + ' ' + esc(pb.label) + '</h2>' +
-    '<span class="soft" style="font-size:.84rem">Domain Coaching Playbook</span></div>' +
-    '<button class="mini-btn ghost" onclick="CURR_SUB=\'coach\';renderPortal()">&#8592; Back to Coach Hub</button>' +
+    '<span class="soft" style="font-size:.84rem">' + t('Domain Coaching Playbook','Manual de Enseñanza del Dominio') + '</span></div>' +
+    '<button class="mini-btn ghost" onclick="CURR_SUB=\'coach\';renderPortal()">&#8592; ' + t('Back to Coach Hub','Volver al Centro de Entrenamiento') + '</button>' +
     '</div>';
 
   h += '<div class="playbook-card">' +
     '<div class="pb-mindset"><span class="pb-mindset-ic">&#129504;</span>' +
-    '<div><b>Teaching Mindset</b><p>' + esc(pb.teacherMindset) + '</p></div></div>' +
+    '<div><b>' + t('Teaching Mindset','Mentalidad de Enseñanza') + '</b><p>' + esc(pb.teacherMindset) + '</p></div></div>' +
 
-    '<div class="pb-section"><b class="pb-sec-title" style="color:var(--teal)">&#9989; Golden Rules — Always Do These</b>' +
+    '<div class="pb-section"><b class="pb-sec-title" style="color:var(--teal)">&#9989; ' + t('Golden Rules — Always Do These','Reglas de Oro — Siempre Haz Estas') + '</b>' +
     '<ul class="pb-list">' + pb.goldRules.map(function(r){ return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>' +
 
-    '<div class="pb-section"><b class="pb-sec-title" style="color:var(--coral)">&#9888; Red Flags — Avoid These</b>' +
+    '<div class="pb-section"><b class="pb-sec-title" style="color:var(--coral)">&#9888; ' + t('Red Flags — Avoid These','Señales de Alerta — Evita Estas') + '</b>' +
     '<ul class="pb-list pb-red">' + pb.redFlags.map(function(r){ return '<li>' + esc(r) + '</li>'; }).join('') + '</ul></div>' +
 
-    '<div class="pb-dev-note"><b>&#128218; Developmental Note</b><p>' + esc(pb.devNote) + '</p></div>' +
+    '<div class="pb-dev-note"><b>&#128218; ' + t('Developmental Note','Nota de Desarrollo') + '</b><p>' + esc(pb.devNote) + '</p></div>' +
     '</div>';
 
   /* Activities in this domain */
   var ages = ['infants','toddlers','preschool','school_age'];
-  h += '<div style="margin-top:18px"><b style="color:var(--night)">Activities in this Domain:</b></div>';
+  h += '<div style="margin-top:18px"><b style="color:var(--night)">' + t('Activities in this Domain:','Actividades en este Dominio:') + '</b></div>';
   ages.forEach(function(ageKey) {
     var acts = (typeof ACTIVITY_LIBRARY !== 'undefined' && ACTIVITY_LIBRARY[ageKey]) ? (ACTIVITY_LIBRARY[ageKey][domainId] || []) : [];
     if (!acts.length) return;
@@ -681,7 +683,7 @@ function showDomainPlaybook(domainId) {
         '<div class="cds-act-main"><b style="color:var(--night)">' + esc(act.title) + '</b>' +
         '<span class="cds-dur">&#128336; ' + act.dur + ' min</span></div>' +
         '<span class="cds-obj soft">' + esc(act.obj) + '</span>' +
-        (hasCoaching(act.id) ? '<span class="coach-badge">&#127795; Full Guide</span>' : '') +
+        (hasCoaching(act.id) ? '<span class="coach-badge">&#127795; ' + t('Full Guide','Guía Completa') + '</span>' : '') +
         '</div>';
     });
     h += '</div>';
@@ -705,20 +707,20 @@ function openActivityCoach(actId) {
   var h = '<div class="portal-head">' +
     '<div><h2 style="margin-bottom:2px">' + esc(act.title) + '</h2>' +
     '<span class="role-chip role-teacher">&#128336; ' + act.dur + ' min &nbsp;&bull;&nbsp; ' + esc(found.domain) + '</span></div>' +
-    '<button class="mini-btn ghost" onclick="CURR_SUB=\'coach\';renderPortal()">&#8592; All Activities</button>' +
+    '<button class="mini-btn ghost" onclick="CURR_SUB=\'coach\';renderPortal()">&#8592; ' + t('All Activities','Todas las Actividades') + '</button>' +
     '</div>';
 
   /* Objective strip */
-  h += '<div class="act-obj-strip"><b>Objective:</b> ' + esc(act.obj) + '</div>';
+  h += '<div class="act-obj-strip"><b>' + t('Objective:','Objetivo:') + '</b> ' + esc(act.obj) + '</div>';
 
   /* Tab bar */
   var tabs = [
-    { id:'prepare', icon:'&#127919;', label:'Prepare' },
-    { id:'teach',   icon:'&#127795;', label:'Teach'   },
-    { id:'assess',  icon:'&#128202;', label:'Assess'  },
-    { id:'report',  icon:'&#128140;', label:'Report'  },
-    { id:'vars',    icon:'&#128300;', label:'Variations'},
-    { id:'res',     icon:'&#128218;', label:'Resources'}
+    { id:'prepare', icon:'&#127919;', label:t('Prepare','Preparar') },
+    { id:'teach',   icon:'&#127795;', label:t('Teach','Enseñar')   },
+    { id:'assess',  icon:'&#128202;', label:t('Assess','Evaluar')  },
+    { id:'report',  icon:'&#128140;', label:t('Report','Reporte')  },
+    { id:'vars',    icon:'&#128300;', label:t('Variations','Variaciones')},
+    { id:'res',     icon:'&#128218;', label:t('Resources','Recursos')}
   ];
   h += '<div class="subtabs" style="margin-bottom:14px">';
   tabs.forEach(function(tab){
@@ -731,10 +733,10 @@ function openActivityCoach(actId) {
   if (!c) {
     h += '<div class="card" style="text-align:center;padding:30px">' +
       '<div style="font-size:2rem;margin-bottom:10px">&#128197;</div>' +
-      '<b style="color:var(--night)">Coaching guide for this activity is being prepared.</b>' +
-      '<p class="soft" style="margin-top:6px">Check back soon — all ' + (typeof ACTIVITY_LIBRARY !== 'undefined' ? '' : '') + 'activities are being fully coached.</p>' +
+      '<b style="color:var(--night)">' + t('Coaching guide for this activity is being prepared.','La guía de entrenamiento para esta actividad está en preparación.') + '</b>' +
+      '<p class="soft" style="margin-top:6px">' + t('Check back soon — all activities are being fully coached.','Vuelve pronto — todas las actividades están siendo completamente entrenadas.') + '</p>' +
       (pb ? '<div class="pb-mindset" style="margin-top:14px;text-align:left"><span class="pb-mindset-ic">&#129504;</span>' +
-        '<div><b>' + esc(pb.label) + ' General Guidance</b><p>' + esc(pb.teacherMindset) + '</p></div></div>' : '') +
+        '<div><b>' + esc(pb.label) + ' ' + t('General Guidance','Orientación General') + '</b><p>' + esc(pb.teacherMindset) + '</p></div></div>' : '') +
       '</div>';
     var el2 = document.getElementById('portal-root');
     if (el2) el2.innerHTML = h;
@@ -744,31 +746,31 @@ function openActivityCoach(actId) {
   /* PREPARE TAB */
   if (COACH_DETAIL_TAB === 'prepare') {
     h += '<div class="coach-section">';
-    h += '<b class="coach-sec-title">&#127775; Materials Needed</b>';
+    h += '<b class="coach-sec-title">&#127775; ' + t('Materials Needed','Materiales Necesarios') + '</b>';
     h += '<div class="mat-grid">';
     if (c.materials && c.materials.required && c.materials.required.length) {
-      h += '<div class="mat-col"><b class="mat-label">Required</b><ul class="mat-list">' +
+      h += '<div class="mat-col"><b class="mat-label">' + t('Required','Requerido') + '</b><ul class="mat-list">' +
         c.materials.required.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>';
     } else if (act.mats && act.mats.length) {
-      h += '<div class="mat-col"><b class="mat-label">Required</b><ul class="mat-list">' +
+      h += '<div class="mat-col"><b class="mat-label">' + t('Required','Requerido') + '</b><ul class="mat-list">' +
         act.mats.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>';
     }
     if (c.materials && c.materials.optional && c.materials.optional.length) {
-      h += '<div class="mat-col"><b class="mat-label">Optional</b><ul class="mat-list mat-opt">' +
+      h += '<div class="mat-col"><b class="mat-label">' + t('Optional','Opcional') + '</b><ul class="mat-list mat-opt">' +
         c.materials.optional.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>';
     }
     if (c.materials && c.materials.printable && c.materials.printable.length) {
-      h += '<div class="mat-col"><b class="mat-label">&#128196; Printable</b><ul class="mat-list mat-print">' +
+      h += '<div class="mat-col"><b class="mat-label">&#128196; ' + t('Printable','Imprimible') + '</b><ul class="mat-list mat-print">' +
         c.materials.printable.map(function(m){ return '<li>' + esc(m) + '</li>'; }).join('') + '</ul></div>';
     }
     h += '</div>';
 
-    h += '<b class="coach-sec-title" style="margin-top:18px">&#127775; Setup &amp; Intro Script</b>';
-    h += coachScript('Say to open the activity', c.intro);
+    h += '<b class="coach-sec-title" style="margin-top:18px">&#127775; ' + t('Setup &amp; Intro Script','Guión de Preparación e Introducción') + '</b>';
+    h += coachScript(t('Say to open the activity','Di para abrir la actividad'), c.intro);
     h += coachTips(c.tips);
 
     if (pb) {
-      h += '<div class="pb-mini"><b>&#128161; ' + esc(pb.label) + ' Reminder</b>' +
+      h += '<div class="pb-mini"><b>&#128161; ' + esc(pb.label) + ' ' + t('Reminder','Recordatorio') + '</b>' +
         '<p>' + esc(pb.teacherMindset) + '</p></div>';
     }
     h += '</div>';
@@ -777,48 +779,48 @@ function openActivityCoach(actId) {
   /* TEACH TAB */
   if (COACH_DETAIL_TAB === 'teach') {
     h += '<div class="coach-section">';
-    h += '<b class="coach-sec-title">&#128172; In-Activity Scripts</b>';
+    h += '<b class="coach-sec-title">&#128172; ' + t('In-Activity Scripts','Guiones de la Actividad') + '</b>';
     if (c.prompts && c.prompts.length) {
       c.prompts.forEach(function(p, i) {
-        h += coachScript('Prompt ' + (i+1), p);
+        h += coachScript(t('Prompt','Indicación') + ' ' + (i+1), p);
       });
     }
-    if (c.close) h += coachScript('To conclude the activity', c.close);
+    if (c.close) h += coachScript(t('To conclude the activity','Para concluir la actividad'), c.close);
 
-    h += '<b class="coach-sec-title" style="margin-top:18px">&#10067; Question Bank</b>';
+    h += '<b class="coach-sec-title" style="margin-top:18px">&#10067; ' + t('Question Bank','Banco de Preguntas') + '</b>';
     h += '<div class="q-bank">';
     if (c.questions) {
-      h += renderQuestionChips(c.questions.beginner,     '&#128308; Beginner',     '#E86B6B');
-      h += renderQuestionChips(c.questions.intermediate, '&#128993; Intermediate',  '#C8960A');
-      h += renderQuestionChips(c.questions.advanced,     '&#128994; Advanced',      '#4A9E4A');
-      h += renderQuestionChips(c.questions.openEnded,    '&#128309; Open-Ended',   '#4A8BC4');
+      h += renderQuestionChips(c.questions.beginner,     '&#128308; ' + t('Beginner','Principiante'),     '#E86B6B');
+      h += renderQuestionChips(c.questions.intermediate, '&#128993; ' + t('Intermediate','Intermedio'),    '#C8960A');
+      h += renderQuestionChips(c.questions.advanced,     '&#128994; ' + t('Advanced','Avanzado'),          '#4A9E4A');
+      h += renderQuestionChips(c.questions.openEnded,    '&#128309; ' + t('Open-Ended','Preguntas Abiertas'), '#4A8BC4');
     }
     h += '</div>';
 
-    h += '<b class="coach-sec-title" style="margin-top:18px">&#129488; Expected Child Responses</b>';
+    h += '<b class="coach-sec-title" style="margin-top:18px">&#129488; ' + t('Expected Child Responses','Respuestas Esperadas de los Niños') + '</b>';
     h += '<div class="response-grid">';
     if (c.responses) {
-      h += responseCard('Typical Response',         c.responses.typical,        '#4A8BC4');
-      h += responseCard('Strong / Advanced',        c.responses.strong,         '#4A9E4A');
-      h += responseCard('Shy / Hesitant',           c.responses.shy,            '#C8960A');
-      h += responseCard('Limited Language',         c.responses.limitedLanguage,'#8B4AB8');
+      h += responseCard(t('Typical Response','Respuesta Típica'),        c.responses.typical,        '#4A8BC4');
+      h += responseCard(t('Strong / Advanced','Fuerte / Avanzado'),      c.responses.strong,         '#4A9E4A');
+      h += responseCard(t('Shy / Hesitant','Tímido / Dubitativo'),       c.responses.shy,            '#C8960A');
+      h += responseCard(t('Limited Language','Lenguaje Limitado'),       c.responses.limitedLanguage,'#8B4AB8');
     }
     h += '</div>';
 
     if (c.shySupport) {
-      h += '<b class="coach-sec-title" style="margin-top:18px">&#128155; Supporting Shy &amp; Hesitant Children</b>';
+      h += '<b class="coach-sec-title" style="margin-top:18px">&#128155; ' + t('Supporting Shy &amp; Hesitant Children','Apoyo para Niños Tímidos y Dubitativos') + '</b>';
       h += '<div class="shy-grid">';
       if (c.shySupport.prompts && c.shySupport.prompts.length) {
-        h += '<div class="shy-col"><b class="shy-label">Gentle Prompts</b>' +
+        h += '<div class="shy-col"><b class="shy-label">' + t('Gentle Prompts','Indicaciones Suaves') + '</b>' +
           c.shySupport.prompts.map(function(p){ return '<div class="coach-script" style="margin-bottom:8px">' +
-            '<div class="cs-label">&#128172; Say</div><div class="cs-text">&ldquo;' + esc(p) + '&rdquo;</div></div>'; }).join('') + '</div>';
+            '<div class="cs-label">&#128172; ' + t('Say','Di') + '</div><div class="cs-text">&ldquo;' + esc(p) + '&rdquo;</div></div>'; }).join('') + '</div>';
       }
       if (c.shySupport.alternatives && c.shySupport.alternatives.length) {
-        h += '<div class="shy-col"><b class="shy-label">Alternative Participation</b><ul class="coach-tips">' +
+        h += '<div class="shy-col"><b class="shy-label">' + t('Alternative Participation','Participación Alternativa') + '</b><ul class="coach-tips">' +
           c.shySupport.alternatives.map(function(a){ return '<li>' + esc(a) + '</li>'; }).join('') + '</ul></div>';
       }
       if (c.shySupport.encouragement && c.shySupport.encouragement.length) {
-        h += '<div class="shy-col"><b class="shy-label">Encouragement Phrases</b>' +
+        h += '<div class="shy-col"><b class="shy-label">' + t('Encouragement Phrases','Frases de Aliento') + '</b>' +
           c.shySupport.encouragement.map(function(e){ return '<div class="encourage-chip">' + esc(e) + '</div>'; }).join('') + '</div>';
       }
       h += '</div>';
@@ -829,20 +831,20 @@ function openActivityCoach(actId) {
   /* ASSESS TAB */
   if (COACH_DETAIL_TAB === 'assess') {
     h += '<div class="coach-section">';
-    h += '<b class="coach-sec-title">&#128065; Observation Guide</b>';
-    h += '<p class="soft" style="margin-bottom:8px">During this activity, watch specifically for:</p>';
+    h += '<b class="coach-sec-title">&#128065; ' + t('Observation Guide','Guía de Observación') + '</b>';
+    h += '<p class="soft" style="margin-bottom:8px">' + t('During this activity, watch specifically for:','Durante esta actividad, observa específicamente:') + '</p>';
     if (c.observation) h += observationList(c.observation);
 
     if (c.classroomMgmt) {
       h += '<div class="mgmt-grid" style="margin-top:14px">';
-      if (c.classroomMgmt.transitions)   h += '<div class="mgmt-item"><b>&#8651; Transitions</b><p>' + esc(c.classroomMgmt.transitions) + '</p></div>';
-      if (c.classroomMgmt.disruptions)   h += '<div class="mgmt-item"><b>&#9889; Disruptions</b><p>' + esc(c.classroomMgmt.disruptions) + '</p></div>';
-      if (c.classroomMgmt.participation) h += '<div class="mgmt-item"><b>&#128075; Participation</b><p>' + esc(c.classroomMgmt.participation) + '</p></div>';
-      if (c.classroomMgmt.diverseLearners) h += '<div class="mgmt-item"><b>&#127919; Diverse Learners</b><p>' + esc(c.classroomMgmt.diverseLearners) + '</p></div>';
+      if (c.classroomMgmt.transitions)   h += '<div class="mgmt-item"><b>&#8651; ' + t('Transitions','Transiciones') + '</b><p>' + esc(c.classroomMgmt.transitions) + '</p></div>';
+      if (c.classroomMgmt.disruptions)   h += '<div class="mgmt-item"><b>&#9889; ' + t('Disruptions','Interrupciones') + '</b><p>' + esc(c.classroomMgmt.disruptions) + '</p></div>';
+      if (c.classroomMgmt.participation) h += '<div class="mgmt-item"><b>&#128075; ' + t('Participation','Participación') + '</b><p>' + esc(c.classroomMgmt.participation) + '</p></div>';
+      if (c.classroomMgmt.diverseLearners) h += '<div class="mgmt-item"><b>&#127919; ' + t('Diverse Learners','Aprendices Diversos') + '</b><p>' + esc(c.classroomMgmt.diverseLearners) + '</p></div>';
       h += '</div>';
     }
 
-    h += '<b class="coach-sec-title" style="margin-top:18px">&#128202; Assessment Rubric</b>';
+    h += '<b class="coach-sec-title" style="margin-top:18px">&#128202; ' + t('Assessment Rubric','Rúbrica de Evaluación') + '</b>';
     if (c.rubric) {
       h += '<div class="rubric-grid">';
       h += rubricBadge('beginning', c.rubric.beginning);
@@ -852,8 +854,8 @@ function openActivityCoach(actId) {
       h += '</div>';
     }
 
-    h += '<b class="coach-sec-title" style="margin-top:18px">&#128221; Teacher Observation Note Examples</b>';
-    h += '<p class="soft" style="margin-bottom:8px">Copy, edit, and use these in daily reports:</p>';
+    h += '<b class="coach-sec-title" style="margin-top:18px">&#128221; ' + t('Teacher Observation Note Examples','Ejemplos de Notas de Observación del Maestro') + '</b>';
+    h += '<p class="soft" style="margin-bottom:8px">' + t('Copy, edit, and use these in daily reports:','Copia, edita y úsalas en los reportes diarios:') + '</p>';
     if (c.teacherNotes && c.teacherNotes.length) {
       h += '<div class="tn-list">';
       c.teacherNotes.forEach(function(note) {
@@ -869,14 +871,14 @@ function openActivityCoach(actId) {
   /* REPORT TAB */
   if (COACH_DETAIL_TAB === 'report') {
     h += '<div class="coach-section">';
-    h += '<b class="coach-sec-title">&#128140; Ready-to-Send Parent Report Examples</b>';
-    h += '<p class="soft" style="margin-bottom:10px">These are complete, professional parent-facing messages. Copy, personalise with the child\'s name, and send:</p>';
+    h += '<b class="coach-sec-title">&#128140; ' + t('Ready-to-Send Parent Report Examples','Ejemplos de Reportes para Padres Listos para Enviar') + '</b>';
+    h += '<p class="soft" style="margin-bottom:10px">' + t("These are complete, professional parent-facing messages. Copy, personalise with the child's name, and send:","Estos son mensajes completos y profesionales para los padres. Copia, personaliza con el nombre del niño y envía:") + '</p>';
     if (c.parentReport) {
       h += '<div class="tn-item" style="margin-bottom:12px">' +
         '<span class="tn-copy" onclick="copyTeacherNote(this)" title="Copy report">&#128203;</span>' +
         '<span class="tn-text">' + esc(c.parentReport.example) + '</span></div>';
       h += '<div class="home-ext-card">' +
-        '<b>&#127968; Suggested Home Extension</b>' +
+        '<b>&#127968; ' + t('Suggested Home Extension','Extensión para el Hogar Sugerida') + '</b>' +
         '<p>' + esc(c.parentReport.homeExtension) + '</p></div>';
     }
     h += '</div>';
@@ -885,9 +887,9 @@ function openActivityCoach(actId) {
   /* VARIATIONS TAB */
   if (COACH_DETAIL_TAB === 'vars') {
     h += '<div class="coach-section">';
-    h += '<b class="coach-sec-title">&#128300; Activity Variations</b>';
+    h += '<b class="coach-sec-title">&#128300; ' + t('Activity Variations','Variaciones de la Actividad') + '</b>';
     if (c.variations) {
-      var varLabels = { smallGroup:'&#128101; Small Group (2–4 children)', wholeClass:'&#127891; Whole Class', outdoor:'&#127807; Outdoor Version', indoor:'&#127968; Indoor Version', lowResource:'&#9878; Low-Resource / No-Materials Version' };
+      var varLabels = { smallGroup:'&#128101; '+t('Small Group (2–4 children)','Grupo Pequeño (2-4 niños)'), wholeClass:'&#127891; '+t('Whole Class','Clase Completa'), outdoor:'&#127807; '+t('Outdoor Version','Versión al Aire Libre'), indoor:'&#127968; '+t('Indoor Version','Versión de Interior'), lowResource:'&#9878; '+t('Low-Resource / No-Materials Version','Versión con Pocos/Sin Materiales') };
       Object.keys(varLabels).forEach(function(k) {
         if (c.variations[k]) {
           h += '<div class="var-card"><b>' + varLabels[k] + '</b><p>' + esc(c.variations[k]) + '</p></div>';
@@ -900,10 +902,10 @@ function openActivityCoach(actId) {
   /* RESOURCES TAB */
   if (COACH_DETAIL_TAB === 'res') {
     h += '<div class="coach-section">';
-    h += '<b class="coach-sec-title">&#128218; Recommended Resources for this Activity</b>';
+    h += '<b class="coach-sec-title">&#128218; ' + t('Recommended Resources for this Activity','Recursos Recomendados para esta Actividad') + '</b>';
     var relOrgs = getResourcesForDomain(found.domain, found.ageKey);
     if (relOrgs.length === 0) {
-      h += '<p class="soft">See the full Resource Library for related materials.</p>';
+      h += '<p class="soft">' + t('See the full Resource Library for related materials.','Consulta la Biblioteca de Recursos completa para materiales relacionados.') + '</p>';
     } else {
       relOrgs.forEach(function(org) {
         var relRes = org.resources.filter(function(r){ return r.domain === found.domain; });
@@ -916,7 +918,7 @@ function openActivityCoach(actId) {
           }).join('') + '</div></div>';
       });
     }
-    h += '<button class="btn btn-teal" style="margin-top:14px;font-size:.85rem" onclick="CURR_SUB=\'resources\';renderPortal()">Open Full Resource Library &#8594;</button>';
+    h += '<button class="btn btn-teal" style="margin-top:14px;font-size:.85rem" onclick="CURR_SUB=\'resources\';renderPortal()">' + t('Open Full Resource Library &#8594;','Abrir Biblioteca de Recursos Completa &#8594;') + '</button>';
     h += '</div>';
   }
 
@@ -929,19 +931,19 @@ function resourceLibraryView() {
   var cats = (typeof CURR_CATS !== 'undefined') ? CURR_CATS : [];
 
   var h = '<div class="portal-head">' +
-    '<div><h2 style="margin-bottom:2px">&#128218; Resource Library</h2>' +
-    '<span class="soft" style="font-size:.84rem">Curated resources from 8 leading educational organizations</span></div>' +
-    '<button class="mini-btn ghost" onclick="CURR_SUB=\'coach\';renderPortal()">&#8592; Back to Coach</button>' +
+    '<div><h2 style="margin-bottom:2px">&#128218; ' + t('Resource Library','Biblioteca de Recursos') + '</h2>' +
+    '<span class="soft" style="font-size:.84rem">' + t('Curated resources from 8 leading educational organizations','Recursos seleccionados de 8 organizaciones educativas líderes') + '</span></div>' +
+    '<button class="mini-btn ghost" onclick="CURR_SUB=\'coach\';renderPortal()">&#8592; ' + t('Back to Coach','Volver al Entrenador') + '</button>' +
     '</div>';
 
   /* Filters */
   h += '<div class="res-filters">' +
-    '<div class="rf-group"><b>Domain:</b><div class="rf-pills">' +
-    '<span class="rf-pill ' + (RES_DOMAIN==='all'?'active':'') + '" onclick="RES_DOMAIN=\'all\';renderPortal()">All</span>' +
+    '<div class="rf-group"><b>' + t('Domain:','Dominio:') + '</b><div class="rf-pills">' +
+    '<span class="rf-pill ' + (RES_DOMAIN==='all'?'active':'') + '" onclick="RES_DOMAIN=\'all\';renderPortal()">' + t('All','Todo') + '</span>' +
     cats.map(function(c){ return '<span class="rf-pill ' + (RES_DOMAIN===c.id?'active':'') + '" onclick="RES_DOMAIN=\'' + c.id + '\';renderPortal()">' + c.icon + ' ' + esc(c.label) + '</span>'; }).join('') +
     '</div></div>' +
-    '<div class="rf-group"><b>Age Group:</b><div class="rf-pills">' +
-    '<span class="rf-pill ' + (RES_AGE==='all'?'active':'') + '" onclick="RES_AGE=\'all\';renderPortal()">All Ages</span>' +
+    '<div class="rf-group"><b>' + t('Age Group:','Grupo de Edad:') + '</b><div class="rf-pills">' +
+    '<span class="rf-pill ' + (RES_AGE==='all'?'active':'') + '" onclick="RES_AGE=\'all\';renderPortal()">' + t('All Ages','Todas las Edades') + '</span>' +
     ['infants','toddlers','preschool','school_age'].map(function(a){
       var info = (typeof CURR_AGE_INFO !== 'undefined') ? CURR_AGE_INFO[a] : { label:a, icon:'' };
       return '<span class="rf-pill ' + (RES_AGE===a?'active':'') + '" onclick="RES_AGE=\'' + a + '\';renderPortal()">' + info.icon + ' ' + esc(info.label) + '</span>';
@@ -951,7 +953,7 @@ function resourceLibraryView() {
 
   var orgs = getResourcesForDomain(RES_DOMAIN, RES_AGE);
   if (!orgs.length) {
-    h += '<div class="empty">No resources match this filter combination.</div>';
+    h += '<div class="empty">' + t('No resources match this filter combination.','No hay recursos que coincidan con esta combinación de filtros.') + '</div>';
   } else {
     h += '<div class="res-org-grid">';
     orgs.forEach(function(org) {
@@ -966,7 +968,7 @@ function resourceLibraryView() {
           return '<a class="res-link" href="' + r.url + '" target="_blank" rel="noopener">' +
             '<span class="res-type-badge">' + esc(r.type) + '</span>' + esc(r.title) + ' &#8599;</a>';
         }).join('') + '</div>' +
-        '<a href="' + org.url + '" target="_blank" rel="noopener" class="btn btn-teal btn-full" style="font-size:.82rem;margin-top:12px">Visit ' + esc(org.org) + ' &#8599;</a>' +
+        '<a href="' + org.url + '" target="_blank" rel="noopener" class="btn btn-teal btn-full" style="font-size:.82rem;margin-top:12px">' + t('Visit','Visitar') + ' ' + esc(org.org) + ' &#8599;</a>' +
         '</div>';
     });
     h += '</div>';
@@ -1005,8 +1007,8 @@ function copyTeacherNote(el) {
 
     /* Inject new tabs into the subtabs row */
     var newBtns =
-      '<button class="' + (CURR_SUB==='coach'?'active':'') + '" onclick="CURR_SUB=\'coach\';renderPortal()">&#127795; Coach</button>' +
-      '<button class="' + (CURR_SUB==='resources'?'active':'') + '" onclick="CURR_SUB=\'resources\';renderPortal()">&#128218; Resources</button>';
+      '<button class="' + (CURR_SUB==='coach'?'active':'') + '" onclick="CURR_SUB=\'coach\';renderPortal()">&#127795; ' + t('Coach','Entrenador') + '</button>' +
+      '<button class="' + (CURR_SUB==='resources'?'active':'') + '" onclick="CURR_SUB=\'resources\';renderPortal()">&#128218; ' + t('Resources','Recursos') + '</button>';
 
     var insertAt = html.lastIndexOf('</div>');
     var subtabsEnd = html.indexOf('</div>', html.indexOf('class="subtabs"'));

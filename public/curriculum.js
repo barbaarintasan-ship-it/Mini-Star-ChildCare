@@ -34,6 +34,8 @@ const CURR_CATS = [
 ];
 
 const ML_LEVELS = ['Beginning', 'Emerging', 'Developing', 'Proficient', 'Advanced'];
+const ML_LEVELS_ES = ['Inicial', 'Emergente', 'En desarrollo', 'Competente', 'Avanzado'];
+function mlLabel(l) { const i = ML_LEVELS.indexOf(l); return typeof LANG !== 'undefined' && LANG === 'es' && i >= 0 ? ML_LEVELS_ES[i] : l; }
 const ML_COLORS  = ['#DDD', '#F7C4C4', '#FFE08A', '#A8D8A8', '#4ECDC4'];
 
 const CURR_THEMES = [
@@ -45,10 +47,10 @@ const CURR_THEMES = [
 ];
 
 const STATUS_OPTS = [
-  { val: 'pending',   label: 'Not Started', icon: '&#9634;',  cls: '' },
-  { val: 'completed', label: 'Completed',   icon: '&#9989;',  cls: 'success' },
-  { val: 'partial',   label: 'Partial',     icon: '&#9888;',  cls: 'warn' },
-  { val: 'skipped',   label: 'Skipped',     icon: '&#10006;', cls: 'muted' }
+  { val: 'pending',   label: 'Not Started', es: 'No Iniciado', icon: '&#9634;',  cls: '' },
+  { val: 'completed', label: 'Completed',   es: 'Completado',  icon: '&#9989;',  cls: 'success' },
+  { val: 'partial',   label: 'Partial',     es: 'Parcial',     icon: '&#9888;',  cls: 'warn' },
+  { val: 'skipped',   label: 'Skipped',     es: 'Omitido',     icon: '&#10006;', cls: 'muted' }
 ];
 
 let CURR_SUB       = 'today';
@@ -490,12 +492,12 @@ function teacherCurriculumView() {
   const theme = getWeekTheme(CU.classId);
 
   const tabs = [
-    ['today',    '&#128197; Today\'s Plan'],
-    ['milestones','&#127919; Milestones'],
-    ['success',  '&#11088; Success Metrics'],
-    ['library',  '&#128218; Activity Library'],
-    ['pathways', '&#128197; Monthly Pathways'],
-    ['generator','&#9889; AI Generator']
+    ['today',    '&#128197; '+t("Today's Plan","Plan de Hoy")],
+    ['milestones','&#127919; '+t('Milestones','Hitos')],
+    ['success',  '&#11088; '+t('Success Metrics','Metricas de Exito')],
+    ['library',  '&#128218; '+t('Activity Library','Biblioteca de Actividades')],
+    ['pathways', '&#128197; '+t('Monthly Pathways','Rutas Mensuales')],
+    ['generator','&#9889; '+t('AI Generator','Generador IA')]
   ];
   let h = '<div class="subtabs">' + tabs.map(([k, l]) =>
     `<button class="${CURR_SUB===k?'active':''}" onclick="CURR_SUB='${k}';renderPortal()">${l}</button>`
@@ -504,7 +506,7 @@ function teacherCurriculumView() {
   h += `<div style="background:${ageInfo.color};border-radius:14px;padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
     <span style="font-size:1.5rem">${ageInfo.icon}</span>
     <div><b style="color:var(--night)">${esc(ageInfo.label)}</b> &nbsp;&#183;&nbsp; <span class="soft">${esc(ageInfo.range)}</span></div>
-    <div style="margin-left:auto;font-weight:700;color:var(--night)">&#127808; Theme: ${esc(theme)}</div>
+    <div style="margin-left:auto;font-weight:700;color:var(--night)">&#127808; ${t('Theme:','Tema:')} ${esc(theme)}</div>
   </div>`;
 
   /* ── TODAY'S LESSON PLAN ── */
@@ -516,12 +518,12 @@ function teacherCurriculumView() {
         <input type="date" value="${dateStr}" style="border:2px solid #EAE2DA;border-radius:10px;padding:6px 10px;font-size:.88rem"
           onchange="CURR_DATE_VIEW=this.value;renderPortal()">
         <span class="tag" style="background:var(--gold);color:#fff">&#127808; ${esc(theme)}</span>
-        <button class="mini-btn ghost" onclick="regeneratePlan('${CU.classId}','${dateStr}')">&#8635; Regenerate Plan</button>
+        <button class="mini-btn ghost" onclick="regeneratePlan('${CU.classId}','${dateStr}')">&#8635; ${t('Regenerate Plan','Regenerar Plan')}</button>
       </div>
     </div>`;
 
     /* Daily Schedule */
-    h += `<p class="lead" style="margin-bottom:8px">&#128198; Daily Schedule</p>`;
+    h += `<p class="lead" style="margin-bottom:8px">&#128198; ${t('Daily Schedule','Horario Diario')}</p>`;
     h += `<div style="overflow-x:auto;margin-bottom:18px">`;
     plan.schedule.forEach((slot, i) => {
       if (slot.type === 'care') return;
@@ -536,7 +538,7 @@ function teacherCurriculumView() {
     h += `</div>`;
 
     /* Activity Cards by Category */
-    h += `<p class="lead" style="margin-bottom:8px">&#127919; Today's Learning Activities</p>`;
+    h += `<p class="lead" style="margin-bottom:8px">&#127919; ${t("Today's Learning Activities","Actividades de Aprendizaje de Hoy")}</p>`;
     plan.activities.forEach((entry, idx) => {
       const catInfo = CURR_CATS.find(c => c.id === entry.catId) || {};
       const actPool = (ACTIVITY_LIBRARY[ageKey] || {})[entry.catId] || [];
@@ -550,24 +552,24 @@ function teacherCurriculumView() {
           <span class="tag">&#128337; ${act_obj.dur} min</span>
           <div style="margin-left:auto;display:flex;gap:6px">
             ${STATUS_OPTS.map(s => `<button class="mini-btn ${s.cls||'ghost'}" style="${entry.status===s.val?'outline:2px solid var(--night)':''}"
-              onclick="setCurrActivityStatus('${plan.id}',${idx},'${s.val}')">${s.icon} ${esc(s.label)}</button>`).join('')}
+              onclick="setCurrActivityStatus('${plan.id}',${idx},'${s.val}')">${s.icon} ${t(s.label,s.es)}</button>`).join('')}
           </div>
         </div>
         <h3 style="margin:0 0 4px;font-size:1rem">${esc(act_obj.title)}</h3>
         <p class="soft" style="font-size:.85rem;margin:0 0 8px">&#127919; ${esc(act_obj.obj)}</p>
         <details style="margin-bottom:8px">
-          <summary style="cursor:pointer;font-size:.85rem;font-weight:700;color:var(--teal)">View Full Instructions</summary>
+          <summary style="cursor:pointer;font-size:.85rem;font-weight:700;color:var(--teal)">${t('View Full Instructions','Ver Instrucciones Completas')}</summary>
           <div style="padding-top:8px">
-            <p style="font-size:.83rem;margin-bottom:6px"><b>&#128203; Materials:</b> ${esc((act_obj.mats||[]).join(', '))}</p>
-            <div style="font-size:.83rem;margin-bottom:6px"><b>&#128295; Steps:</b>
+            <p style="font-size:.83rem;margin-bottom:6px"><b>&#128203; ${t('Materials:','Materiales:')}</b> ${esc((act_obj.mats||[]).join(', '))}</p>
+            <div style="font-size:.83rem;margin-bottom:6px"><b>&#128295; ${t('Steps:','Pasos:')}</b>
               <ol style="margin:4px 0 0 18px;padding:0">${(act_obj.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
             </div>
-            ${act_obj.qs && act_obj.qs.length ? `<p style="font-size:.83rem;margin-bottom:6px"><b>&#10067; Ask Children:</b> ${esc(act_obj.qs.join(' | '))}</p>` : ''}
-            <p style="font-size:.83rem;margin-bottom:6px"><b>&#127807; Benefits:</b> ${esc(act_obj.benefits||'')}</p>
+            ${act_obj.qs && act_obj.qs.length ? `<p style="font-size:.83rem;margin-bottom:6px"><b>&#10067; ${t('Ask Children:','Preguntas para los Ninos:')}</b> ${esc(act_obj.qs.join(' | '))}</p>` : ''}
+            <p style="font-size:.83rem;margin-bottom:6px"><b>&#127807; ${t('Benefits:','Beneficios:')}</b> ${esc(act_obj.benefits||'')}</p>
           </div>
         </details>
-        <div class="field" style="margin:0"><label style="font-size:.78rem">Teacher Notes for this Activity</label>
-          <input style="font-size:.83rem" placeholder="What happened? What did you observe?"
+        <div class="field" style="margin:0"><label style="font-size:.78rem">${t('Teacher Notes for this Activity','Notas del Maestro para esta Actividad')}</label>
+          <input style="font-size:.83rem" placeholder="${t('What happened? What did you observe?','Que ocurrio? Que observo?')}"
             value="${esc(entry.notes||'')}"
             onchange="setCurrActivityNote('${plan.id}',${idx},this.value)">
         </div>
@@ -576,7 +578,7 @@ function teacherCurriculumView() {
 
     /* Milestone Quick-Check */
     if (kids.length) {
-      h += `<p class="lead" style="margin-bottom:8px">&#127919; Quick Milestone Check</p>`;
+      h += `<p class="lead" style="margin-bottom:8px">&#127919; ${t('Quick Milestone Check','Verificacion Rapida de Hitos')}</p>`;
       const selChild = CURR_CHILD_SEL && kids.some(k=>k.id===CURR_CHILD_SEL) ? CURR_CHILD_SEL : kids[0].id;
       CURR_CHILD_SEL = selChild;
       if (kids.length > 1) {
@@ -591,8 +593,8 @@ function teacherCurriculumView() {
 
   /* ── MILESTONES TRACKER ── */
   if (CURR_SUB === 'milestones') {
-    h += `<p class="soft" style="margin-bottom:10px">Track each child's developmental progress across all learning domains.</p>`;
-    if (!kids.length) { h += `<div class="empty">No children in your classroom yet.</div>`; return h; }
+    h += `<p class="soft" style="margin-bottom:10px">${t("Track each child's developmental progress across all learning domains.","Siga el progreso de desarrollo de cada nino en todos los dominios.")}</p>`;
+    if (!kids.length) { h += `<div class="empty">${t('No children in your classroom yet.','Aun no hay ninos en su salon.')}</div>`; return h; }
     const selChild = CURR_CHILD_SEL && kids.some(k=>k.id===CURR_CHILD_SEL) ? CURR_CHILD_SEL : kids[0].id;
     CURR_CHILD_SEL = selChild;
     h += `<div class="subtabs" style="padding-top:0">${kids.map(k=>
@@ -613,8 +615,8 @@ function teacherCurriculumView() {
 
   /* ── SUCCESS METRICS ── */
   if (CURR_SUB === 'success') {
-    h += `<p class="soft" style="margin-bottom:10px">Track each child's growth in creativity, leadership, resilience, and other non-academic success areas.</p>`;
-    if (!kids.length) { h += `<div class="empty">No children in your classroom yet.</div>`; return h; }
+    h += `<p class="soft" style="margin-bottom:10px">${t("Track each child's growth in creativity, leadership, resilience, and other non-academic success areas.","Siga el crecimiento en creatividad, liderazgo, resiliencia y otras areas no academicas.")}</p>`;
+    if (!kids.length) { h += `<div class="empty">${t('No children in your classroom yet.','Aun no hay ninos en su salon.')}</div>`; return h; }
     const selChild2 = CURR_CHILD_SEL && kids.some(k => k.id === CURR_CHILD_SEL) ? CURR_CHILD_SEL : kids[0].id;
     CURR_CHILD_SEL = selChild2;
     if (kids.length > 1) {
@@ -639,14 +641,14 @@ function teacherCurriculumView() {
 
 function parentLearningView() {
   const kids = DB.children.filter(c => (c.parentIds||[]).includes(CU.id));
-  if (!kids.length) return `<div class="empty">Your children have not been linked to your account yet.<br>Contact Mini Star: <a href="tel:+12062554000" style="color:var(--gold)">(206) 255-4000</a></div>`;
+  if (!kids.length) return `<div class="empty">${t('Your children have not been linked to your account yet.','Sus hijos aun no han sido vinculados a su cuenta.')}<br>${t('Contact Mini Star:','Contacte a Mini Star:')} <a href="tel:+12062554000" style="color:var(--gold)">(206) 255-4000</a></div>`;
 
   const tabs = [
-    ['today',     '&#128197; Today\'s Learning'],
-    ['progress',  '&#128202; Progress'],
-    ['milestones','&#127919; Milestones'],
-    ['success',   '&#11088; Success Profile'],
-    ['report',    '&#128203; Full Report']
+    ['today',     '&#128197; '+t("Today's Learning","Aprendizaje de Hoy")],
+    ['progress',  '&#128202; '+t('Progress','Progreso')],
+    ['milestones','&#127919; '+t('Milestones','Hitos')],
+    ['success',   '&#11088; '+t('Success Profile','Perfil de Exito')],
+    ['report',    '&#128203; '+t('Full Report','Reporte Completo')]
   ];
   let h = '<div class="subtabs">' + tabs.map(([k, l]) =>
     `<button class="${CURR_SUB===k?'active':''}" onclick="CURR_SUB='${k}';renderPortal()">${l}</button>`
@@ -669,8 +671,8 @@ function parentLearningView() {
   if (CURR_SUB === 'today') {
     const theme = getWeekTheme(child.classId);
     h += `<div class="card t-gold" style="margin-bottom:14px">
-      <h3 style="margin:0 0 4px">&#127775; Today my child learned</h3>
-      <p class="soft" style="font-size:.85rem;margin:0">${esc(fmtDateC(dateStr))} &nbsp;&#183;&nbsp; &#127808; Theme: <b>${esc(theme)}</b></p>
+      <h3 style="margin:0 0 4px">&#127775; ${t("Today my child learned","Mi hijo aprendio hoy")}</h3>
+      <p class="soft" style="font-size:.85rem;margin:0">${esc(fmtDateC(dateStr))} &nbsp;&#183;&nbsp; &#127808; ${t('Theme:','Tema:')} <b>${esc(theme)}</b></p>
     </div>`;
 
     if (plan) {
@@ -685,19 +687,19 @@ function parentLearningView() {
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
               <span>${catInfo.icon||''}</span>
               <b style="font-size:.9rem">${esc(catInfo.label||'')}</b>
-              <span class="tag ${entry.status==='completed'?'paid':'unpaid'}">${entry.status==='completed'?'&#9989; Completed':'&#9888; Partial'}</span>
+              <span class="tag ${entry.status==='completed'?'paid':'unpaid'}">${entry.status==='completed'?'&#9989; '+t('Completed','Completado'):'&#9888; '+t('Partial','Parcial')}</span>
             </div>
             <h4 style="margin:0 0 4px;color:var(--night)">${esc(act_obj.title)}</h4>
             <p style="font-size:.83rem;margin:0 0 4px;color:var(--ink)">&#127919; ${esc(act_obj.obj)}</p>
             <p style="font-size:.8rem;margin:0;color:var(--muted)">&#127807; ${esc(act_obj.benefits)}</p>
-            ${entry.notes ? `<div style="margin-top:8px;padding:8px;background:#FFF8F4;border-radius:8px;font-size:.82rem"><b>&#128203; Teacher Note:</b> ${esc(entry.notes)}</div>` : ''}
+            ${entry.notes ? `<div style="margin-top:8px;padding:8px;background:#FFF8F4;border-radius:8px;font-size:.82rem"><b>&#128203; ${t('Teacher Note:','Nota del Maestro:')}</b> ${esc(entry.notes)}</div>` : ''}
           </div>`;
         });
       } else {
-        h += `<div class="card"><p class="soft" style="margin:0">No activities marked as completed yet today. Check back later!</p></div>`;
+        h += `<div class="card"><p class="soft" style="margin:0">${t('No activities marked as completed yet today. Check back later!','Aun no hay actividades completadas hoy. Vuelva mas tarde.')}</p></div>`;
       }
     } else {
-      h += `<div class="card"><p class="soft" style="margin:0">Today's learning report is not yet available. Check back after class!</p></div>`;
+      h += `<div class="card"><p class="soft" style="margin:0">${t("Today's learning report is not yet available. Check back after class!","El reporte de aprendizaje de hoy aun no esta disponible. Vuelva despues de clase.")}</p></div>`;
     }
 
     /* Teacher notes for the day */
@@ -705,11 +707,11 @@ function parentLearningView() {
     if (notes.length) {
       notes.forEach(note => {
         h += `<div class="card t-teal" style="margin-top:10px">
-          <p class="lead" style="margin-bottom:8px">&#128203; Teacher Notes for Today</p>
-          ${note.strengths  ? `<div style="margin-bottom:6px"><b>&#11088; Strengths observed:</b><br><span style="font-size:.88rem">${esc(note.strengths)}</span></div>` : ''}
-          ${note.areas      ? `<div style="margin-bottom:6px"><b>&#127919; Areas to support:</b><br><span style="font-size:.88rem">${esc(note.areas)}</span></div>` : ''}
-          ${note.moments    ? `<div style="margin-bottom:6px"><b>&#128149; Positive moments:</b><br><span style="font-size:.88rem">${esc(note.moments)}</span></div>` : ''}
-          ${note.recs       ? `<div style="margin-bottom:0"><b>&#127968; Try at home:</b><br><span style="font-size:.88rem">${esc(note.recs)}</span></div>` : ''}
+          <p class="lead" style="margin-bottom:8px">&#128203; ${t('Teacher Notes for Today','Notas del Maestro de Hoy')}</p>
+          ${note.strengths  ? `<div style="margin-bottom:6px"><b>&#11088; ${t('Strengths observed:','Fortalezas observadas:')}</b><br><span style="font-size:.88rem">${esc(note.strengths)}</span></div>` : ''}
+          ${note.areas      ? `<div style="margin-bottom:6px"><b>&#127919; ${t('Areas to support:','Areas de apoyo:')}</b><br><span style="font-size:.88rem">${esc(note.areas)}</span></div>` : ''}
+          ${note.moments    ? `<div style="margin-bottom:6px"><b>&#128149; ${t('Positive moments:','Momentos positivos:')}</b><br><span style="font-size:.88rem">${esc(note.moments)}</span></div>` : ''}
+          ${note.recs       ? `<div style="margin-bottom:0"><b>&#127968; ${t('Try at home:','Para practicar en casa:')}</b><br><span style="font-size:.88rem">${esc(note.recs)}</span></div>` : ''}
         </div>`;
       });
     }
@@ -719,8 +721,8 @@ function parentLearningView() {
   if (CURR_SUB === 'success') {
     const selKid = DB.children.find(c => c.id === selChild);
     h += `<div class="card t-gold" style="margin-bottom:14px">
-      <p class="lead" style="margin-bottom:4px">&#11088; ${esc(selKid ? selKid.name.split(' ')[0] : 'Your Child')}'s Success Profile</p>
-      <p style="font-size:.83rem;color:var(--ink);margin:0">We measure growth through creativity, leadership, resilience, and real-world skills — not just academic scores.</p>
+      <p class="lead" style="margin-bottom:4px">&#11088; ${esc(selKid ? selKid.name.split(' ')[0] : t('Your Child','Su Hijo'))}'s ${t('Success Profile','Perfil de Exito')}</p>
+      <p style="font-size:.83rem;color:var(--ink);margin:0">${t('We measure growth through creativity, leadership, resilience, and real-world skills — not just academic scores.','Medimos el crecimiento en creatividad, liderazgo, resiliencia y habilidades practicas, no solo en calificaciones.')}</p>
     </div>`;
     if (typeof successMetricsView === 'function') h += successMetricsView(selChild, false);
   }
@@ -735,7 +737,7 @@ function parentLearningView() {
     const progress = getChildProgress(selChild);
     const ageInfo  = CURR_AGE_INFO[ageKey] || CURR_AGE_INFO.preschool;
     h += `<div class="card" style="background:${ageInfo.color};margin-bottom:14px">
-      <h3 style="margin:0 0 4px">${esc(child.name)}'s Development Overview</h3>
+      <h3 style="margin:0 0 4px">${esc(child.name)} — ${t('Development Overview','Resumen del Desarrollo')}</h3>
       <p class="soft" style="font-size:.83rem;margin:0">${esc(ageInfo.label)} &middot; ${esc(ageInfo.range)}</p>
     </div>`;
     CURR_CATS.forEach(cat => {
@@ -750,7 +752,7 @@ function parentLearningView() {
         </div>
       </div>`;
     });
-    h += `<p class="soft" style="font-size:.8rem;text-align:center;margin-top:8px">Progress is calculated based on milestones assessed by your child's teacher.</p>`;
+    h += `<p class="soft" style="font-size:.8rem;text-align:center;margin-top:8px">${t("Progress is calculated based on milestones assessed by your child's teacher.","El progreso se calcula segun los hitos evaluados por el maestro de su hijo.")}</p>`;
   }
 
   /* ── MILESTONES (read-only for parent) ── */
@@ -767,12 +769,12 @@ function parentLearningView() {
 
 function adminCurriculumView() {
   const tabs = [
-    ['overview',  '&#128202; Overview'],
-    ['themes',    '&#127808; Weekly Themes'],
-    ['analytics', '&#128201; Analytics'],
-    ['success',   '&#11088; Success Analytics'],
-    ['pathways',  '&#128197; Monthly Pathways'],
-    ['library',   '&#128218; Library']
+    ['overview',  '&#128202; '+t('Overview','Resumen')],
+    ['themes',    '&#127808; '+t('Weekly Themes','Temas Semanales')],
+    ['analytics', '&#128201; '+t('Analytics','Analiticas')],
+    ['success',   '&#11088; '+t('Success Analytics','Analiticas de Exito')],
+    ['pathways',  '&#128197; '+t('Monthly Pathways','Rutas Mensuales')],
+    ['library',   '&#128218; '+t('Library','Biblioteca')]
   ];
   let h = '<div class="subtabs">' + tabs.map(([k, l]) =>
     `<button class="${CURR_SUB===k?'active':''}" onclick="CURR_SUB='${k}';renderPortal()">${l}</button>`
@@ -786,17 +788,17 @@ function adminCurriculumView() {
       s + (p.activities||[]).filter(a => a.status === 'completed').length, 0);
     const totalMilestones = DB.curriculum.milestones.length;
     h += `<div class="stat-grid" style="margin-bottom:14px">
-      <div class="stat-box"><div class="stat-num">${totalPlans}</div><div class="stat-lbl">Lesson Plans</div></div>
-      <div class="stat-box"><div class="stat-num">${todayPlans}</div><div class="stat-lbl">Plans Today</div></div>
-      <div class="stat-box"><div class="stat-num">${completedActs}</div><div class="stat-lbl">Activities Done</div></div>
-      <div class="stat-box"><div class="stat-num">${totalMilestones}</div><div class="stat-lbl">Milestones Tracked</div></div>
+      <div class="stat-box"><div class="stat-num">${totalPlans}</div><div class="stat-lbl">${t('Lesson Plans','Planes de Clase')}</div></div>
+      <div class="stat-box"><div class="stat-num">${todayPlans}</div><div class="stat-lbl">${t('Plans Today','Planes Hoy')}</div></div>
+      <div class="stat-box"><div class="stat-num">${completedActs}</div><div class="stat-lbl">${t('Activities Done','Actividades Completadas')}</div></div>
+      <div class="stat-box"><div class="stat-num">${totalMilestones}</div><div class="stat-lbl">${t('Milestones Tracked','Hitos Registrados')}</div></div>
     </div>`;
-    h += `<div class="card"><p class="lead">Curriculum System Overview</p><ul class="star-list">
-      <li><b>${Object.values(ACTIVITY_LIBRARY).reduce((s,ag)=>s+Object.values(ag).reduce((ss,cat)=>ss+cat.length,0),0)}</b> activities across all age groups</li>
-      <li><b>${Object.values(MILESTONES_DB).reduce((s,ag)=>s+Object.values(ag).reduce((ss,cat)=>ss+cat.length,0),0)}</b> developmental milestones tracked</li>
-      <li><b>4</b> age groups: Infants, Toddlers, Preschool, School-Age</li>
-      <li><b>8</b> development domains: Language, Cognitive, Social-Emotional, Physical, Creativity, Life Skills, Health, Character</li>
-      <li>AI-generated daily lesson plans with activity library</li>
+    h += `<div class="card"><p class="lead">${t('Curriculum System Overview','Resumen del Sistema de Curriculo')}</p><ul class="star-list">
+      <li><b>${Object.values(ACTIVITY_LIBRARY).reduce((s,ag)=>s+Object.values(ag).reduce((ss,cat)=>ss+cat.length,0),0)}</b> ${t('activities across all age groups','actividades en todos los grupos de edad')}</li>
+      <li><b>${Object.values(MILESTONES_DB).reduce((s,ag)=>s+Object.values(ag).reduce((ss,cat)=>ss+cat.length,0),0)}</b> ${t('developmental milestones tracked','hitos del desarrollo registrados')}</li>
+      <li><b>4</b> ${t('age groups: Infants, Toddlers, Preschool, School-Age','grupos de edad: Bebes, Ninos Pequenos, Preescolar, Edad Escolar')}</li>
+      <li><b>8</b> ${t('development domains: Language, Cognitive, Social-Emotional, Physical, Creativity, Life Skills, Health, Character','dominios: Lenguaje, Cognitivo, Social-Emocional, Fisico, Creatividad, Habilidades de Vida, Salud, Caracter')}</li>
+      <li>${t('AI-generated daily lesson plans with activity library','Planes de clase diarios generados por IA con biblioteca de actividades')}</li>
     </ul></div>`;
     DB.classes.forEach(cls => {
       const ageKey = CLS_TO_AGE[cls.name] || 'preschool';
@@ -812,7 +814,7 @@ function adminCurriculumView() {
           <span class="tag navy">&#127808; ${esc(theme)}</span>
           ${teachers.map(te=>`<span class="soft" style="font-size:.82rem">&#129489; ${esc(te.name)}</span>`).join('')}
           <div style="margin-left:auto">
-            ${total ? `<span style="font-size:.85rem;color:var(--teal);font-weight:700">${done}/${total} activities today</span>` : '<span class="soft" style="font-size:.82rem">No plan today</span>'}
+            ${total ? `<span style="font-size:.85rem;color:var(--teal);font-weight:700">${done}/${total} ${t('activities today','actividades hoy')}</span>` : `<span class="soft" style="font-size:.82rem">${t('No plan today','Sin plan hoy')}</span>`}
           </div>
         </div>
         ${total ? `<div style="background:#EAE2DA;border-radius:999px;height:8px;margin-top:8px;overflow:hidden">
@@ -824,14 +826,14 @@ function adminCurriculumView() {
 
   /* ── WEEKLY THEMES ── */
   if (CURR_SUB === 'themes') {
-    h += `<p class="soft" style="margin-bottom:10px">Assign a weekly learning theme to each classroom. This guides the AI lesson plan generator.</p>`;
+    h += `<p class="soft" style="margin-bottom:10px">${t('Assign a weekly learning theme to each classroom. This guides the AI lesson plan generator.','Asigne un tema semanal de aprendizaje a cada salon. Esto guia el generador de planes de clase.')}</p>`;
     const weekStart = getWeekStart();
     DB.classes.forEach(cls => {
       const current = getWeekTheme(cls.id);
       h += `<div class="card" style="margin-bottom:10px">
         <b>${esc(cls.name)}</b>
         <div class="field" style="margin-top:8px;margin-bottom:0">
-          <label>This Week's Theme (starting ${weekStart})</label>
+          <label>${t("This Week's Theme","Tema de Esta Semana")} (${t('starting','desde')} ${weekStart})</label>
           <select onchange="setWeekTheme('${cls.id}','${weekStart}',this.value)">
             ${CURR_THEMES.map(th=>`<option value="${esc(th)}" ${th===current?'selected':''}>${esc(th)}</option>`).join('')}
           </select>
@@ -842,9 +844,9 @@ function adminCurriculumView() {
 
   /* ── ANALYTICS ── */
   if (CURR_SUB === 'analytics') {
-    h += `<p class="soft" style="margin-bottom:10px">Child development analytics across all classrooms.</p>`;
+    h += `<p class="soft" style="margin-bottom:10px">${t('Child development analytics across all classrooms.','Analiticas del desarrollo infantil en todos los salones.')}</p>`;
     const allKids = DB.children;
-    if (!allKids.length) { h += `<div class="empty">No children enrolled yet.</div>`; return h; }
+    if (!allKids.length) { h += `<div class="empty">${t('No children enrolled yet.','Aun no hay ninos inscritos.')}</div>`; return h; }
     CURR_CATS.forEach(cat => {
       const allProgress = allKids.map(child => {
         const ageKey = getChildAgeKey(child.id);
@@ -855,14 +857,14 @@ function adminCurriculumView() {
       h += `<div style="margin-bottom:12px">
         <div style="display:flex;justify-content:space-between;margin-bottom:3px">
           <span style="font-size:.88rem;font-weight:700">${cat.icon} ${esc(cat.label)}</span>
-          <span style="font-size:.85rem;color:var(--night);font-weight:700">${avg}% avg across all children</span>
+          <span style="font-size:.85rem;color:var(--night);font-weight:700">${avg}% ${t('avg across all children','promedio de todos los ninos')}</span>
         </div>
         <div style="background:#EAE2DA;border-radius:999px;height:12px;overflow:hidden">
           <div style="background:${cat.color};width:${avg}%;height:100%;border-radius:999px"></div>
         </div>
       </div>`;
     });
-    h += `<p class="soft" style="font-size:.8rem;text-align:center">Based on ${DB.curriculum.milestones.length} milestone assessments recorded by teachers.</p>`;
+    h += `<p class="soft" style="font-size:.8rem;text-align:center">${t('Based on','Basado en')} ${DB.curriculum.milestones.length} ${t('milestone assessments recorded by teachers.','evaluaciones de hitos registradas por maestros.')}</p>`;
   }
 
   /* ── LIBRARY (admin view) ── */
@@ -872,9 +874,9 @@ function adminCurriculumView() {
 
   /* ── SUCCESS ANALYTICS (admin view) ── */
   if (CURR_SUB === 'success') {
-    h += `<p class="soft" style="margin-bottom:10px">Non-academic success metrics across all children.</p>`;
+    h += `<p class="soft" style="margin-bottom:10px">${t('Non-academic success metrics across all children.','Metricas de exito no academico en todos los ninos.')}</p>`;
     const allKids = DB.children;
-    if (!allKids.length) { h += `<div class="empty">No children enrolled yet.</div>`; return h; }
+    if (!allKids.length) { h += `<div class="empty">${t('No children enrolled yet.','Aun no hay ninos inscritos.')}</div>`; return h; }
     if (typeof SUCCESS_METRICS !== 'undefined') {
       SUCCESS_METRICS.forEach(metric => {
         const allTracked = (DB.curriculum.successMetrics || []).filter(m => m.metricId === metric.id);
@@ -895,7 +897,7 @@ function adminCurriculumView() {
             }).join('')}
           </div>
           <div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">
-            ${SM_LEVELS.map((l, i) => `<span style="font-size:.68rem;color:var(--muted)"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${SM_COLORS[i]};margin-right:3px"></span>${esc(l)}: ${levelCounts[l]||0}</span>`).join('')}
+            ${SM_LEVELS.map((l, i) => `<span style="font-size:.68rem;color:var(--muted)"><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${SM_COLORS[i]};margin-right:3px"></span>${esc(smLabel(l))}: ${levelCounts[l]||0}</span>`).join('')}
           </div>
         </div>`;
       });
@@ -919,16 +921,16 @@ function activityLibraryView(defaultAge) {
   let h = `<div class="card" style="margin-bottom:14px">
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
       <div class="field" style="margin:0;flex:1;min-width:140px">
-        <label>Age Group</label>
+        <label>${t('Age Group','Grupo de Edad')}</label>
         <select onchange="CURR_LIB_AGE=this.value;renderPortal()">
-          ${defaultAge==='all'?`<option value="all">All Ages</option>`:''}
+          ${defaultAge==='all'?`<option value="all">${t('All Ages','Todas las Edades')}</option>`:''}
           ${Object.entries(CURR_AGE_INFO).map(([k,v])=>`<option value="${k}" ${CURR_LIB_AGE===k?'selected':''}>${esc(v.label)}</option>`).join('')}
         </select>
       </div>
       <div class="field" style="margin:0;flex:1;min-width:140px">
-        <label>Domain</label>
+        <label>${t('Domain','Dominio')}</label>
         <select onchange="CURR_LIB_CAT=this.value;renderPortal()">
-          <option value="all">All Domains</option>
+          <option value="all">${t('All Domains','Todos los Dominios')}</option>
           ${CURR_CATS.map(c=>`<option value="${c.id}" ${CURR_LIB_CAT===c.id?'selected':''}>${c.icon} ${esc(c.label)}</option>`).join('')}
         </select>
       </div>
@@ -952,27 +954,27 @@ function activityLibraryView(defaultAge) {
             <b style="font-size:.88rem;color:var(--night)">${esc(catInfo?.label||catId)}</b>
             <span class="tag" style="background:${ageInfo?.color||'#EEE'};color:var(--night)">${esc(ageInfo?.label||ak)}</span>
             <span class="tag">&#128337; ${a.dur} min</span>
-            <span class="tag">Difficulty ${a.diff}/5</span>
+            <span class="tag">${t('Difficulty','Dificultad')} ${a.diff}/5</span>
           </div>
           <h4 style="margin:0 0 3px">${esc(a.title)}</h4>
           <p class="soft" style="font-size:.83rem;margin:0 0 6px">&#127919; ${esc(a.obj)}</p>
           <details>
-            <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">&#128203; View Full Activity</summary>
+            <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">&#128203; ${t('View Full Activity','Ver Actividad Completa')}</summary>
             <div style="padding-top:8px">
-              <p style="font-size:.82rem;margin-bottom:5px"><b>Materials:</b> ${esc((a.mats||[]).join(', '))}</p>
-              <div style="font-size:.82rem;margin-bottom:5px"><b>Steps:</b>
+              <p style="font-size:.82rem;margin-bottom:5px"><b>${t('Materials:','Materiales:')}</b> ${esc((a.mats||[]).join(', '))}</p>
+              <div style="font-size:.82rem;margin-bottom:5px"><b>${t('Steps:','Pasos:')}</b>
                 <ol style="margin:4px 0 0 18px;padding:0">${(a.steps||[]).map(s=>`<li style="margin-bottom:2px">${esc(s)}</li>`).join('')}</ol>
               </div>
-              ${a.qs&&a.qs.length?`<p style="font-size:.82rem;margin-bottom:5px"><b>Ask Children:</b> ${esc(a.qs.join(' | '))}</p>`:''}
-              <p style="font-size:.82rem;margin-bottom:0"><b>&#127807; Benefits:</b> ${esc(a.benefits||'')}</p>
+              ${a.qs&&a.qs.length?`<p style="font-size:.82rem;margin-bottom:5px"><b>${t('Ask Children:','Preguntas para los Ninos:')}</b> ${esc(a.qs.join(' | '))}</p>`:''}
+              <p style="font-size:.82rem;margin-bottom:0"><b>&#127807; ${t('Benefits:','Beneficios:')}</b> ${esc(a.benefits||'')}</p>
             </div>
           </details>
         </div>`;
       });
     });
   });
-  if (!count) h += `<div class="empty">No activities found for this filter.</div>`;
-  else h = `<p class="soft" style="font-size:.83rem;margin-bottom:10px">${count} activit${count===1?'y':'ies'} found</p>` + h;
+  if (!count) h += `<div class="empty">${t('No activities found for this filter.','No se encontraron actividades para este filtro.')}</div>`;
+  else h = `<p class="soft" style="font-size:.83rem;margin-bottom:10px">${count} ${count===1?t('activity found','actividad encontrada'):t('activities found','actividades encontradas')}</p>` + h;
   return h;
 }
 
@@ -984,7 +986,7 @@ function quickMilestoneWidget(childId, ageKey) {
   const milestoneData = MILESTONES_DB[ageKey] || {};
   const childMilestones = getMilestones(childId);
   let h = `<div class="card" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:10px">&#127919; Quick Milestone Update</p>`;
+    <p class="lead" style="margin-bottom:10px">&#127919; ${t('Quick Milestone Update','Actualizacion Rapida de Hitos')}</p>`;
   const cat = CURR_CATS[0]; // show language by default
   const skills = (milestoneData[cat.id] || []).slice(0, 3);
   skills.forEach(m => {
@@ -995,11 +997,11 @@ function quickMilestoneWidget(childId, ageKey) {
       <div style="display:flex;gap:4px;flex-wrap:wrap">
         ${ML_LEVELS.map((l,i)=>`<button class="mini-btn ${l===lvl?'success':'ghost'}"
           onclick="saveChildMilestoneEntry('${childId}','${cat.id}','${m.id}','${l}')"
-          style="font-size:.72rem;padding:3px 8px">${esc(l)}</button>`).join('')}
+          style="font-size:.72rem;padding:3px 8px">${esc(mlLabel(l))}</button>`).join('')}
       </div>
     </div>`;
   });
-  h += `<button class="btn btn-teal" onclick="CURR_SUB='milestones';renderPortal()">View All Milestones &#8594;</button></div>`;
+  h += `<button class="btn btn-teal" onclick="CURR_SUB='milestones';renderPortal()">${t('View All Milestones','Ver Todos los Hitos')} &#8594;</button></div>`;
   return h;
 }
 
@@ -1012,7 +1014,7 @@ function fullMilestoneTracker(childId, ageKey, canEdit) {
 
   /* Progress Overview */
   h += `<div class="card" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:10px">Development Progress — ${child ? esc(child.name) : ''}</p>
+    <p class="lead" style="margin-bottom:10px">${t('Development Progress','Progreso del Desarrollo')} — ${child ? esc(child.name) : ''}</p>
     ${CURR_CATS.map(cat => {
       const pct = progress[cat.id] || 0;
       return `<div style="margin-bottom:10px">
@@ -1044,13 +1046,13 @@ function fullMilestoneTracker(childId, ageKey, canEdit) {
             const active = l === lvl;
             const past   = i <= lvlIdx;
             if (!canEdit) {
-              return `<span style="padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:${active?ML_COLORS[i]:'#F5F5F5'};color:${active?'#333':'#AAA'}">${esc(l)}</span>`;
+              return `<span style="padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:${active?ML_COLORS[i]:'#F5F5F5'};color:${active?'#333':'#AAA'}">${esc(mlLabel(l))}</span>`;
             }
             return `<button class="mini-btn" style="font-size:.72rem;padding:3px 9px;background:${active?ML_COLORS[i]:'#F5F5F5'};border-color:${active?'#999':'#DDD'};color:${active?'#333':'#AAA'}"
-              onclick="saveChildMilestoneEntry('${childId}','${cat.id}','${m.id}','${l}')">${esc(l)}</button>`;
+              onclick="saveChildMilestoneEntry('${childId}','${cat.id}','${m.id}','${l}')">${esc(mlLabel(l))}</button>`;
           }).join('')}
         </div>
-        ${tracked && tracked.date ? `<p style="font-size:.72rem;color:var(--muted);margin:3px 0 0">Last assessed: ${esc(tracked.date)}</p>` : ''}
+        ${tracked && tracked.date ? `<p style="font-size:.72rem;color:var(--muted);margin:3px 0 0">${t('Last assessed:','Ultima evaluacion:')} ${esc(tracked.date)}</p>` : ''}
       </div>`;
     });
     h += `</div>`;
@@ -1066,16 +1068,16 @@ function teacherNoteWidget(childId, date) {
   const existing = getTeacherNote(childId, date);
   const child = DB.children.find(c => c.id === childId);
   return `<div class="card" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:10px">&#128203; Teacher Notes — ${child ? esc(child.name) : ''}</p>
-    <div class="field"><label>&#11088; Strengths Observed Today</label>
-      <textarea id="tn-strengths" placeholder="What did this child do well today?">${esc((existing||{}).strengths||'')}</textarea></div>
-    <div class="field"><label>&#127919; Areas Needing Support</label>
-      <textarea id="tn-areas" placeholder="Where does this child need additional help or encouragement?">${esc((existing||{}).areas||'')}</textarea></div>
-    <div class="field"><label>&#128149; Positive Moments to Share</label>
-      <textarea id="tn-moments" placeholder="A special moment, interaction, or achievement to share with the family...">${esc((existing||{}).moments||'')}</textarea></div>
-    <div class="field"><label>&#127968; Recommendations for Home</label>
-      <textarea id="tn-recs" placeholder="What can the family do at home to support learning?">${esc((existing||{}).recs||'')}</textarea></div>
-    <button class="btn btn-teal" onclick="saveTeacherCurrNote('${childId}','${date}')">&#9989; Save Notes</button>
+    <p class="lead" style="margin-bottom:10px">&#128203; ${t('Teacher Notes','Notas del Maestro')} — ${child ? esc(child.name) : ''}</p>
+    <div class="field"><label>&#11088; ${t('Strengths Observed Today','Fortalezas Observadas Hoy')}</label>
+      <textarea id="tn-strengths" placeholder="${t('What did this child do well today?','Que hizo bien este nino hoy?')}">${esc((existing||{}).strengths||'')}</textarea></div>
+    <div class="field"><label>&#127919; ${t('Areas Needing Support','Areas que Necesitan Apoyo')}</label>
+      <textarea id="tn-areas" placeholder="${t('Where does this child need additional help or encouragement?','Donde necesita este nino mas ayuda o motivacion?')}">${esc((existing||{}).areas||'')}</textarea></div>
+    <div class="field"><label>&#128149; ${t('Positive Moments to Share','Momentos Positivos para Compartir')}</label>
+      <textarea id="tn-moments" placeholder="${t('A special moment, interaction, or achievement to share with the family...','Un momento especial, interaccion o logro para compartir con la familia...')}">${esc((existing||{}).moments||'')}</textarea></div>
+    <div class="field"><label>&#127968; ${t('Recommendations for Home','Recomendaciones para el Hogar')}</label>
+      <textarea id="tn-recs" placeholder="${t('What can the family do at home to support learning?','Que puede hacer la familia en casa para apoyar el aprendizaje?')}">${esc((existing||{}).recs||'')}</textarea></div>
+    <button class="btn btn-teal" onclick="saveTeacherCurrNote('${childId}','${date}')">&#9989; ${t('Save Notes','Guardar Notas')}</button>
     <div class="form-msg" id="tn-msg"></div>
   </div>`;
 }
@@ -1086,27 +1088,27 @@ function teacherNoteWidget(childId, date) {
 
 function aiGeneratorView(defaultAge) {
   let h = `<div class="card" style="margin-bottom:14px">
-    <p class="lead">&#9889; AI Curriculum Generator</p>
-    <p class="soft" style="font-size:.85rem;margin-bottom:12px">Generate a complete, research-based daily lesson plan aligned to developmental milestones and your weekly theme.</p>
-    <div class="field"><label>Age Group</label>
+    <p class="lead">&#9889; ${t('AI Curriculum Generator','Generador de Curriculo IA')}</p>
+    <p class="soft" style="font-size:.85rem;margin-bottom:12px">${t('Generate a complete, research-based daily lesson plan aligned to developmental milestones and your weekly theme.','Genera un plan de clase diario completo basado en investigacion, alineado con los hitos del desarrollo y el tema semanal.')}</p>
+    <div class="field"><label>${t('Age Group','Grupo de Edad')}</label>
       <select id="gen-age">
         ${Object.entries(CURR_AGE_INFO).map(([k,v])=>`<option value="${k}" ${k===defaultAge?'selected':''}>${esc(v.label)} (${esc(v.range)})</option>`).join('')}
       </select>
     </div>
-    <div class="field"><label>Weekly Learning Theme</label>
+    <div class="field"><label>${t('Weekly Learning Theme','Tema Semanal de Aprendizaje')}</label>
       <select id="gen-theme">
         ${CURR_THEMES.map(th=>`<option value="${esc(th)}">${esc(th)}</option>`).join('')}
       </select>
     </div>
-    <button class="btn btn-night" onclick="runCurriculumGenerator()">&#9889; Generate Lesson Plan</button>
+    <button class="btn btn-night" onclick="runCurriculumGenerator()">&#9889; ${t('Generate Lesson Plan','Generar Plan de Clase')}</button>
   </div>`;
 
   if (CURR_GEN_RESULT) {
     const result = CURR_GEN_RESULT;
     const ageInfo = CURR_AGE_INFO[result.ageKey] || {};
     h += `<div class="card t-gold" style="margin-bottom:14px">
-      <h3 style="margin:0 0 4px">&#127775; Generated Lesson Plan</h3>
-      <p class="soft" style="font-size:.83rem;margin:0">${esc(ageInfo.label)} &middot; Theme: <b>${esc(result.theme)}</b></p>
+      <h3 style="margin:0 0 4px">&#127775; ${t('Generated Lesson Plan','Plan de Clase Generado')}</h3>
+      <p class="soft" style="font-size:.83rem;margin:0">${esc(ageInfo.label)} &middot; ${t('Theme:','Tema:')} <b>${esc(result.theme)}</b></p>
     </div>`;
     result.activities.forEach(entry => {
       const catInfo = CURR_CATS.find(c => c.id === entry.catId) || {};
@@ -1122,14 +1124,14 @@ function aiGeneratorView(defaultAge) {
         <h4 style="margin:0 0 3px">${esc(act_obj.title)}</h4>
         <p class="soft" style="font-size:.83rem;margin:0 0 6px">&#127919; ${esc(act_obj.obj)}</p>
         <details>
-          <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">View Full Activity</summary>
+          <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">${t('View Full Activity','Ver Actividad Completa')}</summary>
           <div style="padding-top:8px">
-            <p style="font-size:.82rem;margin-bottom:5px"><b>Materials:</b> ${esc((act_obj.mats||[]).join(', '))}</p>
-            <div style="font-size:.82rem;margin-bottom:5px"><b>Steps:</b>
+            <p style="font-size:.82rem;margin-bottom:5px"><b>${t('Materials:','Materiales:')}</b> ${esc((act_obj.mats||[]).join(', '))}</p>
+            <div style="font-size:.82rem;margin-bottom:5px"><b>${t('Steps:','Pasos:')}</b>
               <ol style="margin:4px 0 0 18px;padding:0">${(act_obj.steps||[]).map(s=>`<li>${esc(s)}</li>`).join('')}</ol>
             </div>
-            ${act_obj.qs&&act_obj.qs.length?`<p style="font-size:.82rem;margin-bottom:5px"><b>Ask Children:</b> ${esc(act_obj.qs.join(' | '))}</p>`:''}
-            <p style="font-size:.82rem;margin-bottom:0"><b>Benefits:</b> ${esc(act_obj.benefits||'')}</p>
+            ${act_obj.qs&&act_obj.qs.length?`<p style="font-size:.82rem;margin-bottom:5px"><b>${t('Ask Children:','Preguntas para los Ninos:')}</b> ${esc(act_obj.qs.join(' | '))}</p>`:''}
+            <p style="font-size:.82rem;margin-bottom:0"><b>${t('Benefits:','Beneficios:')}</b> ${esc(act_obj.benefits||'')}</p>
           </div>
         </details>
       </div>`;
@@ -1158,7 +1160,7 @@ function setCurrActivityNote(planId, idx, note) {
 }
 
 function regeneratePlan(classId, date) {
-  if (!confirm('Regenerate today\'s lesson plan? Current activity notes will be lost.')) return;
+  if (!confirm(t("Regenerate today's lesson plan? Current activity notes will be lost.","Regenerar el plan de hoy? Se perderan las notas de actividades."))) return;
   DB.curriculum.plans = DB.curriculum.plans.filter(p => !(p.classId === classId && p.date === date));
   saveDB();
   renderPortal();
@@ -1210,7 +1212,7 @@ function runCurriculumGenerator() {
 
 function fmtDateC(s) {
   if (!s) return '';
-  try { return new Date(s + 'T00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); }
+  try { return new Date(s + 'T00:00').toLocaleDateString(typeof LANG !== 'undefined' && LANG === 'es' ? 'es-US' : 'en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' }); }
   catch(e) { return s; }
 }
 
@@ -1489,6 +1491,8 @@ const SUCCESS_METRICS = [
 ];
 
 const SM_LEVELS = ['Not Yet', 'Beginning', 'Developing', 'Consistent', 'Exceptional'];
+const SM_LEVELS_ES = ['Aun no', 'Iniciando', 'En desarrollo', 'Consistente', 'Excepcional'];
+function smLabel(l) { const i = SM_LEVELS.indexOf(l); return typeof LANG !== 'undefined' && LANG === 'es' && i >= 0 ? SM_LEVELS_ES[i] : l; }
 const SM_COLORS = ['#DDD', '#F7C4C4', '#FFE08A', '#A8D8A8', '#4ECDC4'];
 
 function getSuccessMetrics(childId) {
@@ -1510,10 +1514,10 @@ function successMetricsView(childId, canEdit) {
   const child = DB.children.find(c => c.id === childId);
   const metrics = getSuccessMetrics(childId);
   let h = `<div class="card" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:6px">&#11088; Success Metrics — ${child ? esc(child.name) : ''}
-      <span class="soft" style="font-size:.78rem;font-weight:400"> — Beyond Academic Performance</span>
+    <p class="lead" style="margin-bottom:6px">&#11088; ${t('Success Metrics','Metricas de Exito')} — ${child ? esc(child.name) : ''}
+      <span class="soft" style="font-size:.78rem;font-weight:400"> — ${t('Beyond Academic Performance','Mas Alla del Rendimiento Academico')}</span>
     </p>
-    <p style="font-size:.82rem;color:var(--muted);margin:0 0 14px">We measure success through creativity, leadership, resilience, and character — not just academic scores.</p>`;
+    <p style="font-size:.82rem;color:var(--muted);margin:0 0 14px">${t('We measure success through creativity, leadership, resilience, and character — not just academic scores.','Medimos el exito en creatividad, liderazgo, resiliencia y caracter, no solo en calificaciones.')}</p>`;
   SUCCESS_METRICS.forEach(m => {
     const tracked = metrics.find(x => x.metricId === m.id);
     const lvl = tracked ? tracked.level : null;
@@ -1529,17 +1533,17 @@ function successMetricsView(childId, canEdit) {
       h += `<div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">
         ${SM_LEVELS.map((l, i) =>
           `<button class="mini-btn" style="font-size:.7rem;padding:3px 8px;background:${l===lvl?SM_COLORS[i]:'#F5F5F5'};border-color:${l===lvl?'#999':'#DDD'};color:${l===lvl?'#333':'#AAA'}"
-            onclick="saveSuccessMetric('${childId}','${m.id}','${l}')">${esc(l)}</button>`
+            onclick="saveSuccessMetric('${childId}','${m.id}','${l}')">${esc(smLabel(l))}</button>`
         ).join('')}
       </div>`;
       h += `<input style="width:100%;font-size:.78rem;border:1.5px solid #EAE2DA;border-radius:8px;padding:6px 10px"
-        placeholder="Observation notes (optional)..."
+        placeholder="${t('Observation notes (optional)...','Notas de observacion (opcional)...')}"
         value="${esc(tracked && tracked.note ? tracked.note : '')}"
         onchange="(function(el){const t=DB.curriculum.successMetrics.find(x=>x.childId==='${childId}'&&x.metricId==='${m.id}');if(t)t.note=el.value;saveDB();})(this)">`;
     } else {
       h += `<div style="display:flex;gap:4px;flex-wrap:wrap">
         ${SM_LEVELS.map((l, i) =>
-          `<span style="padding:2px 10px;border-radius:20px;font-size:.7rem;font-weight:700;background:${l===lvl?SM_COLORS[i]:'#F5F5F5'};color:${l===lvl?'#333':'#AAA'}">${esc(l)}</span>`
+          `<span style="padding:2px 10px;border-radius:20px;font-size:.7rem;font-weight:700;background:${l===lvl?SM_COLORS[i]:'#F5F5F5'};color:${l===lvl?'#333':'#AAA'}">${esc(smLabel(l))}</span>`
         ).join('')}
       </div>`;
       if (tracked && tracked.note) {
@@ -1622,15 +1626,15 @@ const MONTHLY_PATHWAYS = [
 function monthlyPathwayView() {
   const currentMonth = new Date().toLocaleString('en-US', {month: 'long'});
   let h = `<div class="card" style="margin-bottom:14px">
-    <p class="lead">&#128197; Monthly Learning Pathways</p>
-    <p style="font-size:.85rem;color:var(--muted);margin:0">A 10-month learning journey building whole-child development.</p>
+    <p class="lead">&#128197; ${t('Monthly Learning Pathways','Rutas de Aprendizaje Mensual')}</p>
+    <p style="font-size:.85rem;color:var(--muted);margin:0">${t('A 10-month learning journey building whole-child development.','Un recorrido de aprendizaje de 10 meses para el desarrollo integral del nino.')}</p>
   </div>`;
   MONTHLY_PATHWAYS.forEach(mp => {
     const isCurrent = mp.month === currentMonth;
     h += `<div class="card" style="margin-bottom:10px;border-left:5px solid ${isCurrent?'var(--gold)':'#EAE2DA'}">
       <div style="display:flex;align-items:flex-start;gap:8px;flex-wrap:wrap;margin-bottom:6px">
         <b style="color:var(--night)">${esc(mp.month)}</b>
-        ${isCurrent ? '<span class="tag" style="background:var(--gold);color:#fff">Current Month</span>' : ''}
+        ${isCurrent ? `<span class="tag" style="background:var(--gold);color:#fff">${t('Current Month','Mes Actual')}</span>` : ''}
       </div>
       <p style="font-weight:700;color:var(--ink);margin:0 0 4px">${esc(mp.theme)}</p>
       <p style="font-size:.82rem;color:var(--muted);margin:0 0 8px">${esc(mp.focus)}</p>
@@ -1641,7 +1645,7 @@ function monthlyPathwayView() {
         }).join('')}
       </div>
       <details>
-        <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">&#128197; Monthly Highlights</summary>
+        <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">&#128197; ${t('Monthly Highlights','Puntos Destacados del Mes')}</summary>
         <ul style="margin:8px 0 0 18px;padding:0;font-size:.82rem">
           ${mp.highlights.map(h => `<li style="margin-bottom:3px">${esc(h)}</li>`).join('')}
         </ul>
@@ -1665,7 +1669,7 @@ function parentLearningReport(childId, date) {
   const smMetrics = getSuccessMetrics(childId);
 
   let h = `<div class="card t-gold" style="margin-bottom:14px">
-    <h3 style="margin:0 0 4px">&#127775; ${esc(child.name)}'s Learning Report</h3>
+    <h3 style="margin:0 0 4px">&#127775; ${esc(child.name)} — ${t('Learning Report','Reporte de Aprendizaje')}</h3>
     <p class="soft" style="font-size:.83rem;margin:0">${esc(date ? new Date(date + 'T00:00').toLocaleDateString('en-US', {weekday:'long',month:'long',day:'numeric',year:'numeric'}) : 'Today')}</p>
   </div>`;
 
@@ -1674,7 +1678,7 @@ function parentLearningReport(childId, date) {
     const done = plan.activities.filter(a => a.status === 'completed' || a.status === 'partial');
     if (done.length) {
       h += `<div class="card" style="margin-bottom:10px">
-        <p class="lead" style="margin-bottom:8px">&#127919; What We Did Today</p>`;
+        <p class="lead" style="margin-bottom:8px">&#127919; ${t('What We Did Today','Lo Que Hicimos Hoy')}</p>`;
       done.forEach(entry => {
         const catInfo = CURR_CATS.find(c => c.id === entry.catId);
         const actPool = (ACTIVITY_LIBRARY[ageKey] || {})[entry.catId] || [];
@@ -1683,11 +1687,11 @@ function parentLearningReport(childId, date) {
         h += `<div style="margin-bottom:10px;padding:10px;border-radius:10px;background:#F8F8F8;border:1.5px solid #EAE2DA">
           <div style="display:flex;gap:6px;align-items:center;margin-bottom:4px">
             ${catInfo ? `<span style="color:${catInfo.color};font-size:1rem">${catInfo.icon}</span><b style="font-size:.9rem;color:var(--night)">${esc(catInfo.label)}</b>` : ''}
-            <span class="tag ${entry.status==='completed'?'paid':'unpaid'}" style="margin-left:auto">${entry.status==='completed'?'&#9989; Done':'&#9888; Partial'}</span>
+            <span class="tag ${entry.status==='completed'?'paid':'unpaid'}" style="margin-left:auto">${entry.status==='completed'?'&#9989; '+t('Done','Listo'):'&#9888; '+t('Partial','Parcial')}</span>
           </div>
           <b style="font-size:.95rem;color:var(--ink)">${esc(a.title)}</b>
-          <p style="font-size:.82rem;color:var(--muted);margin:2px 0 0">Skills built: ${esc(a.benefits)}</p>
-          ${entry.notes ? `<p style="font-size:.8rem;font-style:italic;color:var(--ink);margin:4px 0 0">Teacher note: ${esc(entry.notes)}</p>` : ''}
+          <p style="font-size:.82rem;color:var(--muted);margin:2px 0 0">${t('Skills built:','Habilidades desarrolladas:')} ${esc(a.benefits)}</p>
+          ${entry.notes ? `<p style="font-size:.8rem;font-style:italic;color:var(--ink);margin:4px 0 0">${t('Teacher note:','Nota del maestro:')} ${esc(entry.notes)}</p>` : ''}
         </div>`;
       });
       h += `</div>`;
@@ -1697,18 +1701,18 @@ function parentLearningReport(childId, date) {
   // Teacher notes
   if (note) {
     h += `<div class="card t-teal" style="margin-bottom:10px">
-      <p class="lead" style="margin-bottom:8px">&#128203; Teacher's Observations</p>
-      ${note.strengths ? `<div style="margin-bottom:8px"><b>&#11088; What ${esc(child.name.split(' ')[0])} did well:</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.strengths)}</p></div>` : ''}
-      ${note.moments  ? `<div style="margin-bottom:8px"><b>&#128149; A special moment today:</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.moments)}</p></div>` : ''}
-      ${note.areas    ? `<div style="margin-bottom:8px"><b>&#127919; Where we are supporting growth:</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.areas)}</p></div>` : ''}
-      ${note.recs     ? `<div><b>&#127968; Try at home tonight:</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.recs)}</p></div>` : ''}
+      <p class="lead" style="margin-bottom:8px">&#128203; ${t("Teacher's Observations","Observaciones del Maestro")}</p>
+      ${note.strengths ? `<div style="margin-bottom:8px"><b>&#11088; ${t('What','Lo que')} ${esc(child.name.split(' ')[0])} ${t('did well:','hizo bien:')}</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.strengths)}</p></div>` : ''}
+      ${note.moments  ? `<div style="margin-bottom:8px"><b>&#128149; ${t('A special moment today:','Un momento especial hoy:')}</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.moments)}</p></div>` : ''}
+      ${note.areas    ? `<div style="margin-bottom:8px"><b>&#127919; ${t('Where we are supporting growth:','Donde estamos apoyando el crecimiento:')}</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.areas)}</p></div>` : ''}
+      ${note.recs     ? `<div><b>&#127968; ${t('Try at home tonight:','Para practicar en casa esta noche:')}</b><p style="font-size:.88rem;margin:2px 0 0">${esc(note.recs)}</p></div>` : ''}
     </div>`;
   }
 
   // Success Metrics snapshot
   if (smMetrics.length) {
     h += `<div class="card" style="margin-bottom:10px">
-      <p class="lead" style="margin-bottom:8px">&#11088; Growth Areas We're Tracking</p>`;
+      <p class="lead" style="margin-bottom:8px">&#11088; ${t("Growth Areas We're Tracking","Areas de Crecimiento que Seguimos")}</p>`;
     smMetrics.slice(0, 4).forEach(sm => {
       const metric = SUCCESS_METRICS.find(m => m.id === sm.metricId);
       if (!metric) return;
@@ -1724,13 +1728,13 @@ function parentLearningReport(childId, date) {
   // Development progress summary
   const avgProgress = Math.round(Object.values(progress).reduce((s, v) => s + v, 0) / Math.max(Object.keys(progress).length, 1));
   h += `<div class="card" style="margin-bottom:10px">
-    <p class="lead" style="margin-bottom:8px">&#128202; Overall Development Progress</p>
+    <p class="lead" style="margin-bottom:8px">&#128202; ${t('Overall Development Progress','Progreso General del Desarrollo')}</p>
     <div style="background:#EAE2DA;border-radius:999px;height:18px;overflow:hidden;margin-bottom:8px">
       <div style="background:var(--teal);width:${avgProgress}%;height:100%;border-radius:999px;transition:width .5s;display:flex;align-items:center;justify-content:center">
         ${avgProgress > 20 ? `<span style="color:#fff;font-size:.7rem;font-weight:700">${avgProgress}%</span>` : ''}
       </div>
     </div>
-    <p style="font-size:.8rem;color:var(--muted);margin:0;text-align:center">Based on developmental milestones assessed by ${esc(child.name.split(' ')[0])}'s teacher</p>
+    <p style="font-size:.8rem;color:var(--muted);margin:0;text-align:center">${t('Based on developmental milestones assessed by','Basado en hitos del desarrollo evaluados por el maestro de')} ${esc(child.name.split(' ')[0])}</p>
   </div>`;
 
   return h;

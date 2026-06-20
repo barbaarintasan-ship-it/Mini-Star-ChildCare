@@ -416,6 +416,8 @@ const LIFE_READINESS = [
 ];
 
 const RDNS_LEVELS = ['Not Yet', 'Emerging', 'Developing', 'Proficient'];
+const RDNS_LEVELS_ES = ['Aún no', 'Emergente', 'En Desarrollo', 'Competente'];
+function rdnsLabel(l) { const i = RDNS_LEVELS.indexOf(l); return typeof LANG !== 'undefined' && LANG === 'es' && i >= 0 ? RDNS_LEVELS_ES[i] : l; }
 const RDNS_COLORS = ['#EEE', '#FFE08A', '#A8D8F0', '#A8D8A8'];
 
 /* ══════════════════════════════════════════════
@@ -509,8 +511,8 @@ function childrenForCurrentTeacher() {
 
 function roadmapView(isAdmin) {
   let h = `<div class="card t-gold" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#127919; Age-Specific Learning Roadmaps</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Evidence-based developmental pathways from birth to 12 years, covering all domains of learning.</p>
+    <p class="lead" style="margin-bottom:4px">&#127919; ${t('Age-Specific Learning Roadmaps','Rutas de Aprendizaje por Edad')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t('Evidence-based developmental pathways from birth to 12 years, covering all domains of learning.','Rutas de desarrollo basadas en evidencia desde el nacimiento hasta los 12 años, abarcando todos los dominios de aprendizaje.')}</p>
   </div>`;
 
   AGE_ROADMAPS.forEach(band => {
@@ -521,14 +523,14 @@ function roadmapView(isAdmin) {
         <span class="tag" style="margin-left:auto;background:rgba(0,0,0,.12);color:var(--night)">${esc(band.ageRange)}</span>
       </summary>
       <div style="padding:14px;border:2px solid ${band.color};border-top:none;border-radius:0 0 12px 12px;margin-top:-4px">
-        ${_rdSection('&#127919; Learning Goals', band.learningGoals, '#4A8BC4')}
-        ${_rdSection('&#11088; Life Skills', band.lifeSkills, '#4A9E4A')}
-        ${_rdSection('&#129504; Thinking Skills', band.thinkingSkills, '#8B4AB8')}
-        ${_rdSection('&#10084; Social Skills', band.socialSkills, '#E86B6B')}
-        ${_rdSection('&#128200; Leadership', band.leadershipSkills, '#C8960A')}
-        ${_rdSection('&#128180; Financial Literacy', band.financialLiteracy, '#2E9E8A')}
-        ${_rdSection('&#127981; Entrepreneurship', band.entrepreneurship, '#B87828')}
-        ${_rdSection('&#127912; Creativity Goals', band.creativityGoals, '#D45AA0')}
+        ${_rdSection('&#127919; '+t('Learning Goals','Metas de Aprendizaje'), band.learningGoals, '#4A8BC4')}
+        ${_rdSection('&#11088; '+t('Life Skills','Habilidades para la Vida'), band.lifeSkills, '#4A9E4A')}
+        ${_rdSection('&#129504; '+t('Thinking Skills','Habilidades de Pensamiento'), band.thinkingSkills, '#8B4AB8')}
+        ${_rdSection('&#10084; '+t('Social Skills','Habilidades Sociales'), band.socialSkills, '#E86B6B')}
+        ${_rdSection('&#128200; '+t('Leadership','Liderazgo'), band.leadershipSkills, '#C8960A')}
+        ${_rdSection('&#128180; '+t('Financial Literacy','Educación Financiera'), band.financialLiteracy, '#2E9E8A')}
+        ${_rdSection('&#127981; '+t('Entrepreneurship','Emprendimiento'), band.entrepreneurship, '#B87828')}
+        ${_rdSection('&#127912; '+t('Creativity Goals','Metas de Creatividad'), band.creativityGoals, '#D45AA0')}
       </div>
     </details>`;
   });
@@ -552,8 +554,8 @@ function _rdSection(title, items, color) {
 function entPathwayView() {
   const ageKey = typeof getAgeKey === 'function' ? getAgeKey(CU.classId) : 'preschool';
   let h = `<div class="card t-gold" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#127981; Progressive Entrepreneurship Pathway</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Developing value-creation, innovation, and business thinking from age 3 to 12.</p>
+    <p class="lead" style="margin-bottom:4px">&#127981; ${t('Progressive Entrepreneurship Pathway','Ruta Progresiva de Emprendimiento')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t('Developing value-creation, innovation, and business thinking from age 3 to 12.','Desarrollando el pensamiento creativo de valor, innovación y negocios de 3 a 12 años.')}</p>
   </div>`;
 
   ENT_PATHWAY.forEach(stage => {
@@ -563,18 +565,18 @@ function entPathwayView() {
         <span style="font-size:1.3rem">${stage.icon}</span>
         <b style="color:var(--night)">${esc(stage.label)}</b>
         <span class="tag" style="background:${stage.color};color:var(--night)">${esc(stage.ageRange)}</span>
-        ${isCurrent ? '<span class="tag" style="background:var(--gold);color:#fff">&#9733; Your Class</span>' : ''}
+        ${isCurrent ? `<span class="tag" style="background:var(--gold);color:#fff">&#9733; ${t('Your Class','Tu Clase')}</span>` : ''}
       </div>
       <p style="font-style:italic;font-size:.85rem;color:var(--muted);margin:0 0 8px">"${esc(stage.concept)}"</p>
-      <p style="font-weight:700;font-size:.85rem;margin:0 0 5px;color:var(--ink)">Milestones:</p>
+      <p style="font-weight:700;font-size:.85rem;margin:0 0 5px;color:var(--ink)">${t('Milestones:','Hitos:')}</p>
       <ul style="margin:0 0 10px 16px;padding:0">
         ${stage.milestones.map(m=>`<li style="font-size:.82rem;margin-bottom:3px">${esc(m)}</li>`).join('')}
       </ul>
-      <p style="font-weight:700;font-size:.85rem;margin:0 0 5px;color:var(--ink)">Activities:</p>
+      <p style="font-weight:700;font-size:.85rem;margin:0 0 5px;color:var(--ink)">${t('Activities:','Actividades:')}</p>
       ${stage.activities.map(a=>`<div style="padding:8px 10px;background:#F8F8F8;border-radius:8px;margin-bottom:6px">
         <b style="font-size:.88rem">${esc(a.title)}</b>
         <p style="font-size:.8rem;color:var(--muted);margin:2px 0">${esc(a.desc)}</p>
-        <span style="font-size:.75rem;color:var(--teal);font-weight:700">Skills: ${esc(a.skills)}</span>
+        <span style="font-size:.75rem;color:var(--teal);font-weight:700">${t('Skills:','Habilidades:')} ${esc(a.skills)}</span>
       </div>`).join('')}
     </div>`;
   });
@@ -587,11 +589,11 @@ function flTeacherView() {
   C2_PORT_CHILD = selChild;
 
   let h = `<div class="card t-teal" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#128180; Financial Literacy Framework</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Track each child's financial literacy milestones across 6 core domains.</p>
+    <p class="lead" style="margin-bottom:4px">&#128180; ${t('Financial Literacy Framework','Marco de Educación Financiera')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t("Track each child's financial literacy milestones across 6 core domains.","Monitorea los hitos de educación financiera de cada niño en 6 dominios principales.")}</p>
   </div>`;
 
-  if (!kids.length) return h + '<div class="empty">No children in your class.</div>';
+  if (!kids.length) return h + `<div class="empty">${t('No children in your class.','No hay niños en tu clase.')}</div>`;
 
   if (kids.length > 1) {
     h += `<div class="subtabs" style="padding-top:0">${kids.map(k=>
@@ -600,10 +602,10 @@ function flTeacherView() {
   }
 
   const child = kids.find(k=>k.id===selChild);
-  if (!child) return h + '<div class="empty">Select a child.</div>';
+  if (!child) return h + `<div class="empty">${t('Select a child.','Selecciona un niño.')}</div>`;
 
   h += `<div class="card" style="margin-bottom:10px;border-left:5px solid var(--gold)">
-    <b>${esc(child.name)}</b> — Financial Literacy Progress
+    <b>${esc(child.name)}</b> — ${t('Financial Literacy Progress','Progreso de Educación Financiera')}
   </div>`;
 
   FL_DOMAINS.forEach(domain => {
@@ -613,7 +615,7 @@ function flTeacherView() {
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
         <span style="font-size:1.1rem">${domain.icon}</span>
         <b style="color:${domain.color}">${esc(domain.label)}</b>
-        <span style="margin-left:auto;font-size:.8rem;color:var(--muted)">Level ${currentLevel} / ${domain.milestones.length}</span>
+        <span style="margin-left:auto;font-size:.8rem;color:var(--muted)">${t('Level','Nivel')} ${currentLevel} / ${domain.milestones.length}</span>
       </div>
       <div style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px">
         ${domain.milestones.map((m,i) => `<button onclick="saveFLMilestone('${child.id}','${domain.id}',${i+1})"
@@ -622,9 +624,9 @@ function flTeacherView() {
         </button>`).join('')}
       </div>
       ${currentLevel > 0 ? `<div style="padding:8px;background:#F8F8F8;border-radius:8px;font-size:.82rem">
-        <b>Current:</b> ${esc(domain.milestones[currentLevel-1].desc)}
+        <b>${t('Current:','Actual:')}</b> ${esc(domain.milestones[currentLevel-1].desc)}
         <span class="tag" style="margin-left:8px;background:#EEE">${esc(domain.milestones[currentLevel-1].age)}</span>
-      </div>` : '<p style="font-size:.8rem;color:var(--muted);margin:0">Not yet assessed</p>'}
+      </div>` : `<p style="font-size:.8rem;color:var(--muted);margin:0">${t('Not yet assessed','Aún no evaluado')}</p>`}
     </div>`;
   });
   return h;
@@ -636,11 +638,11 @@ function leadershipTeacherView() {
   C2_PORT_CHILD = selChild;
 
   let h = `<div class="card t-night" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px;color:#fff">&#128200; Leadership Development</p>
-    <p style="font-size:.83rem;color:#BFD4FF;margin:0">Track and nurture each child's leadership competencies across 6 key domains.</p>
+    <p class="lead" style="margin-bottom:4px;color:#fff">&#128200; ${t('Leadership Development','Desarrollo del Liderazgo')}</p>
+    <p style="font-size:.83rem;color:#BFD4FF;margin:0">${t("Track and nurture each child's leadership competencies across 6 key domains.","Monitorea y fomenta las competencias de liderazgo de cada niño en 6 dominios clave.")}</p>
   </div>`;
 
-  if (!kids.length) return h + '<div class="empty">No children in your class.</div>';
+  if (!kids.length) return h + `<div class="empty">${t('No children in your class.','No hay niños en tu clase.')}</div>`;
   if (kids.length > 1) {
     h += `<div class="subtabs" style="padding-top:0">${kids.map(k=>
       `<button class="${k.id===selChild?'active':''}" onclick="C2_PORT_CHILD='${k.id}';renderPortal()">${esc(k.name)}</button>`
@@ -656,6 +658,7 @@ function leadershipTeacherView() {
     const current = getLeadershipProgress(child.id, mod.id);
     const indicators = mod.indicators[ageKey] || mod.indicators.preschool || [];
     const levels = ['Not Started', 'Beginning', 'Developing', 'Proficient'];
+    const levelsES = ['No Iniciado', 'Iniciando', 'En Desarrollo', 'Competente'];
     const curLevelIdx = current ? levels.indexOf(current.level) : 0;
 
     h += `<div class="card" style="margin-bottom:10px;border-left:5px solid ${mod.color}">
@@ -665,13 +668,13 @@ function leadershipTeacherView() {
         <span style="margin-left:auto">
           ${levels.map((lv,i) => `<button onclick="saveLeadershipProgress('${child.id}','${mod.id}','${lv}')"
             style="padding:3px 8px;font-size:.7rem;font-weight:700;border-radius:12px;cursor:pointer;border:2px solid ${mod.color};margin-left:3px;background:${curLevelIdx===i?mod.color:'#fff'};color:${curLevelIdx===i?'#fff':mod.color}">
-            ${esc(lv)}
+            ${esc(typeof LANG!=='undefined'&&LANG==='es'?levelsES[i]:lv)}
           </button>`).join('')}
         </span>
       </div>
       <p style="font-size:.8rem;color:var(--muted);margin:0 0 6px;font-style:italic">${esc(mod.desc)}</p>
       ${indicators.length ? `<div style="background:#F8F8F8;padding:8px;border-radius:8px">
-        <p style="font-size:.75rem;font-weight:700;color:var(--night);margin:0 0 4px">Age-specific indicators:</p>
+        <p style="font-size:.75rem;font-weight:700;color:var(--night);margin:0 0 4px">${t('Age-specific indicators:','Indicadores por edad:')}</p>
         <ul style="margin:0 0 0 14px;padding:0">${indicators.map(i=>`<li style="font-size:.78rem;margin-bottom:2px">${esc(i)}</li>`).join('')}</ul>
       </div>` : ''}
     </div>`;
@@ -684,12 +687,12 @@ function ctEngineView() {
   const templates = CT_TEMPLATES[ageKey] || CT_TEMPLATES.preschool;
 
   let h = `<div class="card t-teal" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#129504; Critical Thinking Engine</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">A 6-phase framework that builds evidence-based reasoning from an early age.</p>
+    <p class="lead" style="margin-bottom:4px">&#129504; ${t('Critical Thinking Engine','Motor de Pensamiento Crítico')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t('A 6-phase framework that builds evidence-based reasoning from an early age.','Un marco de 6 fases que desarrolla el razonamiento basado en evidencia desde temprana edad.')}</p>
   </div>`;
 
   h += `<div class="card" style="margin-bottom:14px">
-    <p style="font-weight:700;margin:0 0 10px;color:var(--night)">The 6-Phase Critical Thinking Process</p>
+    <p style="font-weight:700;margin:0 0 10px;color:var(--night)">${t('The 6-Phase Critical Thinking Process','El Proceso de Pensamiento Crítico de 6 Fases')}</p>
     ${CT_PHASES.map((ph,i) => `<div style="display:flex;gap:10px;margin-bottom:8px;align-items:flex-start">
       <div style="min-width:30px;height:30px;background:${ph.color};border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.85rem">${i+1}</div>
       <div style="flex:1">
@@ -701,7 +704,7 @@ function ctEngineView() {
     </div>`).join('')}
   </div>`;
 
-  h += `<p class="lead" style="margin-bottom:8px">&#127775; Example Lesson Templates for Your Class</p>`;
+  h += `<p class="lead" style="margin-bottom:8px">&#127775; ${t('Example Lesson Templates for Your Class','Plantillas de Lecciones para Tu Clase')}</p>`;
   templates.forEach(tmpl => {
     h += `<details style="margin-bottom:10px">
       <summary style="cursor:pointer;background:#F8F8F8;border:2px solid #EAE2DA;border-radius:12px;padding:10px 14px;font-weight:700;list-style:none">
@@ -732,17 +735,17 @@ function pblTeacherView() {
   const completedIds = (DB.curriculum.projects||[]).filter(p=>p.classId===CU.classId).map(p=>p.projectId);
 
   let h = `<div class="card t-gold" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#127919; Project-Based Learning</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Deep learning through real-world projects. Each project connects multiple developmental domains.</p>
+    <p class="lead" style="margin-bottom:4px">&#127919; ${t('Project-Based Learning','Aprendizaje Basado en Proyectos')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t('Deep learning through real-world projects. Each project connects multiple developmental domains.','Aprendizaje profundo mediante proyectos del mundo real. Cada proyecto conecta múltiples dominios del desarrollo.')}</p>
   </div>`;
 
   h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
-    ${[['all','All Ages'],['infants','Infants'],['toddlers','Toddlers'],['preschool','Preschool'],['school_age','School-Age']].map(([k,l])=>
+    ${[['all',t('All Ages','Todas las Edades')],['infants',t('Infants','Infantes')],['toddlers',t('Toddlers','Pequeños')],['preschool',t('Preschool','Preescolar')],['school_age',t('School-Age','Edad Escolar')]].map(([k,l])=>
       `<button class="mini-btn ${C2_PBL_AGE===k?'in':'ghost'}" onclick="C2_PBL_AGE='${k}';renderPortal()">${esc(l)}</button>`
     ).join('')}
   </div>`;
 
-  if (!projects.length) return h + '<div class="empty">No projects for this age group.</div>';
+  if (!projects.length) return h + `<div class="empty">${t('No projects for this age group.','No hay proyectos para este grupo de edad.')}</div>`;
 
   projects.forEach(proj => {
     const done = completedIds.includes(proj.id);
@@ -752,7 +755,7 @@ function pblTeacherView() {
           <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:4px">
             <b style="color:var(--night)">${esc(proj.title)}</b>
             <span class="tag">${esc(proj.ageGroup.replace('_',' '))}</span>
-            ${done ? '<span class="tag paid">&#9989; Completed</span>' : ''}
+            ${done ? `<span class="tag paid">&#9989; ${t('Completed','Completado')}</span>` : ''}
           </div>
           <p style="font-size:.82rem;color:var(--muted);margin:0">${esc(proj.objective)}</p>
         </div>
@@ -761,18 +764,18 @@ function pblTeacherView() {
         ${proj.skills.map(s=>`<span style="background:#F0F4FF;color:var(--night);border-radius:20px;padding:2px 8px;font-size:.7rem;font-weight:700">${esc(s)}</span>`).join('')}
       </div>
       <details>
-        <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">View Full Project Guide</summary>
+        <summary style="cursor:pointer;font-size:.82rem;color:var(--teal);font-weight:700">${t('View Full Project Guide','Ver Guía Completa del Proyecto')}</summary>
         <div style="padding-top:10px">
-          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">Materials:</p>
+          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">${t('Materials:','Materiales:')}</p>
           <p style="font-size:.8rem;margin:0 0 8px">${esc(proj.materials.join(', '))}</p>
-          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">Teacher Steps:</p>
+          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">${t('Teacher Steps:','Pasos del Maestro:')}</p>
           <ol style="margin:0 0 8px 16px;padding:0">${proj.teacherGuide.map(s=>`<li style="font-size:.8rem;margin-bottom:3px">${esc(s)}</li>`).join('')}</ol>
-          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">Assessment Criteria:</p>
+          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">${t('Assessment Criteria:','Criterios de Evaluación:')}</p>
           <ul style="margin:0 0 8px 16px;padding:0">${proj.assessment.map(s=>`<li style="font-size:.8rem;margin-bottom:2px">${esc(s)}</li>`).join('')}</ul>
-          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">Parent Summary (to share):</p>
+          <p style="font-size:.83rem;font-weight:700;margin:0 0 4px">${t('Parent Summary (to share):','Resumen para Padres (para compartir):')}</p>
           <p style="font-size:.8rem;font-style:italic;color:var(--ink);background:#F8F8F8;padding:8px;border-radius:8px;margin:0 0 10px">${esc(proj.parentSummary)}</p>
           <button class="btn ${done?'btn-teal':'btn-gold'}" onclick="markPBLComplete('${proj.id}','${CU.classId}')">
-            ${done ? '&#9989; Mark as Completed Again' : '&#127775; Mark as Completed'}
+            ${done ? `&#9989; ${t('Mark as Completed Again','Marcar como Completado Nuevamente')}` : `&#127775; ${t('Mark as Completed','Marcar como Completado')}`}
           </button>
         </div>
       </details>
@@ -798,11 +801,11 @@ function portfolioTeacherView() {
   C2_PORT_CHILD = selChild;
 
   let h = `<div class="card t-coral" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#128203; Child Portfolio</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Document projects, achievements, milestones, and observations. Parents can see this in their portal.</p>
+    <p class="lead" style="margin-bottom:4px">&#128203; ${t('Child Portfolio','Portafolio del Niño')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t('Document projects, achievements, milestones, and observations. Parents can see this in their portal.','Documenta proyectos, logros, hitos y observaciones. Los padres pueden verlo en su portal.')}</p>
   </div>`;
 
-  if (!kids.length) return h + '<div class="empty">No children in your class.</div>';
+  if (!kids.length) return h + `<div class="empty">${t('No children in your class.','No hay niños en tu clase.')}</div>`;
   if (kids.length > 1) {
     h += `<div class="subtabs" style="padding-top:0">${kids.map(k=>
       `<button class="${k.id===selChild?'active':''}" onclick="C2_PORT_CHILD='${k.id}';renderPortal()">${esc(k.name)}</button>`
@@ -812,7 +815,7 @@ function portfolioTeacherView() {
   const child = kids.find(k=>k.id===selChild);
   if (!child) return h;
 
-  const types = [['all','All'],['achievement','&#127942; Achievement'],['project','&#127919; Project'],['milestone','&#127775; Milestone'],['observation','&#128270; Observation']];
+  const types = [['all',t('All','Todo')],['achievement','&#127942; '+t('Achievement','Logro')],['project','&#127919; '+t('Project','Proyecto')],['milestone','&#127775; '+t('Milestone','Hito')],['observation','&#128270; '+t('Observation','Observación')]];
   h += `<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px">
     ${types.map(([k,l])=>`<button class="mini-btn ${C2_PORT_TYPE===k?'in':'ghost'}" onclick="C2_PORT_TYPE='${k}';renderPortal()">${l}</button>`).join('')}
   </div>`;
@@ -820,25 +823,25 @@ function portfolioTeacherView() {
   const items = getPortfolioItems(child.id, C2_PORT_TYPE);
 
   h += `<div class="card" style="margin-bottom:12px;background:#F8F8F8">
-    <p style="font-weight:700;margin:0 0 8px">&#10133; Add Portfolio Entry for ${esc(child.name.split(' ')[0])}</p>
+    <p style="font-weight:700;margin:0 0 8px">&#10133; ${t('Add Portfolio Entry for','Agregar Entrada al Portafolio de')} ${esc(child.name.split(' ')[0])}</p>
     <div class="field">
-      <label>Type</label>
+      <label>${t('Type','Tipo')}</label>
       <select id="pt-type">
-        <option value="achievement">Achievement</option>
-        <option value="project">Project</option>
-        <option value="milestone">Milestone</option>
-        <option value="observation">Observation</option>
+        <option value="achievement">${t('Achievement','Logro')}</option>
+        <option value="project">${t('Project','Proyecto')}</option>
+        <option value="milestone">${t('Milestone','Hito')}</option>
+        <option value="observation">${t('Observation','Observación')}</option>
       </select>
     </div>
-    <div class="field"><label>Title</label><input id="pt-title" placeholder="e.g., First time writing full name"></div>
-    <div class="field"><label>Description</label><textarea id="pt-desc" rows="3" placeholder="Describe what happened, what the child did, why it matters..."></textarea></div>
-    <div class="field"><label>Skills Demonstrated (comma-separated)</label><input id="pt-skills" placeholder="e.g., Fine Motor, Confidence, Literacy"></div>
-    <button class="btn btn-teal" onclick="submitPortfolioEntry('${child.id}')">&#10133; Add to Portfolio</button>
+    <div class="field"><label>${t('Title','Título')}</label><input id="pt-title" placeholder="${t('e.g., First time writing full name','ej., Primera vez escribiendo su nombre completo')}"></div>
+    <div class="field"><label>${t('Description','Descripción')}</label><textarea id="pt-desc" rows="3" placeholder="${t('Describe what happened, what the child did, why it matters...','Describe lo que ocurrió, lo que el niño hizo, por qué es importante...')}"></textarea></div>
+    <div class="field"><label>${t('Skills Demonstrated (comma-separated)','Habilidades Demostradas (separadas por coma)')}</label><input id="pt-skills" placeholder="${t('e.g., Fine Motor, Confidence, Literacy','ej., Motricidad Fina, Confianza, Lectura')}"></div>
+    <button class="btn btn-teal" onclick="submitPortfolioEntry('${child.id}')">&#10133; ${t('Add to Portfolio','Agregar al Portafolio')}</button>
     <span id="pt-msg" style="font-size:.8rem;margin-left:10px"></span>
   </div>`;
 
   if (!items.length) {
-    h += '<div class="empty">No portfolio entries yet. Add the first one above!</div>';
+    h += `<div class="empty">${t('No portfolio entries yet. Add the first one above!','Aún no hay entradas en el portafolio. ¡Agrega la primera arriba!')}</div>`;
   } else {
     items.slice().reverse().forEach(item => {
       const icons = {achievement:'&#127942;', project:'&#127919;', milestone:'&#127775;', observation:'&#128270;'};
@@ -866,7 +869,7 @@ function submitPortfolioEntry(childId) {
   const title = ((document.getElementById('pt-title')||{}).value||'').trim();
   const desc  = ((document.getElementById('pt-desc')||{}).value||'').trim();
   const skills= ((document.getElementById('pt-skills')||{}).value||'').trim();
-  if (!title || !desc) { const el=document.getElementById('pt-msg'); if(el){el.textContent='Please fill in title and description.';el.style.color='var(--coral)';} return; }
+  if (!title || !desc) { const el=document.getElementById('pt-msg'); if(el){el.textContent=t('Please fill in title and description.','Por favor completa el título y la descripción.');el.style.color='var(--coral)';} return; }
   addPortfolioItem(childId, type, title, desc, skills);
 }
 
@@ -880,11 +883,11 @@ function readinessTeacherView() {
   C2_RDNS_CHILD = selChild;
 
   let h = `<div class="card t-teal" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#127891; Readiness Assessment</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Track school readiness AND life readiness — because success requires both.</p>
+    <p class="lead" style="margin-bottom:4px">&#127891; ${t('Readiness Assessment','Evaluación de Preparación')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t('Track school readiness AND life readiness — because success requires both.','Monitorea la preparación escolar Y la preparación para la vida — porque el éxito requiere ambas.')}</p>
   </div>`;
 
-  if (!kids.length) return h + '<div class="empty">No children in your class.</div>';
+  if (!kids.length) return h + `<div class="empty">${t('No children in your class.','No hay niños en tu clase.')}</div>`;
   if (kids.length > 1) {
     h += `<div class="subtabs" style="padding-top:0">${kids.map(k=>
       `<button class="${k.id===selChild?'active':''}" onclick="C2_RDNS_CHILD='${k.id}';renderPortal()">${esc(k.name)}</button>`
@@ -898,12 +901,12 @@ function readinessTeacherView() {
   const lifePct   = getChildReadinessAvg(child.id, 'life');
 
   h += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-    <div class="stat-box"><div class="stat-num">${schoolPct}%</div><div class="stat-lbl">School Readiness</div></div>
-    <div class="stat-box"><div class="stat-num">${lifePct}%</div><div class="stat-lbl">Life Readiness</div></div>
+    <div class="stat-box"><div class="stat-num">${schoolPct}%</div><div class="stat-lbl">${t('School Readiness','Preparación Escolar')}</div></div>
+    <div class="stat-box"><div class="stat-num">${lifePct}%</div><div class="stat-lbl">${t('Life Readiness','Preparación para la Vida')}</div></div>
   </div>`;
 
-  h += _readinessSectionTeacher(child.id, 'school', '&#127891; School Readiness', SCHOOL_READINESS, '#4A8BC4');
-  h += _readinessSectionTeacher(child.id, 'life', '&#127775; Life Readiness', LIFE_READINESS, '#4A9E4A');
+  h += _readinessSectionTeacher(child.id, 'school', '&#127891; '+t('School Readiness','Preparación Escolar'), SCHOOL_READINESS, '#4A8BC4');
+  h += _readinessSectionTeacher(child.id, 'life', '&#127775; '+t('Life Readiness','Preparación para la Vida'), LIFE_READINESS, '#4A9E4A');
   return h;
 }
 
@@ -921,7 +924,7 @@ function _readinessSectionTeacher(childId, type, heading, criteria, color) {
       <div style="display:flex;gap:5px;flex-wrap:wrap">
         ${RDNS_LEVELS.map(lv => `<button onclick="saveReadinessScore('${childId}','${c.id}','${type}','${lv}')"
           style="padding:3px 10px;border-radius:20px;font-size:.72rem;font-weight:700;cursor:pointer;border:2px solid ${color};background:${curLevel===lv?color:'#fff'};color:${curLevel===lv?'#fff':color}">
-          ${esc(lv)}
+          ${esc(rdnsLabel(lv))}
         </button>`).join('')}
       </div>
     </div>`;
@@ -940,18 +943,18 @@ function parentRoadmapView(childId) {
   if (!rm || !child) return '';
 
   let h = `<div class="card t-gold" style="margin-bottom:14px">
-    <h3 style="margin:0 0 4px">&#127919; ${esc(child.name.split(' ')[0])}'s Learning Roadmap</h3>
+    <h3 style="margin:0 0 4px">&#127919; ${esc(child.name.split(' ')[0])}'s ${t('Learning Roadmap','Ruta de Aprendizaje')}</h3>
     <p class="soft" style="font-size:.83rem;margin:0">${esc(rm.label)} &middot; ${esc(rm.ageRange)}</p>
   </div>`;
 
-  h += _rdSection('&#127919; What ' + esc(child.name.split(' ')[0]) + ' Is Learning', rm.learningGoals, '#4A8BC4');
-  h += _rdSection('&#11088; Life Skills Being Built', rm.lifeSkills, '#4A9E4A');
-  h += _rdSection('&#129504; Thinking Skills', rm.thinkingSkills, '#8B4AB8');
-  h += _rdSection('&#10084; Social Skills', rm.socialSkills, '#E86B6B');
-  h += _rdSection('&#128200; Leadership in Development', rm.leadershipSkills, '#C8960A');
-  h += _rdSection('&#128180; Financial Literacy Goals', rm.financialLiteracy, '#2E9E8A');
-  h += _rdSection('&#127981; Entrepreneurship Skills', rm.entrepreneurship, '#B87828');
-  h += _rdSection('&#127912; Creativity Goals', rm.creativityGoals, '#D45AA0');
+  h += _rdSection('&#127919; '+t('What','Lo que')+' ' + esc(child.name.split(' ')[0]) + ' '+t('Is Learning','Está Aprendiendo'), rm.learningGoals, '#4A8BC4');
+  h += _rdSection('&#11088; '+t('Life Skills Being Built','Habilidades para la Vida en Desarrollo'), rm.lifeSkills, '#4A9E4A');
+  h += _rdSection('&#129504; '+t('Thinking Skills','Habilidades de Pensamiento'), rm.thinkingSkills, '#8B4AB8');
+  h += _rdSection('&#10084; '+t('Social Skills','Habilidades Sociales'), rm.socialSkills, '#E86B6B');
+  h += _rdSection('&#128200; '+t('Leadership in Development','Liderazgo en Desarrollo'), rm.leadershipSkills, '#C8960A');
+  h += _rdSection('&#128180; '+t('Financial Literacy Goals','Metas de Educación Financiera'), rm.financialLiteracy, '#2E9E8A');
+  h += _rdSection('&#127981; '+t('Entrepreneurship Skills','Habilidades de Emprendimiento'), rm.entrepreneurship, '#B87828');
+  h += _rdSection('&#127912; '+t('Creativity Goals','Metas de Creatividad'), rm.creativityGoals, '#D45AA0');
   return h;
 }
 
@@ -961,11 +964,11 @@ function parentPortfolioView(childId) {
   const items = getPortfolioItems(childId, 'all');
 
   let h = `<div class="card t-teal" style="margin-bottom:14px">
-    <h3 style="margin:0 0 4px">&#128203; ${esc(child.name.split(' ')[0])}'s Portfolio</h3>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">${items.length} items documenting your child's growth and achievements.</p>
+    <h3 style="margin:0 0 4px">&#128203; ${esc(child.name.split(' ')[0])}'s ${t('Portfolio','Portafolio')}</h3>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${items.length} ${t("items documenting your child's growth and achievements.","elementos que documentan el crecimiento y los logros de tu hijo.")}</p>
   </div>`;
 
-  if (!items.length) return h + '<div class="empty">Your child\'s teacher will add portfolio items here as they achieve milestones and complete projects.</div>';
+  if (!items.length) return h + `<div class="empty">${t("Your child's teacher will add portfolio items here as they achieve milestones and complete projects.","El maestro de tu hijo agregará elementos al portafolio aquí cuando logre hitos y complete proyectos.")}</div>`;
 
   items.slice().reverse().forEach(item => {
     const icons = {achievement:'&#127942;', project:'&#127919;', milestone:'&#127775;', observation:'&#128270;'};
@@ -993,17 +996,17 @@ function parentReadinessView(childId) {
   const lifePct   = getChildReadinessAvg(childId, 'life');
 
   let h = `<div class="card t-gold" style="margin-bottom:14px">
-    <h3 style="margin:0 0 4px">&#127891; ${esc(child.name.split(' ')[0])}'s Readiness Profile</h3>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">Assessed by your child's teacher, updated regularly.</p>
+    <h3 style="margin:0 0 4px">&#127891; ${esc(child.name.split(' ')[0])}'s ${t('Readiness Profile','Perfil de Preparación')}</h3>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${t("Assessed by your child's teacher, updated regularly.","Evaluado por el maestro de tu hijo, actualizado regularmente.")}</p>
   </div>`;
 
   h += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
-    <div class="stat-box"><div class="stat-num">${schoolPct}%</div><div class="stat-lbl">School Readiness</div></div>
-    <div class="stat-box"><div class="stat-num">${lifePct}%</div><div class="stat-lbl">Life Readiness</div></div>
+    <div class="stat-box"><div class="stat-num">${schoolPct}%</div><div class="stat-lbl">${t('School Readiness','Preparación Escolar')}</div></div>
+    <div class="stat-box"><div class="stat-num">${lifePct}%</div><div class="stat-lbl">${t('Life Readiness','Preparación para la Vida')}</div></div>
   </div>`;
 
-  h += _rdnsParentSection(childId, 'school', '&#127891; School Readiness', SCHOOL_READINESS, '#4A8BC4');
-  h += _rdnsParentSection(childId, 'life', '&#127775; Life Readiness', LIFE_READINESS, '#4A9E4A');
+  h += _rdnsParentSection(childId, 'school', '&#127891; '+t('School Readiness','Preparación Escolar'), SCHOOL_READINESS, '#4A8BC4');
+  h += _rdnsParentSection(childId, 'life', '&#127775; '+t('Life Readiness','Preparación para la Vida'), LIFE_READINESS, '#4A9E4A');
   return h;
 }
 
@@ -1019,7 +1022,7 @@ function _rdnsParentSection(childId, type, heading, criteria, color) {
       <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px">
         <span>${c.icon}</span>
         <b style="font-size:.85rem;flex:1">${esc(c.label)}</b>
-        <span style="padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:${RDNS_COLORS[levelIdx]||'#EEE'};color:#333">${esc(curLevel)}</span>
+        <span style="padding:2px 10px;border-radius:20px;font-size:.72rem;font-weight:700;background:${RDNS_COLORS[levelIdx]||'#EEE'};color:#333">${esc(rdnsLabel(curLevel))}</span>
       </div>
       <div style="background:#EAE2DA;border-radius:999px;height:8px;overflow:hidden">
         <div style="background:${color};width:${pct}%;height:100%;border-radius:999px;transition:width .5s"></div>
@@ -1057,26 +1060,26 @@ function parentWeeklyView(childId) {
   }));
 
   let h = `<div class="card t-night" style="margin-bottom:14px">
-    <h3 style="margin:0 0 4px;color:#fff">&#128197; This Week's Learning Summary</h3>
+    <h3 style="margin:0 0 4px;color:#fff">&#128197; ${t("This Week's Learning Summary","Resumen de Aprendizaje de Esta Semana")}</h3>
     <p style="font-size:.83rem;color:#BFD4FF;margin:0">${esc(child.name)} &middot; ${esc(last7[last7.length-1])} to ${esc(last7[0])}</p>
   </div>`;
 
   h += `<div class="stat-grid" style="margin-bottom:14px">
-    <div class="stat-box"><div class="stat-num">${doneActs}</div><div class="stat-lbl">Activities Done</div></div>
-    <div class="stat-box"><div class="stat-num">${notes.length}</div><div class="stat-lbl">Teacher Notes</div></div>
-    <div class="stat-box"><div class="stat-num">${portfolioThisWeek.length}</div><div class="stat-lbl">Portfolio Items</div></div>
-    <div class="stat-box"><div class="stat-num">${smMetrics.length}</div><div class="stat-lbl">Skills Tracked</div></div>
+    <div class="stat-box"><div class="stat-num">${doneActs}</div><div class="stat-lbl">${t('Activities Done','Actividades Realizadas')}</div></div>
+    <div class="stat-box"><div class="stat-num">${notes.length}</div><div class="stat-lbl">${t('Teacher Notes','Notas del Maestro')}</div></div>
+    <div class="stat-box"><div class="stat-num">${portfolioThisWeek.length}</div><div class="stat-lbl">${t('Portfolio Items','Elementos del Portafolio')}</div></div>
+    <div class="stat-box"><div class="stat-num">${smMetrics.length}</div><div class="stat-lbl">${t('Skills Tracked','Habilidades Rastreadas')}</div></div>
   </div>`;
 
   if (Object.keys(domainCounts).length) {
     h += `<div class="card" style="margin-bottom:10px">
-      <p class="lead" style="margin-bottom:8px">&#129504; Domains Covered This Week</p>
+      <p class="lead" style="margin-bottom:8px">&#129504; ${t('Domains Covered This Week','Dominios Cubiertos Esta Semana')}</p>
       ${Object.entries(domainCounts).map(([catId, count]) => {
         const cat = CURR_CATS.find(c=>c.id===catId);
         return cat ? `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
           <span style="color:${cat.color}">${cat.icon}</span>
           <span style="font-size:.85rem;font-weight:700;flex:1">${esc(cat.label)}</span>
-          <span style="background:${cat.color}20;color:${cat.color};padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700">${count} activit${count===1?'y':'ies'}</span>
+          <span style="background:${cat.color}20;color:${cat.color};padding:2px 10px;border-radius:20px;font-size:.75rem;font-weight:700">${count} ${count===1?t('activity','actividad'):t('activities','actividades')}</span>
         </div>` : '';
       }).join('')}
     </div>`;
@@ -1084,13 +1087,13 @@ function parentWeeklyView(childId) {
 
   if (notes.length) {
     h += `<div class="card t-teal" style="margin-bottom:10px">
-      <p class="lead" style="margin-bottom:8px">&#128203; Teacher Observations This Week</p>`;
+      <p class="lead" style="margin-bottom:8px">&#128203; ${t('Teacher Observations This Week','Observaciones del Maestro Esta Semana')}</p>`;
     notes.forEach(n => {
       h += `<div style="border-bottom:1px solid #EAE2DA;padding-bottom:8px;margin-bottom:8px;last-child:border-none">
         <p style="font-size:.78rem;color:var(--muted);font-weight:700;margin:0 0 4px">${esc(n.date)}</p>
-        ${n.strengths ? `<p style="font-size:.82rem;margin:0 0 3px"><b>Excelled at:</b> ${esc(n.strengths)}</p>` : ''}
-        ${n.moments   ? `<p style="font-size:.82rem;margin:0 0 3px"><b>Special moment:</b> ${esc(n.moments)}</p>` : ''}
-        ${n.recs      ? `<p style="font-size:.82rem;margin:0"><b>Try at home:</b> ${esc(n.recs)}</p>` : ''}
+        ${n.strengths ? `<p style="font-size:.82rem;margin:0 0 3px"><b>${t('Excelled at:','Excelió en:')}</b> ${esc(n.strengths)}</p>` : ''}
+        ${n.moments   ? `<p style="font-size:.82rem;margin:0 0 3px"><b>${t('Special moment:','Momento especial:')}</b> ${esc(n.moments)}</p>` : ''}
+        ${n.recs      ? `<p style="font-size:.82rem;margin:0"><b>${t('Try at home:','Prueba en casa:')}</b> ${esc(n.recs)}</p>` : ''}
       </div>`;
     });
     h += '</div>';
@@ -1098,7 +1101,7 @@ function parentWeeklyView(childId) {
 
   if (portfolioThisWeek.length) {
     h += `<div class="card" style="margin-bottom:10px">
-      <p class="lead" style="margin-bottom:8px">&#127942; New Portfolio Items This Week</p>`;
+      <p class="lead" style="margin-bottom:8px">&#127942; ${t('New Portfolio Items This Week','Nuevos Elementos del Portafolio Esta Semana')}</p>`;
     portfolioThisWeek.forEach(item => {
       h += `<div style="padding:8px;background:#F8F8F8;border-radius:8px;margin-bottom:6px">
         <b style="font-size:.85rem">${esc(item.title)}</b>
@@ -1109,7 +1112,7 @@ function parentWeeklyView(childId) {
   }
 
   if (!totalActs && !notes.length) {
-    h += '<div class="empty">No learning data available for this week yet. Check back after your child\'s first full week.</div>';
+    h += `<div class="empty">${t("No learning data available for this week yet. Check back after your child's first full week.","Aún no hay datos de aprendizaje disponibles para esta semana. Regresa después de la primera semana completa de tu hijo.")}</div>`;
   }
   return h;
 }
@@ -1135,17 +1138,17 @@ function adminAnalyticsView2() {
   const completionPct = totalActs ? Math.round((doneActs/totalActs)*100) : 0;
 
   let h = `<div class="card t-night" style="margin-bottom:14px">
-    <p class="lead" style="color:#fff;margin-bottom:4px">&#128201; Advanced Analytics Dashboard</p>
-    <p style="font-size:.83rem;color:#BFD4FF;margin:0">Full visibility across curriculum, milestones, readiness, portfolios, and success metrics.</p>
+    <p class="lead" style="color:#fff;margin-bottom:4px">&#128201; ${t('Advanced Analytics Dashboard','Panel de Análisis Avanzado')}</p>
+    <p style="font-size:.83rem;color:#BFD4FF;margin:0">${t('Full visibility across curriculum, milestones, readiness, portfolios, and success metrics.','Visibilidad completa del currículo, hitos, preparación, portafolios y métricas de éxito.')}</p>
   </div>`;
 
   h += `<div class="stat-grid" style="margin-bottom:14px">
-    <div class="stat-box"><div class="stat-num">${completionPct}%</div><div class="stat-lbl">Activity Completion</div></div>
-    <div class="stat-box"><div class="stat-num">${allPortfolio.length}</div><div class="stat-lbl">Portfolio Items</div></div>
-    <div class="stat-box"><div class="stat-num">${allProjects.length}</div><div class="stat-lbl">PBL Projects Done</div></div>
-    <div class="stat-box"><div class="stat-num">${allReadiness.length}</div><div class="stat-lbl">Readiness Assessments</div></div>
-    <div class="stat-box"><div class="stat-num">${allFL.length}</div><div class="stat-lbl">FL Milestones</div></div>
-    <div class="stat-box"><div class="stat-num">${allLeadership.length}</div><div class="stat-lbl">Leadership Tracked</div></div>
+    <div class="stat-box"><div class="stat-num">${completionPct}%</div><div class="stat-lbl">${t('Activity Completion','Finalización de Actividades')}</div></div>
+    <div class="stat-box"><div class="stat-num">${allPortfolio.length}</div><div class="stat-lbl">${t('Portfolio Items','Elementos del Portafolio')}</div></div>
+    <div class="stat-box"><div class="stat-num">${allProjects.length}</div><div class="stat-lbl">${t('PBL Projects Done','Proyectos PBL Completados')}</div></div>
+    <div class="stat-box"><div class="stat-num">${allReadiness.length}</div><div class="stat-lbl">${t('Readiness Assessments','Evaluaciones de Preparación')}</div></div>
+    <div class="stat-box"><div class="stat-num">${allFL.length}</div><div class="stat-lbl">${t('FL Milestones','Hitos de Ed. Financiera')}</div></div>
+    <div class="stat-box"><div class="stat-num">${allLeadership.length}</div><div class="stat-lbl">${t('Leadership Tracked','Liderazgo Rastreado')}</div></div>
   </div>`;
 
   // Domain mastery heatmap
@@ -1158,7 +1161,7 @@ function adminAnalyticsView2() {
 
   if (Object.keys(domainTotals).length) {
     h += `<div class="card" style="margin-bottom:14px">
-      <p class="lead" style="margin-bottom:10px">&#127919; Domain Mastery Rates</p>`;
+      <p class="lead" style="margin-bottom:10px">&#127919; ${t('Domain Mastery Rates','Tasas de Dominio por Área')}</p>`;
     CURR_CATS.forEach(cat => {
       const total = domainTotals[cat.id]||0;
       const done  = domainDone[cat.id]||0;
@@ -1180,7 +1183,7 @@ function adminAnalyticsView2() {
   // Readiness overview per class
   if (DB.classes.length) {
     h += `<div class="card" style="margin-bottom:14px">
-      <p class="lead" style="margin-bottom:10px">&#127891; Readiness Scores by Class</p>`;
+      <p class="lead" style="margin-bottom:10px">&#127891; ${t('Readiness Scores by Class','Puntajes de Preparación por Clase')}</p>`;
     DB.classes.forEach(cls => {
       const classKids = allKids.filter(k=>k.classId===cls.id);
       if (!classKids.length) return;
@@ -1192,14 +1195,14 @@ function adminAnalyticsView2() {
         <b>${esc(cls.name)}</b> <span class="soft">(${classKids.length} children)</span>
         <div style="display:flex;gap:10px;margin-top:6px">
           <div style="flex:1">
-            <p style="font-size:.75rem;color:var(--muted);margin:0 0 3px">School Readiness</p>
+            <p style="font-size:.75rem;color:var(--muted);margin:0 0 3px">${t('School Readiness','Preparación Escolar')}</p>
             <div style="background:#EAE2DA;border-radius:999px;height:8px;overflow:hidden">
               <div style="background:#4A8BC4;width:${avgSchool}%;height:100%;border-radius:999px"></div>
             </div>
             <p style="font-size:.75rem;text-align:right;margin:2px 0 0">${avgSchool}%</p>
           </div>
           <div style="flex:1">
-            <p style="font-size:.75rem;color:var(--muted);margin:0 0 3px">Life Readiness</p>
+            <p style="font-size:.75rem;color:var(--muted);margin:0 0 3px">${t('Life Readiness','Preparación para la Vida')}</p>
             <div style="background:#EAE2DA;border-radius:999px;height:8px;overflow:hidden">
               <div style="background:#4A9E4A;width:${avgLife}%;height:100%;border-radius:999px"></div>
             </div>
@@ -1216,7 +1219,7 @@ function adminAnalyticsView2() {
     const byType = {};
     allPortfolio.forEach(p=>byType[p.type]=(byType[p.type]||0)+1);
     h += `<div class="card" style="margin-bottom:14px">
-      <p class="lead" style="margin-bottom:10px">&#128203; Portfolio Distribution</p>
+      <p class="lead" style="margin-bottom:10px">&#128203; ${t('Portfolio Distribution','Distribución del Portafolio')}</p>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         ${Object.entries(byType).map(([t,c])=>`<div class="stat-box" style="flex:1;min-width:80px">
           <div class="stat-num">${c}</div><div class="stat-lbl">${esc(t)}</div>
@@ -1230,7 +1233,7 @@ function adminAnalyticsView2() {
     const flByDomain = {};
     allFL.forEach(m=>flByDomain[m.domainId]=(flByDomain[m.domainId]||[]).concat(m.level));
     h += `<div class="card" style="margin-bottom:14px">
-      <p class="lead" style="margin-bottom:10px">&#128180; Financial Literacy Progress</p>`;
+      <p class="lead" style="margin-bottom:10px">&#128180; ${t('Financial Literacy Progress','Progreso de Educación Financiera')}</p>`;
     FL_DOMAINS.forEach(d => {
       const levels = flByDomain[d.id]||[];
       if (!levels.length) return;
@@ -1240,7 +1243,7 @@ function adminAnalyticsView2() {
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
           <span>${d.icon}</span>
           <b style="font-size:.83rem;flex:1">${esc(d.label)}</b>
-          <span style="font-size:.78rem;color:var(--muted)">${levels.length} kids assessed &middot; avg level ${avg}</span>
+          <span style="font-size:.78rem;color:var(--muted)">${levels.length} ${t('kids assessed · avg level','niños evaluados · nivel promedio')} ${avg}</span>
         </div>
         <div style="background:#EAE2DA;border-radius:999px;height:8px;overflow:hidden">
           <div style="background:${d.color};width:${pct}%;height:100%;border-radius:999px"></div>
@@ -1255,8 +1258,9 @@ function adminAnalyticsView2() {
     const ldByModule = {};
     allLeadership.forEach(m=>ldByModule[m.moduleId]=(ldByModule[m.moduleId]||[]).concat(m.level));
     const levels = ['Not Started','Beginning','Developing','Proficient'];
+    const levelsESAdmin = ['No Iniciado','Iniciando','En Desarrollo','Competente'];
     h += `<div class="card" style="margin-bottom:14px">
-      <p class="lead" style="margin-bottom:10px">&#128200; Leadership Development Distribution</p>`;
+      <p class="lead" style="margin-bottom:10px">&#128200; ${t('Leadership Development Distribution','Distribución del Desarrollo del Liderazgo')}</p>`;
     LEADERSHIP_MODULES.forEach(mod => {
       const entries = ldByModule[mod.id]||[];
       if (!entries.length) return;
@@ -1265,10 +1269,10 @@ function adminAnalyticsView2() {
       h += `<div style="margin-bottom:8px;padding:8px;background:#F8F8F8;border-radius:8px">
         <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
           <span>${mod.icon}</span><b style="font-size:.83rem">${esc(mod.label)}</b>
-          <span class="soft" style="font-size:.75rem">${entries.length} children</span>
+          <span class="soft" style="font-size:.75rem">${entries.length} ${t('children','niños')}</span>
         </div>
         <div style="display:flex;gap:4px;flex-wrap:wrap">
-          ${levels.map(lv=>counts[lv]?`<span style="padding:2px 8px;border-radius:20px;font-size:.7rem;font-weight:700;background:${mod.color}30;color:${mod.color}">${esc(lv)}: ${counts[lv]}</span>`:''). join('')}
+          ${levels.map((lv,i)=>counts[lv]?`<span style="padding:2px 8px;border-radius:20px;font-size:.7rem;font-weight:700;background:${mod.color}30;color:${mod.color}">${esc(typeof LANG!=='undefined'&&LANG==='es'?levelsESAdmin[i]:lv)}: ${counts[lv]}</span>`:''). join('')}
         </div>
       </div>`;
     });
@@ -1276,7 +1280,7 @@ function adminAnalyticsView2() {
   }
 
   if (!totalActs && !allPortfolio.length) {
-    h += '<div class="empty">Analytics will populate as teachers log activities and assessments.</div>';
+    h += `<div class="empty">${t('Analytics will populate as teachers log activities and assessments.','Las analíticas se llenarán a medida que los maestros registren actividades y evaluaciones.')}</div>`;
   }
   return h;
 }
@@ -1290,31 +1294,31 @@ function adminPBLView() {
   });
 
   let h = `<div class="card t-teal" style="margin-bottom:14px">
-    <p class="lead" style="margin-bottom:4px">&#127919; Project-Based Learning Overview</p>
-    <p style="font-size:.83rem;color:var(--muted);margin:0">${PBL_PROJECTS.length} projects available across all age groups.</p>
+    <p class="lead" style="margin-bottom:4px">&#127919; ${t('Project-Based Learning Overview','Resumen de Aprendizaje Basado en Proyectos')}</p>
+    <p style="font-size:.83rem;color:var(--muted);margin:0">${PBL_PROJECTS.length} ${t('projects available across all age groups.','proyectos disponibles en todos los grupos de edad.')}</p>
   </div>`;
 
   h += `<div class="stat-grid" style="margin-bottom:14px">
-    <div class="stat-box"><div class="stat-num">${PBL_PROJECTS.length}</div><div class="stat-lbl">Total Projects</div></div>
-    <div class="stat-box"><div class="stat-num">${(DB.curriculum.projects||[]).length}</div><div class="stat-lbl">Completions Logged</div></div>
+    <div class="stat-box"><div class="stat-num">${PBL_PROJECTS.length}</div><div class="stat-lbl">${t('Total Projects','Proyectos Totales')}</div></div>
+    <div class="stat-box"><div class="stat-num">${(DB.curriculum.projects||[]).length}</div><div class="stat-lbl">${t('Completions Logged','Completados Registrados')}</div></div>
   </div>`;
 
   if (DB.classes.length) {
-    h += `<div class="card" style="margin-bottom:14px"><p class="lead" style="margin-bottom:8px">Completions by Class</p>`;
+    h += `<div class="card" style="margin-bottom:14px"><p class="lead" style="margin-bottom:8px">${t('Completions by Class','Completados por Clase')}</p>`;
     DB.classes.forEach(cls => {
       h += `<div style="display:flex;align-items:center;gap:8px;padding:8px;border-radius:8px;background:#F8F8F8;margin-bottom:6px">
         <b style="flex:1">${esc(cls.name)}</b>
-        <span class="tag" style="background:var(--teal);color:#fff">${completedByClass[cls.id]||0} completed</span>
+        <span class="tag" style="background:var(--teal);color:#fff">${completedByClass[cls.id]||0} ${t('completed','completados')}</span>
       </div>`;
     });
     h += '</div>';
   }
 
-  h += `<p class="lead" style="margin-bottom:8px">Available Projects by Age Group</p>`;
+  h += `<p class="lead" style="margin-bottom:8px">${t('Available Projects by Age Group','Proyectos Disponibles por Grupo de Edad')}</p>`;
   ['infants','toddlers','preschool','school_age'].forEach(ag => {
     const ps = PBL_PROJECTS.filter(p=>p.ageGroup===ag);
     if (!ps.length) return;
-    const agLabel = {infants:'Infants',toddlers:'Toddlers',preschool:'Preschool',school_age:'School-Age'}[ag];
+    const agLabel = {infants:t('Infants','Infantes'),toddlers:t('Toddlers','Pequeños'),preschool:t('Preschool','Preescolar'),school_age:t('School-Age','Edad Escolar')}[ag];
     h += `<div style="margin-bottom:10px"><p style="font-weight:700;color:var(--night);margin:0 0 6px">${esc(agLabel)}</p>`;
     ps.forEach(p=>{
       h+=`<div style="padding:8px 12px;background:#F8F8F8;border-radius:8px;margin-bottom:4px">
@@ -1350,22 +1354,22 @@ function adminPBLView() {
 
   /* ── Teacher ── */
   const TEACHER_ORIG_TABS = [
-    ['today',     '&#128197; Today\'s Plan'],
-    ['milestones','&#127919; Milestones'],
-    ['success',   '&#11088; Success Metrics'],
-    ['library',   '&#128218; Activity Library'],
-    ['pathways',  '&#128197; Monthly Pathways'],
-    ['generator', '&#9889; AI Generator']
+    ['today',     '&#128197; '+t("Today's Plan","Plan de Hoy")],
+    ['milestones','&#127919; '+t('Milestones','Hitos')],
+    ['success',   '&#11088; '+t('Success Metrics','Métricas de Éxito')],
+    ['library',   '&#128218; '+t('Activity Library','Biblioteca de Actividades')],
+    ['pathways',  '&#128197; '+t('Monthly Pathways','Rutas Mensuales')],
+    ['generator', '&#9889; '+t('AI Generator','Generador IA')]
   ];
   const TEACHER_NEW_TABS = [
-    ['roadmaps',    '&#127919; Roadmaps'],
-    ['ent_pathway', '&#127981; Entrepreneur'],
-    ['fl_tracker',  '&#128180; Fin. Literacy'],
-    ['leadership',  '&#128200; Leadership'],
-    ['ct_engine',   '&#129504; Critical Thinking'],
-    ['pbl',         '&#127919; Projects'],
-    ['portfolio',   '&#128203; Portfolio'],
-    ['readiness',   '&#127891; Readiness']
+    ['roadmaps',    '&#127919; '+t('Roadmaps','Rutas')],
+    ['ent_pathway', '&#127981; '+t('Entrepreneur','Emprendedor')],
+    ['fl_tracker',  '&#128180; '+t('Fin. Literacy','Ed. Financiera')],
+    ['leadership',  '&#128200; '+t('Leadership','Liderazgo')],
+    ['ct_engine',   '&#129504; '+t('Critical Thinking','Pensamiento Crítico')],
+    ['pbl',         '&#127919; '+t('Projects','Proyectos')],
+    ['portfolio',   '&#128203; '+t('Portfolio','Portafolio')],
+    ['readiness',   '&#127891; '+t('Readiness','Preparación')]
   ];
 
   const ALL_TEACHER_KEYS = [...TEACHER_ORIG_TABS, ...TEACHER_NEW_TABS].map(([k])=>k);
@@ -1388,7 +1392,7 @@ function adminPBLView() {
     h += `<div style="background:${ageInfo.color};border-radius:14px;padding:10px 16px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
       <span style="font-size:1.5rem">${ageInfo.icon}</span>
       <div><b style="color:var(--night)">${esc(ageInfo.label)}</b> &nbsp;&#183;&nbsp; <span class="soft">${esc(ageInfo.range)}</span></div>
-      <div style="margin-left:auto;font-weight:700;color:var(--night)">&#127808; Theme: ${esc(theme)}</div>
+      <div style="margin-left:auto;font-weight:700;color:var(--night)">&#127808; ${t('Theme:','Tema:')} ${esc(theme)}</div>
     </div>`;
 
     if (CURR_SUB === 'roadmaps')    h += roadmapView(false);
@@ -1404,17 +1408,17 @@ function adminPBLView() {
 
   /* ── Parent ── */
   const PARENT_ORIG_TABS = [
-    ['today',     '&#128197; Today\'s Learning'],
-    ['progress',  '&#128202; Progress'],
-    ['milestones','&#127919; Milestones'],
-    ['success',   '&#11088; Success Profile'],
-    ['report',    '&#128203; Full Report']
+    ['today',     '&#128197; '+t("Today's Learning","Aprendizaje de Hoy")],
+    ['progress',  '&#128202; '+t('Progress','Progreso')],
+    ['milestones','&#127919; '+t('Milestones','Hitos')],
+    ['success',   '&#11088; '+t('Success Profile','Perfil de Éxito')],
+    ['report',    '&#128203; '+t('Full Report','Reporte Completo')]
   ];
   const PARENT_NEW_TABS = [
-    ['roadmap',   '&#127919; Roadmap'],
-    ['weekly',    '&#128197; Weekly Summary'],
-    ['portfolio', '&#128203; Portfolio'],
-    ['readiness', '&#127891; Readiness']
+    ['roadmap',   '&#127919; '+t('Roadmap','Ruta')],
+    ['weekly',    '&#128197; '+t('Weekly Summary','Resumen Semanal')],
+    ['portfolio', '&#128203; '+t('Portfolio','Portafolio')],
+    ['readiness', '&#127891; '+t('Readiness','Preparación')]
   ];
 
   const _origParent = parentLearningView;
@@ -1446,17 +1450,17 @@ function adminPBLView() {
 
   /* ── Admin ── */
   const ADMIN_ORIG_TABS = [
-    ['overview',  '&#128202; Overview'],
-    ['themes',    '&#127808; Weekly Themes'],
-    ['analytics', '&#128201; Analytics'],
-    ['success',   '&#11088; Success Analytics'],
-    ['pathways',  '&#128197; Monthly Pathways'],
-    ['library',   '&#128218; Library']
+    ['overview',  '&#128202; '+t('Overview','Resumen')],
+    ['themes',    '&#127808; '+t('Weekly Themes','Temas Semanales')],
+    ['analytics', '&#128201; '+t('Analytics','Analíticas')],
+    ['success',   '&#11088; '+t('Success Analytics','Analíticas de Éxito')],
+    ['pathways',  '&#128197; '+t('Monthly Pathways','Rutas Mensuales')],
+    ['library',   '&#128218; '+t('Library','Biblioteca')]
   ];
   const ADMIN_NEW_TABS = [
-    ['roadmaps',    '&#127919; Roadmaps'],
-    ['analytics2',  '&#128201; Advanced Analytics'],
-    ['pbl_admin',   '&#127919; PBL Projects'],
+    ['roadmaps',    '&#127919; '+t('Roadmaps','Rutas')],
+    ['analytics2',  '&#128201; '+t('Advanced Analytics','Análisis Avanzado')],
+    ['pbl_admin',   '&#127919; '+t('PBL Projects','Proyectos PBL')],
   ];
 
   const _origAdmin = adminCurriculumView;
