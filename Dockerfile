@@ -22,11 +22,8 @@ RUN npm install --production
 # Copy Express server
 COPY server.js ./
 
-# Copy static assets (logo, images needed by old pages if any)
-COPY public/images ./public_react/images
-
-# Copy built React app into public_react/
-COPY --from=builder /app/public_react/ ./public_react/
+# Copy the HTML app (public/)
+COPY public/ ./public/
 
 EXPOSE 8080
 
