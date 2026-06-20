@@ -1373,8 +1373,6 @@ function adminPBLView() {
   ];
 
   const ALL_TEACHER_KEYS = [...TEACHER_ORIG_TABS, ...TEACHER_NEW_TABS].map(([k])=>k);
-  const ALL_PARENT_KEYS  = [...PARENT_ORIG_TABS,  ...PARENT_NEW_TABS ].map(([k])=>k);
-  const ALL_ADMIN_KEYS   = [...ADMIN_ORIG_TABS,   ...ADMIN_NEW_TABS  ].map(([k])=>k);
 
   const _origTeacher = teacherCurriculumView;
   teacherCurriculumView = function() {
@@ -1420,6 +1418,7 @@ function adminPBLView() {
     ['portfolio', '&#128203; '+t('Portfolio','Portafolio')],
     ['readiness', '&#127891; '+t('Readiness','Preparación')]
   ];
+  const ALL_PARENT_KEYS  = [...PARENT_ORIG_TABS,  ...PARENT_NEW_TABS ].map(([k])=>k);
 
   const _origParent = parentLearningView;
   parentLearningView = function() {
@@ -1462,6 +1461,7 @@ function adminPBLView() {
     ['analytics2',  '&#128201; '+t('Advanced Analytics','Análisis Avanzado')],
     ['pbl_admin',   '&#127919; '+t('PBL Projects','Proyectos PBL')],
   ];
+  const ALL_ADMIN_KEYS   = [...ADMIN_ORIG_TABS,   ...ADMIN_NEW_TABS  ].map(([k])=>k);
 
   const _origAdmin = adminCurriculumView;
   adminCurriculumView = function() {

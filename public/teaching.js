@@ -561,7 +561,7 @@ function observationList(items) {
 
 /* ── 8a. Teacher Coaching Hub (coach subtab) ── */
 function teacherCoachView() {
-  var u = (typeof DB !== 'undefined' && DB.users) ? DB.users.find(function(x){ return x.id === CURR_USER; }) : null;
+  var u = (typeof DB !== 'undefined' && DB.users && typeof CU !== 'undefined' && CU) ? DB.users.find(function(x){ return x.id === CU.id; }) : null;
   var cls = (u && typeof DB !== 'undefined') ? DB.classes.find(function(c){ return c.id === u.classId; }) : null;
   var ageKey = cls ? (typeof getAgeKey === 'function' ? getAgeKey(cls.id) : 'preschool') : 'preschool';
   var ctx = AGE_COACHING_CONTEXT[ageKey] || AGE_COACHING_CONTEXT.preschool;
