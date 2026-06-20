@@ -1372,7 +1372,7 @@ function adminPBLView() {
     ['readiness',   '&#127891; '+t('Readiness','Preparación')]
   ];
 
-  const ALL_TEACHER_KEYS = [...TEACHER_ORIG_TABS, ...TEACHER_NEW_TABS].map(([k])=>k);
+  const ALL_TEACHER_KEYS = [...TEACHER_ORIG_TABS, ...TEACHER_NEW_TABS].map(([k])=>k).concat(['coach','resources']);
 
   const _origTeacher = teacherCurriculumView;
   teacherCurriculumView = function() {
